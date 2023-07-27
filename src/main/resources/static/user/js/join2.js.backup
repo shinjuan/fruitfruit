@@ -1,0 +1,58 @@
+$(document).on('click', '#joinok', () => {
+
+
+    let email = $("#email").val();
+    let nickname = $("#nickname").val();
+    let password = $("#password").val();
+
+    // 선택한 약관들을 배열에 저장합니다.
+    let selectedTerms = [];
+    if ($("#chk2").is(":checked")) selectedTerms.push(2);
+    if ($("#chk3").is(":checked")) selectedTerms.push(3);
+    if ($("#chk4").is(":checked")) selectedTerms.push(4);
+    if ($("#chk5").is(":checked")) selectedTerms.push(5);
+    if ($("#chk6").is(":checked")) selectedTerms.push(6);
+
+    // 필수 약관 체크 여부 확인
+    if (!(selectedTerms.includes(2) && selectedTerms.includes(3) && selectedTerms.includes(4))) {
+        // 필수 약관 중 하나라도 체크되지 않은 경우 모달 알림창 표시
+        showModal();
+        event.preventDefault();
+    } else {
+
+        // AJAX 요청을 보냅니다.
+        axios({
+            method: "post",
+            url: "/join_ok", // "/alert" URL 로 요청
+            data: {
+                email: email,
+                nickname: nickname,
+                password: password,
+                selectedTerms: selectedTerms
+            },
+            headers: {'Content-Type': 'application/json'} // 요청 헤더에 JSON 형식으로 데이터
+        }).then(res => {
+            console.log("회원가입 성공:", res);
+
+
+            $("body").empty();
+            $("body").append(res.data);
+
+        });
+    }
+});
+
+
+// 모달창 보이기
+function showModal(message) {
+    $("#modalMessage").text(message);
+    $(".txt04").css("display", "block");
+}
+
+// 모달창 감추기
+function hideModal() {
+    $(".txt04").css("display", "none");
+};
+
+
+

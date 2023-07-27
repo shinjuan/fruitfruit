@@ -1,0 +1,12 @@
+<table>
+ <tr>
+  <th>Name</th>
+  <th>Email</th>
+
+ </tr>
+ <tr th:each="item : ${test}">
+  <td th:text="${item['name']}"></td>
+  <td th:text="${item['email']}"></td>
+
+ </tr>
+</table>
