@@ -51,6 +51,7 @@
 
     <script defer src="user/js/main.js"></script>
 
+
     <th:block th:insert="~{includes/library}"></th:block>
     <th:block th:insert="~{includes/style}"></th:block>
     <th:block th:insert="~{includes/scripts}"></th:block>
@@ -135,12 +136,14 @@
                     </label>
                     <label for="nickname">
                         <p>닉네임</p>
-                        <input type="textbox" name="nickname" placeholder="닉네임 입력 (2자 이상)" id="nickname" required>
+                        <input type="textbox" name="nickname" placeholder="닉네임 입력 (2자 이상)" id="nickname" oninput="checkLength()" required>
                         <p class="wrong__pw" id="nicknamechk" name="nicknamechk"></p>
+
                     </label>
                     <label for="password">
                         <p>비밀번호</p>
-                        <input type="textbox" name="password" placeholder="영문, 숫자, 특수문자 (8자-20자 이내)" id="password" required>
+                        <input type="textbox" name="password" placeholder="영문, 숫자, 특수문자 (8자-20자 이내)" id="password" onkeyup="checkPasswordMatch()" required>
+                        <p class="wrong__pw" id="pwdchk2" style="display: none;">영문자/숫자/특수문자 포 함 최소 8자리 이상 20자리 이내로 입력해주세요.</p>
                     </label>
                     <label for="password2">
                         <p>비밀번호 확인</p>
@@ -316,6 +319,21 @@
             updateChk1Status();
         });
     }
+</script>
+<script>
+    function checkPasswordMatch() {
+        const password = document.getElementById('password').value;
+        const pwdchkMsg2 = document.getElementById('pwdchk2');
+
+        const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,20}$/;
+
+        if (!passwordPattern.test(password)) {
+            pwdchkMsg2.style.display = 'block'; // 메시지를 보여줌
+        } else {
+            pwdchkMsg2.style.display = 'none'; // 메시지를 숨김
+        }
+    }
+
 </script>
 
 </html>

@@ -39,6 +39,13 @@ $(document).on('click', '#joinok', () => {
         showModal("비밀번호를 확인해 주세요.");
         event.preventDefault();
     }
+
+    const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,20}$/;
+
+    if (!passwordPattern.test(document.getElementById('password').value.trim())) {
+        showModal("비밀번호를 확인해 주세요.");
+        event.preventDefault();
+    }
     if(document.getElementById('password').value.trim() != document.getElementById('password2').value.trim()) {
         showModal("비밀번호가 일치하지 않습니다.");
         event.preventDefault();
