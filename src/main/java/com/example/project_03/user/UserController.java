@@ -26,37 +26,17 @@ public class UserController {
 
         return  pageName;
     }
-//    @Transactional
-//    @PostMapping("join_ok")
-//    public String join_ok(@RequestBody HashMap<String, Object> requestData, Model model)  {
-//
-//        userService.insertMemberTermAll(requestData);
-//
-//        model.addAttribute("user_email", requestData.get("email"));
-//        System.out.println("모델:"+model.getAttribute("user_email"));
-//
-//        return "joinConfirm";
-//    }
-
 
     @PostMapping("join_ok")
     public String join_ok(@RequestParam HashMap<String, Object> requestData,
-                          @RequestParam List<String> status
-            , Model model)  {
-
-        System.out.println("동기data"+requestData);
-        System.out.println("체크박스data"+status);
-
-        status.remove("1");
+                          @RequestParam List<String> status, Model model)  {
 
         requestData.put("status",status);
-
-        System.out.println("최종requestData"+requestData);
 
         userService.insertMemberTermAll(requestData);
 
         model.addAttribute("user_email", requestData.get("email"));
-        System.out.println("모델:"+model.getAttribute("user_email"));
+
 
         return "joinConfirm";
     }

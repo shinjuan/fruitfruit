@@ -27,12 +27,14 @@ public class UserService implements UserMapper {
     //회원가입
     @Override
     public void insertMember(HashMap<String, Object> requestData) {}
-
+    
+    //이메일 중복체크
     @Override
     public String emailChk(HashMap<String, Object> requestData) {
         return userMapper.emailChk(requestData);
     }
-
+    
+    //닉네임 중복체크
     @Override
     public String nicknameChk(HashMap<String, Object> requestData) {
         return userMapper.nicknameChk(requestData);

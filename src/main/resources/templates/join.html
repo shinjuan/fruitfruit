@@ -131,18 +131,18 @@
                 <div class="inputboxs">
                     <label for="email">
                         <p>이메일주소(ID)</p>
-                        <input type="textbox" name="email" placeholder="이메일 주소 입력" id="email" onblur="handleBlurEvent()" required>
+                        <input type="textbox" name="email" placeholder="이메일 주소 입력" id="email"  required>
                         <p class="wrong__pw" id="emailchk" name="emailchk"></p>
                     </label>
                     <label for="nickname">
                         <p>닉네임</p>
-                        <input type="textbox" name="nickname" placeholder="닉네임 입력 (2자 이상)" id="nickname" oninput="checkLength()" required>
+                        <input type="textbox" name="nickname" placeholder="닉네임 입력 (2자 이상)" id="nickname"  required>
                         <p class="wrong__pw" id="nicknamechk" name="nicknamechk"></p>
 
                     </label>
                     <label for="password">
                         <p>비밀번호</p>
-                        <input type="textbox" name="password" placeholder="영문, 숫자, 특수문자 (8자-20자 이내)" id="password" onkeyup="checkPasswordMatch()" required>
+                        <input type="textbox" name="password" placeholder="영문, 숫자, 특수문자 (8자-20자 이내)" id="password"  required>
                         <p class="wrong__pw" id="pwdchk2" style="display: none;">영문자/숫자/특수문자 포 함 최소 8자리 이상 20자리 이내로 입력해주세요.</p>
                     </label>
                     <label for="password2">
@@ -177,7 +177,7 @@
 
                     <!-- 모든약관에 동의 체크하면 모두 체크되게.. -->
                     <label for="chk1" class="all__agreed">
-                        <input type="checkbox" name="status" value="1" id="chk1">
+                        <input type="checkbox" name="status" id="chk1">
                         <p class="agree">모든 약관에 동의합니다.</p>
                     </label>
 
@@ -269,71 +269,8 @@
         </div>
     </footer>
 </body>
-<script>
-    function checkPasswordMatch() {
-        const password = document.getElementById('password').value;
-        const password2 = document.getElementById('password2').value;
-        const pwdchkMsg = document.getElementById('pwdchk');
-
-        if (password !== password2) {
-            pwdchkMsg.style.display = 'block'; // 메시지를 보여줌
-        } else {
-            pwdchkMsg.style.display = 'none'; // 메시지를 숨김
-        }
-    }
-
-    // 비밀번호 입력 또는 비밀번호 확인 입력에서 이벤트 발생 시 실행되도록 설정
-    document.getElementById('password').addEventListener('input', checkPasswordMatch);
-    document.getElementById('password2').addEventListener('input', checkPasswordMatch);
-</script>
-<script>
-    // JavaScript 코드
-    let chk1 = document.getElementById('chk1');
 
 
 
-    let otherCheckboxes = document.querySelectorAll('input[name="status"]:not(#chk1)');
-
-    function updateChk1Status() {
-        let allChecked = true;
-        for (let i = 0; i < otherCheckboxes.length; i++) {
-            if (!otherCheckboxes[i].checked) {
-                allChecked = false;
-                break;
-            }
-        }
-        chk1.checked = allChecked;
-    }
-
-    chk1.addEventListener('change', function() {
-        for (let i = 0; i < otherCheckboxes.length; i++) {
-            otherCheckboxes[i].checked = this.checked;
-        }
-    });
-
-    for (let i = 0; i < otherCheckboxes.length; i++) {
-        otherCheckboxes[i].addEventListener('change', function() {
-            if (!this.checked) {
-                chk1.checked = false;
-            }
-            updateChk1Status();
-        });
-    }
-</script>
-<script>
-    function checkPasswordMatch() {
-        const password = document.getElementById('password').value;
-        const pwdchkMsg2 = document.getElementById('pwdchk2');
-
-        const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,20}$/;
-
-        if (!passwordPattern.test(password)) {
-            pwdchkMsg2.style.display = 'block'; // 메시지를 보여줌
-        } else {
-            pwdchkMsg2.style.display = 'none'; // 메시지를 숨김
-        }
-    }
-
-</script>
 
 </html>

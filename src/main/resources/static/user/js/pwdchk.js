@@ -1,4 +1,4 @@
-function checkPasswordMatch() {
+$(document).on('keyup', '#password,#password2', () => {
     const password = document.getElementById('password').value;
     const pwdchkMsg2 = document.getElementById('pwdchk2');
 
@@ -9,4 +9,17 @@ function checkPasswordMatch() {
     } else {
         pwdchkMsg2.style.display = 'none'; // 메시지를 숨김
     }
-}
+
+
+    const password2 = document.getElementById('password2').value;
+    const pwdchkMsg = document.getElementById('pwdchk');
+
+    if (password !== password2) {
+        pwdchkMsg.style.display = 'block'; // 메시지를 보여줌
+    } else {
+        pwdchkMsg.style.display = 'none'; // 메시지를 숨김
+    }
+
+})
+
+
