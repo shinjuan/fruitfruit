@@ -19,6 +19,11 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("favicon.ico")
+    @ResponseBody
+    void noFavicon() {
+    }
+
 
 
     @GetMapping("{pageName}")
