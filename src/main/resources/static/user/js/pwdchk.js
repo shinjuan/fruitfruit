@@ -1,4 +1,4 @@
-$(document).on('keyup', '#password,#password2', () => {
+$(document).on('keyup', '#password2, #password', () => {
     const password = document.getElementById('password').value;
     const pwdchkMsg2 = document.getElementById('pwdchk2');
 
