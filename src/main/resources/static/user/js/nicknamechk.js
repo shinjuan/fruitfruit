@@ -23,11 +23,11 @@ $(document).on('blur', '#nickname', () => {
 
 
 
+//
+//         for (let i = 0; i < res.data.length; i++) {
+//             const html = `<b>이름 : </b> ${res.data[i].name} <br>
+// <b>이메일 : </b> ${res.data[i].email} <br>`;
+//             $("body").append(html);
 
-        for (let i = 0; i < res.data.length; i++) {
-            const html = `<b>이름 : </b> ${res.data[i].name} <br>
-<b>이메일 : </b> ${res.data[i].email} <br>`;
-            $("body").append(html);
-        }
     });
 });

@@ -11,7 +11,7 @@
     <meta property="og:site_name" content="프룻프룻 Shopping Mall" />
     <meta property="og:title" content="프룻프룻 Shopping Mall" />
     <meta property="og:description" content="프룻프룻 Shopping Mall 입니다." />
-    <meta property="og:image" content="./img/openGraph.png" />
+    <meta property="og:image" content="user/img/openGraph.png" />
     <meta property="og:url" content="https://prpr-shopping-mall.co.kr" />
 
     <!--파비콘-->
@@ -50,6 +50,11 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
     <script defer src="./js/main.js"></script>
+
+    <th:block th:insert="~{includes/library}"></th:block>
+    <th:block th:insert="~{includes/style}"></th:block>
+    <th:block th:insert="~{includes/scripts}"></th:block>
+
 </head>
 
 <body>
@@ -58,7 +63,7 @@
         <div class="inner">
 
             <a href="./index.html" class="logo">
-                <img src="./img/푸릇푸릇 로고.png" alt="logo" />
+                <img src="user/img/푸릇푸릇 로고.png" alt="logo" />
             </a>
 
             <div class="sub-menu">
@@ -110,6 +115,8 @@
         </div>
     </header>
 
+
+
     <div class="findPw_wrap">
         <div class="inner box-shadow">
             <div class="txt01">
@@ -121,14 +128,15 @@
             </div>
 
             <div class="txt03">
-                <input type="textbox" name="id" value="이메일을 입력해주세요." id="id">
+                <input type="textbox" name="find_email" placeholder="이메일을 입력해주세요." id="find_email" required>
 
-                <a href="#">
-                    <button>확인</button>
+                <a>
+                    <button id="findpw">확인</button>
                 </a>
             </div>
         </div>
     </div>
+
 
     <!-- 이메일 확인 되었습니다. 모달 창 -->
     <div class="txt04" style="display: none;">
@@ -160,7 +168,7 @@
     <footer id="footer">
         <div class="inner">
             <h1>
-                <img src="./img/푸릇푸릇 로고.png" alt="로고">
+                <img src="user/img/푸릇푸릇 로고.png" alt="로고">
             </h1>
             <ul>
                 <li>

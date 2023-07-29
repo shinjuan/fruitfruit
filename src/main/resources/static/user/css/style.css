@@ -237,6 +237,13 @@
   font: normal 11px/1 "Nanum Gothic";
   margin-top: 7px;
 }
+#login .inner .login__input .input__id .wrong__id {
+  color: red;
+  font: normal 11px/1 "Nanum Gothic";
+  margin-top: 7px;
+}
+
+
 #login .inner .login__button {
   margin-top: 50px;
 }
@@ -563,10 +570,10 @@
   font: 600 15px/2 "Nanum Gothic";
   color: var(--primary-color);
 }
-.changePw_wrap .inner .txt03 label p {
-  font: bold 14px/1 "Nanum Gothic";
-  margin-bottom: 10px;
-  margin-left: 5px;
+.changePw_wrap .inner .txt03 label #pwdchk2,#pwdchk {
+  color: red;
+  font: normal 11px/1 "Nanum Gothic";
+  margin-top: 1px;
 }
 .changePw_wrap .inner .txt03 label input {
   width: 300px;

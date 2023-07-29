@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,11 +47,75 @@ public class UserController {
         return "joinConfirm";
     }
 
+    @PostMapping("login_ok")
+    public String login_ok(@RequestParam HashMap<String, Object> requestData,Model model)  {
+
+        HashMap<String, Object> result = userService.loginChk(requestData);
+
+        System.out.println("컨트롤러쪽requestData"+requestData);
+
+        String loginResult = (String) result.get("result");
+        if (loginResult.equals("success")) {
+            model.addAttribute("email", requestData.get("nickname"));
+            return "index"; // 로그인 성공 시 이동할 뷰 페이지
+        }
+        else if(loginResult.equals(("fail"))) {
+            model.addAttribute("failMessage","이메일과 비밀번호가 일치하지 않습니다.");
+            return "login";
+        }
+        else if(loginResult.equals(("fail2"))) {
+            model.addAttribute("fail2Message", "이메일이 존재하지 않습니다.");
+            return "login";
+        }
+
+        return loginResult;
+    }
+
+
+
+    @PostMapping("findpw_ok")
+    public String findpw_ok(@RequestBody HashMap<String, Object> requestData,HttpSession session)  {
+
+        System.out.println("비밀번호찾기"+requestData);
+
+        HashMap<String,Object> findemail = userService.emailChk(requestData);
+
+        if (findemail == null) {
+            return "modal/findpw_notok";
+        } else {
+            session.setAttribute("email",findemail.get("email"));
+            return "modal/findpw_ok";
+        }
+
+
+    }
+
+    @PostMapping("changepw_ok")
+    public String changepw_ok(@RequestBody HashMap<String, Object> requestData,HttpSession session) {
+
+        String email = (String)session.getAttribute("email");
+        String msg="기존 비밀번호와 동일 합니다.";
+
+        requestData.put("email",email);
+
+        HashMap<String,Object> pwdchk = userService.emailChk(requestData);
+
+        if (pwdchk.get("password").toString().equals(requestData.get("newpwd").toString())) {
+            return  "modal/changepwd_same";
+        } else {
+            userService.changePwd(requestData);
+            return "modal/changepwd";
+        }
+
+
+    }
+
+
     @ResponseBody
     @PostMapping("/emailchk")
     public String emailChk(@RequestBody HashMap<String, Object> requestData) {
 
-        String emailChk = userService.emailChk(requestData);
+        HashMap<String,Object> emailChk = userService.emailChk(requestData);
 
         if (emailChk != null) {
             return "이미 가입된 계정입니다.";

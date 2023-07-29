@@ -30,7 +30,7 @@ public class UserService implements UserMapper {
     
     //이메일 중복체크
     @Override
-    public String emailChk(HashMap<String, Object> requestData) {
+    public HashMap<String,Object> emailChk(HashMap<String, Object> requestData) {
         return userMapper.emailChk(requestData);
     }
     
@@ -38,6 +38,39 @@ public class UserService implements UserMapper {
     @Override
     public String nicknameChk(HashMap<String, Object> requestData) {
         return userMapper.nicknameChk(requestData);
+    }
+
+    @Override
+    public HashMap<String, Object> loginChk(HashMap<String, Object> requestData) {
+
+        HashMap<String, Object> user = userMapper.emailChk(requestData);
+        HashMap<String, Object> result = new HashMap<>();
+
+        System.out.println("서비스쪽 user"+user);
+
+        if (user != null) {
+            // 아이디가 존재하면 비밀번호 확인
+            String storedPassword = (String) user.get("password");
+            String password = (String) requestData.get("password");
+
+            if (storedPassword.equals(password)) {
+                // 비밀번호가 일치하면 로그인 성공
+                result.put("result", "success");
+            } else {
+                // 비밀번호가 일치하지 않으면 로그인 실패
+                result.put("result", "fail");
+            }
+        } else {
+            // 아이디가 존재하지 않으면 로그인 실패
+            result.put("result", "fail2");
+        }
+
+        return result;
+    }
+
+    @Override
+    public void changePwd(HashMap<String, Object> requestData) {
+        userMapper.changePwd(requestData);
     }
 
 

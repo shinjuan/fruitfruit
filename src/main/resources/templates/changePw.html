@@ -54,10 +54,10 @@
     <th:block th:insert="~{includes/library}"></th:block>
     <th:block th:insert="~{includes/style}"></th:block>
     <th:block th:insert="~{includes/scripts}"></th:block>
+
 </head>
 
 <body>
-
     <header id="header">
         <div class="inner">
 
@@ -68,10 +68,10 @@
             <div class="sub-menu">
                 <ul class="menu">
                     <li>
-                        <a href="login">Sign In</a>
+                        <a href="./login.html">Sign In</a>
                     </li>
                     <li>
-                        <a href="join">Join</a>
+                        <a href="./join.html">Join</a>
                     </li>
                     <li>
                         <a href="javascript:void(0)">language</a>
@@ -114,77 +114,54 @@
         </div>
     </header>
 
-    <form action="login_ok" method="post">
-
-    <section id="login">
+    <div class="changePw_wrap">
         <div class="inner box-shadow">
-            <div class="login__title">
-                <h4>로그인</h4>
+            <div class="txt01">
+                <p>비밀번호 변경</p>
             </div>
 
-            <div class="login__input">
-                <div class="input__id">
-                <label for="id">
-                    <p>이메일주소(ID)</p>
-                    <input type="textbox" name="email" placeholder="이메일 주소 입력" id="id">
-                    <p class="wrong__id" th:text="${fail2Message}"></p>
+            <div class="txt02">
+                <p>비밀번호는
+                    <span>영문자 + 숫자 + 특수문자 포함 최소 8자리 이상 <br> 20자리 이내</span>로 설정해주세요.
+                </p>
+            </div>
+
+            <div class="txt03">
+                <label for="newpw">
+                    <p>새비밀번호</p>
+                    <input type="textbox" name="password" placeholder="비밀번호를 입력해주세요. (특수문자포함 8자리 이상)" id="password" required>
+                    <p class="wrong__pw" id="pwdchk2" style="display: none;">영문자/숫자/특수문자 포 함 최소 8자리 이상 20자리 이내로 입력해주세요.</p>
+
                 </label>
-                </div>
+                <br>
 
-                <div class="input__pw">
-                    <label for="pw">
-                        <p>비밀번호</p>
-                        <input type="textbox" name="password" placeholder="영문, 숫자, 특수문자 (8자-20자 이내)" id="pw">
-                        <p class="wrong__pw" th:text="${failMessage}"></p>
-                    </label>
+                <label for="newpw">
+                    <p>새비밀번호 확인</p>
+                    <input type="textbox" name="password2" placeholder="비밀번호를 한번 더 입력해주세요." id="password2" required>
+                    <p class="wrong__pw" id="pwdchk" style="display: none;">비밀번호가 일치하지 않습니다.</p>
+                </label>
 
-                </div>
 
+                <a>
+                    <button id="changepw">비밀번호 변경</button>
+                </a>
             </div>
 
-            <div class="login__button">
+            <!-- 비밀번호가 정상적으로 변경되었습니다. 모달 창 -->
+            <div class="txt04" style="display: none;">
                 <div class="inner">
-                    <button type="submit" >로그인</button>
+
+                    <h4>알림</h4>
+
+                    <h5>비밀번호가 정상적으로 변경되었습니다. <br>
+                        로그인 화면으로 이동합니다.
+                        <a href="./login.html">확인</a>
+                    </h5>
+
                 </div>
             </div>
-
-            <div class="join__button">
-                <div class="inner">
-                    <a href="/join">
-                        <button>회원가입</button>
-                    </a>
-                </div>
-            </div>
-
-            <div class="login__txt">
-                <div class="search__pw">
-                    <a href="./findPw.html">비밀번호 찾기</a>
-                </div>
-
-                <!-- 로그인 유지 토글 -->
-                <div class="stay__login">
-                    <label>
-                        <input role="switch" type="checkbox" />
-                        <span>로그인 유지</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="sns__txt">
-                <span>SNS 계정으로 간편하게 로그인하세요</span>
-
-                <div class="sns__img">
-                    <img src="user/img/네이버.png" alt="네이버">
-                    <img src="user/img/카카오.png" alt="카카오">
-                    <img src="user/img/구글.png" alt="구글">
-                </div>
-            </div>
-
-
         </div>
-    </section>
-
-    </form>
+    </div>
 
     <footer id="footer">
         <div class="inner">

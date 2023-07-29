@@ -26,6 +26,10 @@
         </foreach>
     </insert>
 
+   <update id="changePwd">
+       UPDATE USER SET password=#{newpwd} where email=#{email}
+  </update>
+
 
 
 

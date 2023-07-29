@@ -12,7 +12,11 @@ public interface UserMapper {
 
     void insertMember(HashMap<String, Object> requestData);
 
-    String emailChk(HashMap<String, Object> requestData);
+    HashMap<String,Object> emailChk(HashMap<String, Object> requestData);
 
     String nicknameChk(HashMap<String, Object> requestData);
+
+    HashMap<String, Object> loginChk(HashMap<String, Object> requestData);
+
+    void changePwd(HashMap<String, Object> requestData);
 }
