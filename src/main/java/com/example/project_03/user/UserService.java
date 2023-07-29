@@ -54,6 +54,7 @@ public class UserService implements UserMapper {
             String password = (String) requestData.get("password");
 
             if (storedPassword.equals(password)) {
+
                 // 비밀번호가 일치하면 로그인 성공
                 result.put("result", "success");
             } else {
