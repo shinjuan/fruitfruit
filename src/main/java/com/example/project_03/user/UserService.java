@@ -1,5 +1,6 @@
 package com.example.project_03.user;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -43,8 +44,14 @@ public class UserService implements UserMapper {
     @Override
     public HashMap<String, Object> loginChk(HashMap<String, Object> requestData) {
 
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
         HashMap<String, Object> user = userMapper.emailChk(requestData);
         HashMap<String, Object> result = new HashMap<>();
+
+        String encodedPassword = (String) user.get("password");
+        String newPassword = (String) requestData.get("password");
+
 
         System.out.println("서비스쪽 user"+user);
 
@@ -53,7 +60,7 @@ public class UserService implements UserMapper {
             String storedPassword = (String) user.get("password");
             String password = (String) requestData.get("password");
 
-            if (storedPassword.equals(password)) {
+            if (bCryptPasswordEncoder.matches(newPassword, encodedPassword)) {
 
                 // 비밀번호가 일치하면 로그인 성공
                 result.put("result", "success");
