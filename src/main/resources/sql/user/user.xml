@@ -15,7 +15,7 @@
 
     <insert id="insertMember" parameterType="java.util.Map">
         INSERT INTO USER (email, nickname, password)
-        VALUES (#{email}, #{nickname}, #{password})
+        VALUES (#{email}, #{nickname}, #{encodedPassword})
     </insert>
 
     <insert id="insertMemberTerm" parameterType="java.util.Map">
@@ -27,7 +27,7 @@
     </insert>
 
    <update id="changePwd">
-       UPDATE USER SET password=#{newpwd} where email=#{email}
+       UPDATE USER SET password=#{encodedPassword2} where email=#{email}
   </update>
 
 

@@ -1,6 +1,7 @@
 package com.example.project_03.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -21,6 +22,8 @@ public class UserController {
 
     private final UserService userService;
 
+
+
     @GetMapping("favicon.ico")
     @ResponseBody
     void noFavicon() {
@@ -36,9 +39,14 @@ public class UserController {
 
     @PostMapping("join_ok")
     public String join_ok(@RequestParam HashMap<String, Object> requestData,
-                          @RequestParam List<String> status, Model model)  {
+                          @RequestParam List<String> status,
+                          BCryptPasswordEncoder bCryptPasswordEncoder,
+                          Model model)  {
+
+        String encodedPassword = bCryptPasswordEncoder.encode((String)requestData.get("password"));
 
         requestData.put("status",status);
+        requestData.put("encodedPassword",encodedPassword);
 
         userService.insertMemberTermAll(requestData);
 
@@ -90,8 +98,6 @@ public class UserController {
     @PostMapping("findpw_ok")
     public String findpw_ok(@RequestBody HashMap<String, Object> requestData,HttpSession session)  {
 
-        System.out.println("비밀번호찾기"+requestData);
-
         HashMap<String,Object> findemail = userService.emailChk(requestData);
 
         if (findemail == null) {
@@ -105,17 +111,21 @@ public class UserController {
     }
 
     @PostMapping("changepw_ok")
-    public String changepw_ok(@RequestBody HashMap<String, Object> requestData,HttpSession session) {
+    public String changepw_ok(@RequestBody HashMap<String, Object> requestData,HttpSession session, BCryptPasswordEncoder bCryptPasswordEncoder) {
 
-        String email = (String)session.getAttribute("email");
+        String email = (String) session.getAttribute("email");
+        requestData.put("email", email);
 
-        requestData.put("email",email);
+        HashMap<String, Object> pwdchk = userService.emailChk(requestData);
 
-        HashMap<String,Object> pwdchk = userService.emailChk(requestData);
+        String encodedPassword = (String) pwdchk.get("password");
+        String newPassword = (String) requestData.get("newpwd");
 
-        if (pwdchk.get("password").toString().equals(requestData.get("newpwd").toString())) {
-            return  "modal/changepwd_same";
+        if (bCryptPasswordEncoder.matches(newPassword, encodedPassword)) {
+            return "modal/changepwd_same";
         } else {
+            String encodedPassword2 = bCryptPasswordEncoder.encode((String)requestData.get("newpwd"));
+            requestData.put("encodedPassword2",encodedPassword2);
             userService.changePwd(requestData);
             return "modal/changepwd";
         }
