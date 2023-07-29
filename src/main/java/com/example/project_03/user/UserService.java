@@ -57,8 +57,6 @@ public class UserService implements UserMapper {
 
         if (user != null) {
             // 아이디가 존재하면 비밀번호 확인
-            String storedPassword = (String) user.get("password");
-            String password = (String) requestData.get("password");
 
             if (bCryptPasswordEncoder.matches(newPassword, encodedPassword)) {
 
