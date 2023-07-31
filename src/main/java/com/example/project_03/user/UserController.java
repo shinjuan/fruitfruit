@@ -3,18 +3,15 @@ package com.example.project_03.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,6 +27,14 @@ public class UserController {
     }
 
 
+    @GetMapping("/changePW")
+    public String login(@RequestParam("email") String email, Model model) {
+
+        model.addAttribute("email",email);
+
+        return  "changePw";
+    }
+
 
     @GetMapping("{pageName}")
     public String login(@PathVariable String pageName) {
@@ -37,11 +42,15 @@ public class UserController {
         return  pageName;
     }
 
+
+
+
+
     @PostMapping("join_ok")
     public String join_ok(@RequestParam HashMap<String, Object> requestData,
                           @RequestParam List<String> status,
                           BCryptPasswordEncoder bCryptPasswordEncoder,
-                          Model model)  {
+                          RedirectAttributes redirectAttributes)  {
 
         String encodedPassword = bCryptPasswordEncoder.encode((String)requestData.get("password"));
 
@@ -50,10 +59,9 @@ public class UserController {
 
         userService.insertMemberTermAll(requestData);
 
-        model.addAttribute("user_email", requestData.get("email"));
+        redirectAttributes.addAttribute("email", requestData.get("email"));
 
-
-        return "joinConfirm";
+        return "redirect:/joinConfirm";
     }
 
     @PostMapping("login_ok")
@@ -96,14 +104,14 @@ public class UserController {
 
 
     @PostMapping("findpw_ok")
-    public String findpw_ok(@RequestBody HashMap<String, Object> requestData,HttpSession session)  {
+    public String findpw_ok(@RequestBody HashMap<String, Object> requestData,Model model)  {
 
         HashMap<String,Object> findemail = userService.emailChk(requestData);
 
         if (findemail == null) {
             return "modal/findpw_notok";
         } else {
-            session.setAttribute("email",findemail.get("email"));
+            model.addAttribute("email", requestData.get("email"));
             return "modal/findpw_ok";
         }
 
@@ -111,10 +119,8 @@ public class UserController {
     }
 
     @PostMapping("changepw_ok")
-    public String changepw_ok(@RequestBody HashMap<String, Object> requestData,HttpSession session, BCryptPasswordEncoder bCryptPasswordEncoder) {
-
-        String email = (String) session.getAttribute("email");
-        requestData.put("email", email);
+    public String changepw_ok(@RequestBody HashMap<String, Object> requestData, BCryptPasswordEncoder bCryptPasswordEncoder
+                              ) {
 
         HashMap<String, Object> pwdchk = userService.emailChk(requestData);
 

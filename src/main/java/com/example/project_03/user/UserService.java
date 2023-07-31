@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 
@@ -17,6 +18,7 @@ public class UserService implements UserMapper {
 
 
    //회원가입 + 약관동의
+   @Transactional
     public void insertMemberTermAll(HashMap<String, Object> requestData) {
         userMapper.insertMember(requestData);
         userMapper.insertMemberTerm(requestData);
