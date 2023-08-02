@@ -99,30 +99,30 @@ public class AdminController {
     }
     @ResponseBody
     @PostMapping("/admin/product_status")
-    public String product_status(@RequestBody HashMap<String, Object> requestData) {
+    public int product_status(@RequestBody HashMap<String, Object> requestData) {
 
 
         if(requestData.get("selectedIds")!=null) {
 
             adminService.saleStopList(requestData);
-
+            return 1;
         }
 
         if(requestData.get("selectedIds2")!=null) {
 
             adminService.productDelete(requestData);
-
+            return 1;
         }
 
         if(requestData.get("selectedIds3")!=null) {
 
 
             adminService.saleStop(requestData);
-
+            return 1;
         }
 
 
-        return null;
+        return 0;
     }
 
 }

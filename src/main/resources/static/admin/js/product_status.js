@@ -19,7 +19,9 @@ $(document).on('click', '#stop_sale', () => {
         headers: { 'Content-Type': 'application/json' } // 요청 헤더에 JSON 형식으로 데이터 전송
     }).then(response => {
 
-
+        if(response.data ==1) {
+            location.reload();
+        }
 
 
 
@@ -32,7 +34,7 @@ $(document).on('click', '#stop', () => {
 
     const selectedIds3 = $(event.target).val();
 
-    alert(selectedIds3)
+
 
 
 
@@ -49,7 +51,9 @@ $(document).on('click', '#stop', () => {
         headers: { 'Content-Type': 'application/json' } // 요청 헤더에 JSON 형식으로 데이터 전송
     }).then(response => {
 
-
+        if(response.data ==1) {
+            location.reload();
+        }
 
 
 
@@ -82,7 +86,9 @@ $(document).on('click', '#product_delete', () => {
         headers: { 'Content-Type': 'application/json' } // 요청 헤더에 JSON 형식으로 데이터 전송
     }).then(response => {
 
-
+        if(response.data ==1) {
+            location.reload();
+        }
 
 
 
