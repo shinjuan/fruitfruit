@@ -46,6 +46,11 @@ public class AdminService implements AdminMapper {
         return adminMapper.countStatus();
     }
 
+    @Override
+    public List<HashMap<String, Object>> selectProductListAll() {
+        return adminMapper.selectProductListAll();
+    }
+
     @Transactional
     public void insertProductAll(HashMap<String, Object> requestData) {
         adminMapper.insertProduct(requestData);

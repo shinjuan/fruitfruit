@@ -223,6 +223,29 @@
                     </thead>
                     <tbody id="product_list">
                     <!-- 타임리프로 반복되는 부분은 여기에 추가될 예정입니다. -->
+                    <tr th:each="product : ${list}">
+                        <td>
+                            <input type="checkbox" id="product_status" th:value="${product.id}">
+                        </td>
+                        <td th:text="${product.id}"></td>
+                        <td th:text="${product.status}"></td>
+                        <td th:text="${product.category_name}"></td>
+                        <td th:text="${product.name}"></td>
+                        <td th:text="${product.price}"></td>
+                        <td th:text="${product.rate}"></td>
+                        <td>269</td>
+                        <td>135</td>
+                        <td>23</td>
+                        <td th:text="${product.created_at}"></td>
+                        <td>
+                            <button>수정</button>
+                        </td>
+                        <td>
+                            <!-- 상태가 'stop sale'일 때는 updated_at 데이터를 보여주고, 그렇지 않을 때는 중지 버튼을 보여줍니다. -->
+                            <span th:if="${product.status == 'stop sale'}" th:text="${product.updated_at}"></span>
+                            <button th:unless="${product.status == 'stop sale'}" id="stop" th:value="${product.id}">중지</button>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

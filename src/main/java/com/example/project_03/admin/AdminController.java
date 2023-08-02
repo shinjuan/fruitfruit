@@ -37,8 +37,10 @@ public class AdminController {
     public String count(Model model) {
 
         HashMap<String,Object> count = adminService.countStatus();
+        List<HashMap<String, Object>> list = adminService.selectProductListAll();
 
         model.addAttribute("count", count);
+        model.addAttribute("list", list);
 
         System.out.println("카운트="+count);
 

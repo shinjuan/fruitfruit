@@ -34,6 +34,7 @@
         WHEN 1 THEN 'sale'
         WHEN 2 THEN 'stop sale'
         WHEN 3 THEN 'sold out'
+        WHEN 4 THEN 'deleted'
         END AS status,
         product.name,
         product.price,
@@ -61,6 +62,30 @@
             LIMIT #{selectedTab}
         </if>
         ORDER BY product.id DESC
+    </select>
+
+    <select id="selectProductListAll" resultType="java.util.Map">
+
+        SELECT
+            product.id,
+            CASE product.status
+                WHEN 1 THEN 'sale'
+                WHEN 2 THEN 'stop sale'
+                WHEN 3 THEN 'sold out'
+                WHEN 4 THEN 'deleted'
+                END AS status,
+            product.name,
+            product.price,
+            product.rate,
+            product.created_at,
+            product.updated_at,
+            category.category_name
+        FROM product product
+                 JOIN category category
+                      ON product.category_id = category.id
+        where product.status = 1 or product.status = 2 or product.status = 3
+        ORDER BY product.id DESC;
+
     </select>
 
 
