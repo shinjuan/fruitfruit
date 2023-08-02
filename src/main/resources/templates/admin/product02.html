@@ -171,7 +171,7 @@
                     <p> <span>*</span> 상품이미지 </p>
                     <div>+ 추가</div>
                     <input type="file" name="productPicture" id="productPicture" accept="image/*">
-                    <img src="./img/이미지위치.png" alt="미리보기 이미지">
+                    <img id="previewImage" >
                 </label>
 
 
@@ -190,29 +190,49 @@
     </section>
        </form>
 </body>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
 <script>
     tinymce.init({
-        selector: '#description',
-        plugins: 'autoresize image',
-        toolbar: 'undo redo | bold italic underline | image',
-        autoresize_bottom_margin: 16,
-        images_upload_url: '/upload-image', // 이미지 업로드를 위한 서버 측 API 엔드포인트
+        selector: "#description",
+        plugins: "image",
+        toolbar: "image",
+        images_upload_url: "/upload-image",
         images_upload_handler: function (blobInfo, success, failure) {
-            // 이미지 업로드 처리
-            const formData = new FormData();
-            formData.append('image', blobInfo.blob(), blobInfo.filename());
+            var formData = new FormData();
+            formData.append("file", blobInfo.blob());
 
-            axios
-                .post('/upload-image', formData)
-                .then((response) => {
-                    const imageUrl = response.data;
-                    success(imageUrl); // 성공 시 업로드된 이미지 URL 반환
+            fetch("/admin/product_insert", {
+                method: "POST",
+                body: formData,
+            })
+                .then((response) => response.text())
+                .then((imageUrl) => {
+                    success(imageUrl);
                 })
                 .catch((error) => {
-                    failure('Image upload failed'); // 실패 시 에러 메시지 반환
+                    console.error("Error uploading image:", error);
+                    failure("Image upload failed");
                 });
         },
     });
+</script>
+<script>
+    // input 요소의 change 이벤트를 감지하여 이미지 미리보기 함수를 호출
+    document.getElementById('productPicture').addEventListener('change', previewImage);
+
+    function previewImage() {
+        const fileInput = document.getElementById('productPicture');
+        const previewImg = document.getElementById('previewImage');
+
+
+        // FileReader 객체를 사용하여 선택한 파일을 읽어옴
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            // 선택한 이미지를 미리보기 이미지로 설정
+            previewImg.src = event.target.result;
+        };
+        reader.readAsDataURL(fileInput.files[0]); // 파일을 data URL로 읽어옴
+    }
 </script>
 
 

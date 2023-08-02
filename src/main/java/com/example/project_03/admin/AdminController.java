@@ -2,6 +2,8 @@ package com.example.project_03.admin;
 
 import lombok.RequiredArgsConstructor;
 import com.example.project_03.firebase.FireBaseService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import java.io.IOException;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -70,10 +73,11 @@ public class AdminController {
 
     @PostMapping("/admin/product_insert")
     public String product_insert(@RequestParam HashMap<String, Object> requestData,
-                                 @RequestParam("productPicture") MultipartFile file) {
+                                 @RequestParam("productPicture") MultipartFile file){
 
 
-        String path = "friut"; // 원하는 이미지 저장 경로를 입력하세요 (예: "products")
+
+        String path = "fruit"; // 원하는 이미지 저장 경로를 입력하세요 (예: "products")
         String fileName = requestData.get("productName") + "_" + file.getOriginalFilename();
         String imageUrl;
         try {
@@ -87,9 +91,9 @@ public class AdminController {
         String originName = fileName; // 로컬경로 대신 원래 파일 이름을 저장 (파일명 중복 방지)
         String firebaseUrl = imageUrl; // Firebase에서 받아온 이미지 URL
         String fileSize = String.valueOf(file.getSize());
+
+
         // 여기서부터 데이터베이스에 저장하는 로직 작성
-
-
         requestData.put("originName", originName);
         requestData.put("firebaseUrl", firebaseUrl);
         requestData.put("fileSize", fileSize);
@@ -97,8 +101,7 @@ public class AdminController {
 
         adminService.insertProductAll(requestData);
 
-
-        return "admin/product";
+        return "redirect:../admin/product";
     }
     @ResponseBody
     @PostMapping("/admin/product_status")
@@ -127,5 +130,7 @@ public class AdminController {
 
         return 0;
     }
+
+
 
 }
