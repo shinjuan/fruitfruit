@@ -52,14 +52,11 @@ public class AdminController {
     @PostMapping("/admin/product")
     public List<HashMap<String, Object>> product(@RequestBody HashMap<String, Object> requestData, Model model) {
 
-        System.out.println("상태=" + requestData.get("selectedStatus"));
-        System.out.println("카테고리=" + requestData.get("selectedCategory"));
-        System.out.println("검색어=" + requestData.get("searchKeyword"));
-        System.out.println("갯수보기=" + requestData.get("selectedTab"));
+
 
         List<HashMap<String, Object>> data = adminService.selectProductList(requestData);
 
-        //model.addAttribute("product",data);
+
 
 
         return data;
@@ -95,7 +92,7 @@ public class AdminController {
         adminService.insertProductAll(requestData);
 
 
-        return "admin/index";
+        return "admin/product";
     }
     @ResponseBody
     @PostMapping("/admin/product_status")

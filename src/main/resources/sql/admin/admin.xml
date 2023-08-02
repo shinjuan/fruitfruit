@@ -125,5 +125,9 @@
 
     </select>
 
+    <select id="getProductInfo" resultType="String">
+        select * from product where id=#{id}
+
+    </select>
 
 </mapper>
