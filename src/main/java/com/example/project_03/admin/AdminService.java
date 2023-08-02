@@ -56,6 +56,16 @@ public class AdminService implements AdminMapper {
         return adminMapper.getProductInfo(id);
     }
 
+    @Override
+    public int countProducts(HashMap<String, Object> requestData) {
+        return adminMapper.countProducts(requestData);
+    }
+
+    @Override
+    public HashMap<String, Object> countProductAll() {
+        return adminMapper.countProductAll();
+    }
+
     @Transactional
     public void insertProductAll(HashMap<String, Object> requestData) {
         adminMapper.insertProduct(requestData);

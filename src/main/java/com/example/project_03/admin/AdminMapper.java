@@ -27,4 +27,8 @@ public interface AdminMapper {
     List<HashMap<String, Object>> selectProductListAll();
 
     HashMap<String, Object> getProductInfo(String id);
+
+    int countProducts(HashMap<String, Object> requestData);
+
+    HashMap<String, Object> countProductAll();
 }

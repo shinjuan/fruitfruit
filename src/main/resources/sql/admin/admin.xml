@@ -23,7 +23,23 @@
         )
     </insert>
 
+    <select id="countProducts" resultType="int">
 
+        SELECT COUNT(*) AS total_count
+        FROM product product
+        JOIN category category ON product.category_id = category.id
+        <where>
+            <if test="selectedStatus != ''">
+                AND product.status = #{selectedStatus}
+            </if>
+            <if test="selectedCategory != ''">
+                AND category_name = #{selectedCategory}
+            </if>
+            <if test="searchKeyword != ''">
+                AND product.name LIKE CONCAT('%', #{searchKeyword}, '%')
+            </if>
+        </where>
+    </select>
 
     <select id="selectProductList" resultType="java.util.Map">
 
@@ -86,6 +102,14 @@
         where product.status = 1 or product.status = 2 or product.status = 3
         ORDER BY product.id DESC;
 
+    </select>
+
+    <select id="countProductAll" resultType="java.util.Map">
+        SELECT
+            COUNT(*) AS count
+        FROM product product
+            JOIN category category ON product.category_id = category.id
+        WHERE product.status = 1 OR product.status = 2 OR product.status = 3
     </select>
 
 

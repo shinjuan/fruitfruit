@@ -40,10 +40,11 @@ function fetchData() {
         console.log(response.data);
 
 
-
+        $("#search_result").empty();
+        $("#search_result").append(response.data.count);
         $("#product_list").empty(); // 기존 데이터를 모두 제거
 
-        for (let i = 0; i < response.data.length; i++) {
+        for (let i = 0; i < response.data.data.length; i++) {
             const html = `
 
 
@@ -52,23 +53,23 @@ function fetchData() {
                        
         <tr>
             <td>
-                <input type="checkbox" id="product_status" value="${response.data[i].id}">
+                <input type="checkbox" id="product_status" value="${response.data.data[i].id}">
             </td>
-            <td>${response.data[i].id}</td>
-            <td>${response.data[i].status}</td>
-            <td>${response.data[i].category_name}</td>
-            <td>${response.data[i].name}</td>
-            <td>${response.data[i].price}</td>
-            <td>${response.data[i].rate}</td>
+            <td>${response.data.data[i].id}</td>
+            <td>${response.data.data[i].status}</td>
+            <td>${response.data.data[i].category_name}</td>
+            <td>${response.data.data[i].name}</td>
+            <td>${response.data.data[i].price}</td>
+            <td>${response.data.data[i].rate}</td>
             <td>269</td>
             <td>135</td>
             <td>23</td>
-            <td>${response.data[i].created_at}</td>
+            <td>${response.data.data[i].created_at}</td>
             <td>
                 <button>수정</button>
             </td>
             <td>
-                ${response.data[i].status == 'stop sale' ? response.data[i].updated_at : `<button id="stop" value="${response.data[i].id}">중지</button>`}
+                ${response.data.data[i].status == 'stop sale' ? response.data.data[i].updated_at : `<button id="stop" value="${response.data.data[i].id}">중지</button>`}
             </td>
         </tr>
         

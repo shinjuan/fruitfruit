@@ -38,28 +38,34 @@ public class AdminController {
 
         HashMap<String,Object> count = adminService.countStatus();
         List<HashMap<String, Object>> list = adminService.selectProductListAll();
+        HashMap<String,Object> search_result = adminService.countProductAll();
 
+        model.addAttribute("search_result", search_result);
         model.addAttribute("count", count);
         model.addAttribute("list", list);
 
-        System.out.println("카운트="+count);
+        System.out.println("카운트="+search_result);
 
         return "admin/product";
     }
 
 
+
     @ResponseBody
     @PostMapping("/admin/product")
-    public List<HashMap<String, Object>> product(@RequestBody HashMap<String, Object> requestData, Model model) {
+    public HashMap<String, Object> product(@RequestBody HashMap<String, Object> requestData, Model model) {
 
 
 
         List<HashMap<String, Object>> data = adminService.selectProductList(requestData);
+        int count = adminService.countProducts(requestData);
 
+        HashMap<String,Object> data_count = new HashMap<>();
 
+        data_count.put("data",data);
+        data_count.put("count",count);
 
-
-        return data;
+        return data_count;
     }
 
     @PostMapping("/admin/product_insert")
