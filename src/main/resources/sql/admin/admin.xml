@@ -1,0 +1,65 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.project_03.admin.AdminMapper">
+
+    <insert id="insertProduct" parameterType="java.util.Map">
+        INSERT INTO product (category_id, name, price, rate, stock_quantity, content)
+        VALUES (#{sort}, #{productName}, #{price}, #{discount}, #{stock}, #{description})
+    </insert>
+
+    <insert id="insertPhoto" parameterType="java.util.Map">
+        INSERT INTO product_image (product_id, origin_name, file_name, file_size)
+        VALUES (
+        <choose>
+            <when test="productName != null">
+                (SELECT id FROM product WHERE name = #{productName})
+            </when>
+            <otherwise>
+                #{product_id}
+            </otherwise>
+        </choose>,
+        #{originName}, #{firebaseUrl}, #{fileSize}
+        )
+    </insert>
+
+
+
+    <select id="selectProductList" resultType="java.util.Map">
+        SELECT
+        product.id,
+        CASE product.status
+        WHEN 1 THEN 'sale'
+        WHEN 2 THEN 'stop sale'
+        WHEN 3 THEN 'sold out'
+        END AS status,
+        product.name,
+        product.price,
+        product.rate,
+        product.created_at,
+        category.category_name
+        FROM product product
+        JOIN category category
+        ON product.category_id = category.id
+        <where>
+            <if test="selectedStatus != ''">
+                product.status = #{selectedStatus}
+            </if>
+            <if test="selectedCategory != ''">
+                AND category_name = #{selectedCategory}
+            </if>
+            <if test="searchKeyword != ''">
+                AND product.name LIKE CONCAT('%', #{searchKeyword}, '%')
+            </if>
+
+        </where>
+        <if test="selectedTab != ''">
+            LIMIT #{selectedTab}
+        </if>
+        ORDER BY product.id DESC
+    </select>
+
+
+
+
+</mapper>
