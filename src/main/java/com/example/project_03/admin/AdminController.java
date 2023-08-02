@@ -30,19 +30,32 @@ public class AdminController {
     public String login(@PathVariable String pageName) {
 
 
-        return  "admin/"+pageName;
+        return "admin/" + pageName;
     }
+
+    @GetMapping("/admin/product")
+    public String count(Model model) {
+
+        HashMap<String,Object> count = adminService.countStatus();
+
+        model.addAttribute("count", count);
+
+        System.out.println("카운트="+count);
+
+        return "admin/product";
+    }
+
 
     @ResponseBody
     @PostMapping("/admin/product")
-    public List<HashMap<String,Object>> product(@RequestBody HashMap<String,Object> requestData, Model model) {
+    public List<HashMap<String, Object>> product(@RequestBody HashMap<String, Object> requestData, Model model) {
 
-        System.out.println("상태="+requestData.get("selectedStatus"));
-        System.out.println("카테고리="+requestData.get("selectedCategory"));
-        System.out.println("검색어="+requestData.get("searchKeyword"));
-        System.out.println("갯수보기="+requestData.get("selectedTab"));
+        System.out.println("상태=" + requestData.get("selectedStatus"));
+        System.out.println("카테고리=" + requestData.get("selectedCategory"));
+        System.out.println("검색어=" + requestData.get("searchKeyword"));
+        System.out.println("갯수보기=" + requestData.get("selectedTab"));
 
-        List<HashMap<String,Object>> data = adminService.selectProductList(requestData);
+        List<HashMap<String, Object>> data = adminService.selectProductList(requestData);
 
         //model.addAttribute("product",data);
 
@@ -51,13 +64,12 @@ public class AdminController {
     }
 
     @PostMapping("/admin/product_insert")
-    public String product_insert(@RequestParam HashMap<String,Object> requestData,
+    public String product_insert(@RequestParam HashMap<String, Object> requestData,
                                  @RequestParam("productPicture") MultipartFile file) {
 
 
-
         String path = "friut"; // 원하는 이미지 저장 경로를 입력하세요 (예: "products")
-        String fileName = requestData.get("productName")+"_"+file.getOriginalFilename();
+        String fileName = requestData.get("productName") + "_" + file.getOriginalFilename();
         String imageUrl;
         try {
             imageUrl = fireBaseService.uploadFiles(file, path, fileName);
@@ -78,17 +90,37 @@ public class AdminController {
         requestData.put("fileSize", fileSize);
 
 
-
         adminService.insertProductAll(requestData);
-
-
 
 
         return "admin/index";
     }
+    @ResponseBody
+    @PostMapping("/admin/product_status")
+    public String product_status(@RequestBody HashMap<String, Object> requestData) {
 
 
+        if(requestData.get("selectedIds")!=null) {
+
+            adminService.saleStopList(requestData);
+
+        }
+
+        if(requestData.get("selectedIds2")!=null) {
+
+            adminService.productDelete(requestData);
+
+        }
+
+        if(requestData.get("selectedIds3")!=null) {
 
 
+            adminService.saleStop(requestData);
+
+        }
+
+
+        return null;
+    }
 
 }

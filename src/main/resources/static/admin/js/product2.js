@@ -52,7 +52,7 @@ function fetchData() {
                        
         <tr>
             <td>
-                <input type="checkbox">
+                <input type="checkbox" id="product_status" value="${response.data[i].id}">
             </td>
             <td>${response.data[i].id}</td>
             <td>${response.data[i].status}</td>
@@ -68,7 +68,7 @@ function fetchData() {
                 <button>수정</button>
             </td>
             <td>
-                <button>중지</button>
+                ${response.data[i].status == 'stop sale' ? response.data[i].updated_at : `<button id="stop" value="${response.data[i].id}">중지</button>`}
             </td>
         </tr>
         

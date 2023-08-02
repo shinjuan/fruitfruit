@@ -26,6 +26,8 @@
 
 
     <select id="selectProductList" resultType="java.util.Map">
+
+
         SELECT
         product.id,
         CASE product.status
@@ -37,10 +39,12 @@
         product.price,
         product.rate,
         product.created_at,
+        product.updated_at,
         category.category_name
         FROM product product
         JOIN category category
         ON product.category_id = category.id
+
         <where>
             <if test="selectedStatus != ''">
                 product.status = #{selectedStatus}
@@ -60,6 +64,41 @@
     </select>
 
 
+    <update id="saleStopList" parameterType="java.util.Map">
+        UPDATE product
+        SET status = 2
+        WHERE id IN
+        <foreach collection="selectedIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="saleStop" parameterType="java.util.Map">
+        UPDATE product
+        SET status = 2
+        WHERE id = #{selectedIds3}
+
+    </update>
+
+    <update id="productDelete" parameterType="java.util.Map">
+        UPDATE product
+        SET status = 4
+        WHERE id IN
+        <foreach collection="selectedIds2" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="countStatus">
+        SELECT
+            COUNT(*) AS total_count,
+            SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS status_1_count,
+            SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) AS status_2_count,
+            SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) AS status_3_count
+        FROM
+            product
+
+    </select>
 
 
 </mapper>

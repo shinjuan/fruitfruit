@@ -1,7 +1,6 @@
 package com.example.project_03.admin;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,4 +14,13 @@ public interface AdminMapper {
     void insertPhoto(HashMap<String, Object> requestData);
 
     List<HashMap<String, Object>> selectProductList(HashMap<String, Object> requestData);
+
+    void saleStopList(HashMap<String, Object> requestData);
+
+    void productDelete(HashMap<String, Object> requestData);
+
+    void saleStop(HashMap<String, Object> requestData);
+
+
+    HashMap<String,Object> countStatus();
 }

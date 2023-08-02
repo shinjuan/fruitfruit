@@ -3,7 +3,6 @@ package com.example.project_03.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +23,27 @@ public class AdminService implements AdminMapper {
     @Override
     public List<HashMap<String, Object>> selectProductList(HashMap<String, Object> requestData) {
         return adminMapper.selectProductList(requestData);
+    }
+
+    @Override
+    public void saleStopList(HashMap<String, Object> requestData) {
+        adminMapper.saleStopList(requestData);
+    }
+
+    @Override
+    public void productDelete(HashMap<String, Object> requestData) {
+        adminMapper.productDelete(requestData);
+    }
+
+    @Override
+    public void saleStop(HashMap<String, Object> requestData) {
+        adminMapper.saleStop(requestData);
+    }
+
+    @Override
+    public HashMap<String,Object> countStatus() {
+
+        return adminMapper.countStatus();
     }
 
     @Transactional
