@@ -56,9 +56,9 @@ public class AdminController {
 
     @ResponseBody
     @PostMapping("/admin/product")
-    public HashMap<String, Object> product(@RequestBody HashMap<String, Object> requestData, Model model) {
+    public HashMap<String, Object> product(@RequestBody HashMap<String, Object> requestData){
 
-
+        System.out.println("테스트"+requestData);
 
         List<HashMap<String, Object>> data = adminService.selectProductList(requestData);
         int count = adminService.countProducts(requestData);

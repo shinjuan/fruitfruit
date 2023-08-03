@@ -1,14 +1,12 @@
 let selectedStatus = '';
 let selectedCategory = '';
 let searchKeyword = ''; // 전역 변수로 선언
-let selectedTab = '';
+let selectedTab = '10';
 
 
 
 $(document).on('change', '#howmany', () => {
-    selectedTab = $('#howmany option:selected').val();
-    console.log(selectedTab);
-    alert(selectedTab);
+    selectedTab = parseInt($('#howmany option:selected').val());
     fetchData();
 });
 
