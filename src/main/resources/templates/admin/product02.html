@@ -53,6 +53,10 @@
 
 
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+
+    <th:block th:insert="~{includes/library}"></th:block>
+    <th:block th:insert="~{includes/admin_style}"></th:block>
+    <th:block th:insert="~{includes/admin_scripts}"></th:block>
 </head>
 
 <body>
@@ -175,9 +179,10 @@
                 </label>
 
 
+
                 <label for="description" class="description">
                     <p> <span>*</span> 상품 상세정보 </p>
-                    <input type="textarea" name="description" id="description">
+                    <input type="text" name="description" id="description">
                 </label>
 
             </div>
@@ -192,63 +197,9 @@
 </body>
 
 </html>
-<script src="https://cdn.tiny.cloud/1/YOUR_TINYMCE_API_KEY/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-<script>
-    tinymce.init({
-        selector: '#description',
-        plugins: 'image',
-        images_upload_handler: uploadImageToFirebase,
-        images_reuse_filename: true, // 이미지 파일명 재사용
-        image_prepend_url: '', // 이미지 URL 앞부분은 비워둡니다.
-    });
-
-    // Firebase Storage에 이미지 업로드하는 함수
-    function uploadImageToFirebase(blobInfo, success, failure) {
-        var xhr, formData;
-        xhr = new XMLHttpRequest();
-        xhr.withCredentials = false;
-        xhr.open('POST', '/upload_image_to_firebase'); // Firebase로 이미지 업로드를 처리하는 서버 엔드포인트 주소를 입력하세요
-        xhr.onload = function() {
-            var json;
-
-            if (xhr.status != 200) {
-                failure('HTTP Error: ' + xhr.status);
-                return;
-            }
-
-            json = JSON.parse(xhr.responseText);
-
-            if (!json || typeof json.location != 'string') {
-                failure('Invalid JSON: ' + xhr.responseText);
-                return;
-            }
-
-            // Firebase Storage URL을 반환
-            success(json.location);
-        };
-        formData = new FormData();
-        formData.append('file', blobInfo.blob(), blobInfo.filename());
-        xhr.send(formData);
-    }
-</script>
-<script>
-    // input 요소의 change 이벤트를 감지하여 이미지 미리보기 함수를 호출
-    document.getElementById('productPicture').addEventListener('change', previewImage);
-
-    function previewImage() {
-        const fileInput = document.getElementById('productPicture');
-        const previewImg = document.getElementById('previewImage');
 
 
-        // FileReader 객체를 사용하여 선택한 파일을 읽어옴
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            // 선택한 이미지를 미리보기 이미지로 설정
-            previewImg.src = event.target.result;
-        };
-        reader.readAsDataURL(fileInput.files[0]); // 파일을 data URL로 읽어옴
-    }
-</script>
 
 
-</html>
+
+

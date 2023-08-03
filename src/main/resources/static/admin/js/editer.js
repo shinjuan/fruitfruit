@@ -1,49 +1,23 @@
-$(document).on('change', '#description', (e) =>{
-    fireBaseUpload('#description', 'description/img').then((res)=>{
-        const imgUrl = `<img src="${res.fileUrl}" data-filename="${res.fileName}" data-filepath="${res.path}">`
-        // tinymce.execCommand('mceInsertContent', false, imgUrl);
-        tinymce.execCommand('mceInsertContent', false, imgUrl);
+tinymce.init({
+    selector: '#description',
+    plugins: 'image',
+    images_reuse_filename: true,
+    automatic_uploads: true,
+    images_upload_handler: uploadImageToFirebase,
+});
 
-    })
+// Firebase Storage에 이미지 업로드하는 함수
+function uploadImageToFirebase(blobInfo, success, failure) {
+    const formData = new FormData();
+    formData.append('file', blobInfo.blob(), blobInfo.filename());
 
-})
-
-
-fireBaseUpload = ((fileEl, path) => {
-    if(fileEl === undefined || path === undefined){
-        console.error('param is undefined !!');
-        console.table({fileEl: '파일 컴포넌트', path: '파이어베이스 폴더명'});
-        return
-    }
-
-    return new Promise((resolve, reject) =>{
-
-        const getFiles = $(`${fileEl}`)[0].files
-
-        $(getFiles).each((idx, item) =>{
-            axios({
-                headers: {'Content-Type': 'multipart/form-data'},
-                method: 'post',
-                url : 'uploadFiles',
-                data : {
-                    file: item,
-                    path: path,
-                    fileName: item.name
-                },
-            }).then((res) =>{
-                const resObj = {
-                    fileName: item.name,
-                    path: path,
-                    fileUrl: res.data
-                }
-                resolve(resObj)
-
-                //파일 컴포넌트 초기화
-                $(`${fileEl}`).val('')
-
-            }).catch((error)=>{
-                reject(error);
-            })
+    axios.post('/upload_image_to_firebase', formData)
+        .then(response => {
+            const imageUrl = response.data.location;
+            success(imageUrl);
         })
-    })
-})
+        .catch(error => {
+            console.error('Error: ', error);
+            failure('HTTP Error: ' + error.response.status);
+        });
+}

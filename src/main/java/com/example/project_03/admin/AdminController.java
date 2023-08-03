@@ -138,15 +138,19 @@ public class AdminController {
         Map<String, String> response = new HashMap<>();
         try {
             String imageUrl = fireBaseService.uploadFiles(file, "tinymce_images", file.getOriginalFilename());
-
             response.put("location", imageUrl); // 이미지 URL을 "location" 키로 반환합니다.
-
             return ResponseEntity.ok(response);
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
+
+
+
+
 
 
 
