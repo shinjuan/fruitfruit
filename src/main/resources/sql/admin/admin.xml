@@ -38,6 +38,7 @@
             <if test="searchKeyword != ''">
                 AND product.name LIKE CONCAT('%', #{searchKeyword}, '%')
             </if>
+            AND product.status = 1 OR product.status = 2 OR product.status = 3
         </where>
     </select>
 
@@ -72,14 +73,12 @@
             <if test="searchKeyword != ''">
                 AND product.name LIKE CONCAT('%', #{searchKeyword}, '%')
             </if>
-
+            AND (product.status = 1 OR product.status = 2 OR product.status = 3)
         </where>
 
         ORDER BY product.id DESC
 
-        <if test="selectedTab != ''">
-            LIMIT #{selectedTab}
-        </if>
+
     </select>
 
     <select id="selectProductListAll" resultType="java.util.Map">
@@ -103,7 +102,7 @@
                       ON product.category_id = category.id
         where product.status = 1 or product.status = 2 or product.status = 3
         ORDER BY product.id DESC
-        LIMIT 10
+
 
     </select>
 

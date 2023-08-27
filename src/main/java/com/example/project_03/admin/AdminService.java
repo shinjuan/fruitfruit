@@ -1,5 +1,6 @@
 package com.example.project_03.admin;
 
+import com.github.pagehelper.PageHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class AdminService implements AdminMapper {
 
     @Override
     public List<HashMap<String, Object>> selectProductList(HashMap<String, Object> requestData) {
+        System.out.println("서비스쪽:"+requestData);
         return adminMapper.selectProductList(requestData);
     }
 
@@ -47,8 +49,14 @@ public class AdminService implements AdminMapper {
     }
 
     @Override
-    public List<HashMap<String, Object>> selectProductListAll() {
-        return adminMapper.selectProductListAll();
+    public List<HashMap<String, Object>> selectProductListAll(HashMap<String,Object> test) {
+
+        int pageNum = Integer.parseInt(test.get("pageNum").toString());
+        int pageSize = Integer.parseInt(test.get("pageSize").toString());
+
+        PageHelper.startPage(pageNum, pageSize);
+
+        return adminMapper.selectProductListAll(test);
     }
 
     @Override

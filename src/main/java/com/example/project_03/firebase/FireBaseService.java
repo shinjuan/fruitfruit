@@ -39,9 +39,7 @@ public class FireBaseService {
         Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
         InputStream content = new ByteArrayInputStream(file.getBytes());
         Blob blob = bucket.create(sb.toString(), content, file.getContentType());
-        URL url = blob.signUrl(365,TimeUnit.DAYS);
-        String fileUrl = url.toString();
 
-        return fileUrl;
+        return blob.getMediaLink();
     }
 }

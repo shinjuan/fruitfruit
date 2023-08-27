@@ -1,10 +1,14 @@
 package com.example.project_03.admin;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import com.example.project_03.firebase.FireBaseService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Controller
+@Log4j2
 @RequiredArgsConstructor
 public class AdminController {
 
@@ -38,17 +43,39 @@ public class AdminController {
     }
 
     @GetMapping("/admin/product")
-    public String count(Model model) {
+    public String product(Model model,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+
+
+        HashMap<String,Object> test = new HashMap<>();
+
+        test.put("pageNum",pageNum);
+        test.put("pageSize",pageSize);
+
+//        PageHelper.startPage(pageNum, pageSize);
+
 
         HashMap<String,Object> count = adminService.countStatus();
-        List<HashMap<String, Object>> list = adminService.selectProductListAll();
         HashMap<String,Object> search_result = adminService.countProductAll();
+        List<HashMap<String, Object>> list = adminService.selectProductListAll(test);
 
+
+
+
+        PageInfo<HashMap<String, Object>> pageInfo = new PageInfo<>(list);
+
+        log.info("카운트 : "+count);
+
+        log.info("써치리절트 : "+search_result);
+
+        log.info("페이지인포확인 : "+pageInfo);
+        //System.out.println("페이지인포?:"+pageInfo);
+
+        model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("search_result", search_result);
         model.addAttribute("count", count);
         model.addAttribute("list", list);
 
-        System.out.println("카운트="+search_result);
+       // System.out.println("카운트="+search_result);
 
         return "admin/product";
     }
@@ -61,13 +88,22 @@ public class AdminController {
 
         System.out.println("테스트"+requestData);
 
+        int pageNum = (int)requestData.get("currentPage");
+        int pageSize = (int)requestData.get("selectedTab");
+
+        PageHelper.startPage(pageNum,pageSize);
+
         List<HashMap<String, Object>> data = adminService.selectProductList(requestData);
+        PageInfo<HashMap<String, Object>> pageInfo = new PageInfo<>(data);
         int count = adminService.countProducts(requestData);
 
         HashMap<String,Object> data_count = new HashMap<>();
 
         data_count.put("data",data);
         data_count.put("count",count);
+        data_count.put("pageInfo",pageInfo);
+
+        log.info("페이지인포"+pageInfo);
 
         return data_count;
     }
@@ -102,7 +138,7 @@ public class AdminController {
 
         adminService.insertProductAll(requestData);
 
-        return "redirect:../admin/product";
+        return "/admin/product";
     }
     @ResponseBody
     @PostMapping("/admin/product_status")
