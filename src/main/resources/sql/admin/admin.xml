@@ -24,23 +24,25 @@
     </insert>
 
     <select id="countProducts" resultType="int">
-
         SELECT COUNT(*) AS total_count
         FROM product product
         JOIN category category ON product.category_id = category.id
         <where>
-            <if test="selectedStatus != ''">
-                AND product.status = #{selectedStatus}
-            </if>
+
+                <if test="selectedStatus != ''">
+                    AND product.status = #{selectedStatus}
+                </if>
+
             <if test="selectedCategory != ''">
                 AND category_name = #{selectedCategory}
             </if>
             <if test="searchKeyword != ''">
                 AND product.name LIKE CONCAT('%', #{searchKeyword}, '%')
             </if>
-            AND product.status = 1 OR product.status = 2 OR product.status = 3
+            AND (product.status = 1 OR product.status = 2 OR product.status = 3)
         </where>
     </select>
+
 
     <select id="selectProductList" resultType="java.util.Map">
 
@@ -51,7 +53,7 @@
         WHEN 1 THEN 'sale'
         WHEN 2 THEN 'stop sale'
         WHEN 3 THEN 'sold out'
-        WHEN 4 THEN 'deleted'
+
         END AS status,
         product.name,
         product.price,
@@ -89,7 +91,7 @@
                 WHEN 1 THEN 'sale'
                 WHEN 2 THEN 'stop sale'
                 WHEN 3 THEN 'sold out'
-                WHEN 4 THEN 'deleted'
+
                 END AS status,
             product.name,
             product.price,
@@ -101,6 +103,26 @@
                  JOIN category category
                       ON product.category_id = category.id
         where product.status = 1 or product.status = 2 or product.status = 3
+        ORDER BY product.id DESC
+
+
+    </select>
+
+    <select id="selectProductListAll_excel" resultType="java.util.Map">
+
+        SELECT
+            product.id as 번호,
+            product.status as 상태,
+            product.name as 상품명,
+            product.price as 상품금액,
+            product.rate as 할인율,
+            product.created_at as 등록일,
+            product.updated_at as 상품수정,
+            category.category_name as 분류
+        FROM product product
+                 JOIN category category
+                      ON product.category_id = category.id
+        WHERE product.status = 1 OR product.status = 2 OR product.status = 3
         ORDER BY product.id DESC
 
 

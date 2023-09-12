@@ -79,4 +79,8 @@ public class AdminService implements AdminMapper {
         adminMapper.insertProduct(requestData);
         adminMapper.insertPhoto(requestData);
     }
+
+    public List<HashMap<String, Object>> selectProductListAll_excel() {
+        return adminMapper.selectProductListAll_excel();
+    }
 }

@@ -31,4 +31,6 @@ public interface AdminMapper {
     int countProducts(HashMap<String, Object> requestData);
 
     HashMap<String, Object> countProductAll();
+
+    List<HashMap<String, Object>> selectProductListAll_excel();
 }
