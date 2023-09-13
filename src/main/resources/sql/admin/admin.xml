@@ -29,14 +29,14 @@
         JOIN category category ON product.category_id = category.id
         <where>
 
-                <if test="selectedStatus != ''">
+            <if test="selectedStatus != null and selectedStatus != ''">
                     AND product.status = #{selectedStatus}
                 </if>
 
-            <if test="selectedCategory != ''">
+            <if test="selectedCategory != null and selectedCategory != ''">
                 AND category_name = #{selectedCategory}
             </if>
-            <if test="searchKeyword != ''">
+            <if test="searchKeyword != null and searchKeyword != ''">
                 AND product.name LIKE CONCAT('%', #{searchKeyword}, '%')
             </if>
             AND (product.status = 1 OR product.status = 2 OR product.status = 3)
@@ -60,19 +60,21 @@
         product.rate,
         product.created_at,
         product.updated_at,
-        category.category_name
+        category.category_name,
+        product_image.file_name
         FROM product product
         JOIN category category
         ON product.category_id = category.id
+        LEFT JOIN product_image product_image ON product.id = product_image.product_id
 
         <where>
-            <if test="selectedStatus != ''">
+            <if test="selectedStatus != null and selectedStatus != ''">
                 product.status = #{selectedStatus}
             </if>
-            <if test="selectedCategory != ''">
+            <if test="selectedCategory != null and selectedCategory != ''">
                 AND category_name = #{selectedCategory}
             </if>
-            <if test="searchKeyword != ''">
+            <if test="searchKeyword != null and searchKeyword != ''">
                 AND product.name LIKE CONCAT('%', #{searchKeyword}, '%')
             </if>
             AND (product.status = 1 OR product.status = 2 OR product.status = 3)
@@ -98,10 +100,12 @@
             product.rate,
             product.created_at,
             product.updated_at,
-            category.category_name
+            category.category_name,
+            product_image.file_name
         FROM product product
                  JOIN category category
                       ON product.category_id = category.id
+                 LEFT JOIN product_image product_image ON product.id = product_image.product_id -- product_image와 조인
         where product.status = 1 or product.status = 2 or product.status = 3
         ORDER BY product.id DESC
 

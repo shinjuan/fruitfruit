@@ -193,7 +193,8 @@ public class AdminController {
 
             adminService.insertProductAll(requestData);
 
-            return "/admin/product";
+            return "redirect:/admin/product";
+
         }
 
         @ResponseBody

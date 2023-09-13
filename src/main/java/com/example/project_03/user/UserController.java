@@ -88,7 +88,7 @@ public class UserController {
                 response.addCookie(emailCookie);
             }
 
-            return "index"; // 로그인 성공 시 이동할 뷰 페이지
+            return "redirect:/"; // 로그인 성공 시 이동할 뷰 페이지
         } else if (loginResult.equals("fail")) {
             model.addAttribute("failMessage", "이메일과 비밀번호가 일치하지 않습니다.");
             return "login";

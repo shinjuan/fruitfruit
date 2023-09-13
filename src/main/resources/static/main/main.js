@@ -14,7 +14,7 @@ $(document).on('click', '.category-btn', () => {
     fetchData();
 });
 
-$(document).on('click', '#searchBtn', () => {
+$(document).on('click', '.material-icons', () => {
     searchKeyword = $('#searchKeyword').val(); // 전역 변수에 값 저장
     fetchData(); // fetchData 함수 호출 (매개변수 없음)
 });
@@ -61,7 +61,7 @@ function fetchData() {
 
 
 
-            for (let i = 0; i < response.data.data.length; i++) {
+        for (let i = 0; i < response.data.data.length; i++) {
 
             const html = `
                 
@@ -88,12 +88,12 @@ function fetchData() {
 
                     <!-- 상품 가격 -->
                     <div>
-                        ${response.data.data[i].price - (response.data.data[i].price * response.data.data[i].rate / 100)}+원
+                        ${Math.ceil(response.data.data[i].price - (response.data.data[i].price * response.data.data[i].rate / 100)).toString()}원
                     </div>
                 </div>
 
             </li>
-            `
+            `;
 
 
             $("#axiosBody").append(html);
