@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프룻프룻 쇼핑몰</title>
+
+    <!--Open Graph-->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="프룻프룻 Shopping Mall" />
+    <meta property="og:title" content="프룻프룻 Shopping Mall" />
+    <meta property="og:description" content="프룻프룻 Shopping Mall 입니다." />
+    <meta property="og:image" content="/user/img/openGraph.png" />
+    <meta property="og:url" content="https://prpr-shopping-mall.co.kr" />
+
+    <!--파비콘-->
+    <link rel="icon" href="./favicon.ico" />
+
+    <!--브라우저 스타일 초기화-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css" />
+
+    <!--Google Fonts - 나눔고딕-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <!-- Google Fonts Noto Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+
+    <!-- Google Fonts - Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+
+    <!--Google Material Icons-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <link rel="stylesheet" href="./css/style.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
+        integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"
+        integrity="sha512-cOH8ndwGgPo+K7pTvMrqYbmI8u8k6Sho3js0gOqVWTmQMlLIi6TbqGWRTpf1ga8ci9H3iPsvDLr4X7xwhC/+DQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- SWIPER -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+    <script defer src="./js/main.js"></script>
+
+
+    <th:block th:insert="~{includes/library}"></th:block>
+    <th:block th:insert="~{includes/style}"></th:block>
+    <th:block th:insert="~{includes/scripts}"></th:block>
+    
+</head>
+
+<body>
+
+    <header id="header">
+        <div class="inner">
+
+            <a href="./index.html" class="logo">
+                <img src="/user/img/푸릇푸릇 로고.png" alt="logo" />
+            </a>
+
+            <div class="sub-menu">
+                <ul class="menu">
+                    <li>
+                        <a href="./login.html">Sign In</a>
+                    </li>
+                    <li>
+                        <a href="./join.html">Join</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">language</a>
+                    </li>
+                </ul>
+            </div>
+
+            <ul class="main-menu">
+                <li class="item">
+                    <div class="item__name">HOME</div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name">
+                        <a href="./search.html">상품소개</a>
+                    </div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name">
+                        <a href="./search.html">구매내역</a>
+                    </div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name">마이페이지</div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name red">
+                        장바구니
+                        <span class="material-icons">
+                            shopping_cart
+                        </span>
+
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </header>
+
+
+
+    <div id="cart">
+        <div class="inner">
+
+            <h2> 장바구니 </h2>
+
+
+
+
+            <div class="txt">
+                <div class="left">
+                    <span>전체 <span class="orange" th:text="${carted_count.carted_count}"></span>개</span>
+                </div>
+
+                <div class="right">
+                    <p>01 장바구니</p>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                    <p>02 주문/결제</p>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                    <p>03 결제완료</p>
+                </div>
+            </div>
+
+            <table>
+                <tr class="title" >
+                    <th>
+                        <input type="checkbox"   id="selectAllCheckbox" checked>
+                    </th>
+                    <th scope="col">상품정보</th>
+                    <th scope="col">상품금액</th>
+                    <th scope="col">상품별 할인</th>
+                </tr>
+
+                <tr th:each="c : ${cart_list}">
+
+                    <input type="hidden" id="carted_count" th:value="${carted_count.carted_count}">
+                    <input type="hidden" th:id="'productImg_'+${c.id}" th:value="${c.file_name}">
+                    <input type="hidden" th:id="'productName_'+${c.id}" th:value="${c.name}">
+                    <input type="hidden" th:id="'productId_'+${c.id}" th:value="${c.id}">
+                    <input type="hidden" th:id="'detailDiscount_'+${c.id}" th:value="${c.rate}">
+                    <input type="hidden" th:id="'detailInitPrice_'+${c.id}" th:value="${c.price}">
+                    <input type="hidden" th:id="'detailDiscountPrice_'+${c.id}" th:value="${c.price * c.rate } / 100">
+                    <input type="hidden" th:id="'detailDiscountedPrice_'+${c.id}" th:value="${c.price - (c.price * c.rate / 100)}">
+                    <input type="hidden" th:id="'detailPrice_'+${c.id}" th:value="${c.price * c.cart_count}">
+
+
+                    <td>
+                        <input type="checkbox"  class="cartProductId" th:value="${c.id}" checked>
+                        <input type="hidden" class="cartProductId" th:value="${c.price * c.rate }/ 100">
+                    </td>
+
+
+                    <td>
+                        <div class="td_wrap">
+                            <img th:id="${c.file_name}" th:src="${c.file_name}" alt="망고스틴">
+
+                            <div class="txt">
+                                <span th:text="${c.name}"></span>
+                                <span>
+                                    <button th:id="'decrement_'+${c.id}" th:data="${c.id}" onclick="handleQuantityChange(this, -1)" style="width: 30px;">-</button>
+                                   <input type="text" th:id="'quantity_'+${c.id}" th:value="${c.cart_count}" onchange="handleQuantityChange(this, 0)" style="width: 30px; text-align: center;">
+                                   <button th:id="'increment_'+${c.id}" th:data="${c.id}" onclick="handleQuantityChange(this, 1)">+</button>
+                                </span>
+                            </div>
+
+                            <div class="price">
+                                <span th:id="'price_'+${c.id}" th:text="${c.price}+' 원'"></span>
+                                <button th:id="${c.id}" onclick="deleteCart(this.id)">x</button>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span th:id="'totalPrice_'+${c.id}" th:text="${c.price} * ${c.cart_count}+' 원'"></span></td>
+                    <td th:text="${c.rate}+' %'"></td>
+                </tr>
+
+
+
+                <tr class="lastTr">
+                    <td scope="col" colspan="4" class="lastTrTd">
+                        장바구니에 담긴 상품은 최대 15일까지 보관되며 종료되거나 매진될 경우 자동으로 삭제됩니다. <br>
+                        적립예정금액은 결제 시 타 쿠폰을 적용하거나 추가 할인을 받을 경우 실제 적립 받는 금액과 달라질 수 있습니다.
+                    </td>
+                </tr>
+
+                <tr class="totalPrice">
+                    <td colspan="2" rowspan="3">
+                        <span class="total">총 주문 금액</span>
+                    </td>
+
+                    <td>
+                        <span class="total02">총 상품금액</span>
+                    </td>
+
+                    <td>
+                        <span id="totalAmount">0원</span>
+                    </td>
+                </tr>
+
+                <tr class="totalPrice">
+                    <td>
+                        <span class="total02">즉시 할인 금액</span>
+                    </td>
+
+                    <td>
+                        <span id="totalDiscountAmount">0원</span>
+                    </td>
+                </tr>
+
+                <tr class="totalPrice">
+                    <td class="br">
+                        <span class="total02">배송비</span>
+                        <br>
+                        <span class="small">(50,000원 이상 무료배송)</span>
+                    </td>
+
+                    <td>
+                        <span id="deliveryFee">무료</span>
+                    </td>
+                </tr>
+
+                <tr class="totalPrice">
+                    <td colspan="2" class="lastTotalPrice">
+                        <span class="total">결제 예상 금액</span>
+                    </td>
+
+                    <td class="lastTotalPrice">
+
+                    </td>
+
+                    <!-- 최종 금액 -->
+                    <td class="lastTotalPrice">
+                        <span class="orange" id="finalAmount">0원</span>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="buttons">
+                <button>쇼핑계속하기</button>
+                <button id="paymentBtn">구매하기</button>
+            </div>
+        </div>
+    </div>
+
+    <form action="/payment" method="post">
+
+        <div id="selectedIdsContainer">
+
+        </div>
+
+
+    </form>
+
+</body>
+
+<script>
+    function handleQuantityChange(button, change) {
+        var productId = button.getAttribute('data');
+        var quantityInput = document.getElementById('quantity_' + productId);
+        var initPriceInput = document.getElementById('detailInitPrice_' + productId);
+        var priceSpan = document.getElementById('price_' + productId);
+        var totalPriceSpan = document.getElementById('totalPrice_' + productId);
+        // var checkbox = document.getElementById('checkbox_' + productId);
+        var currentQuantity = parseInt(quantityInput.value) + change;
+
+
+        // 데이터를 서버로 보내는 부분
+        axios.post('/cart_update', {
+            productId: productId, // productId를 서버로 전송
+            quantity: currentQuantity // change를 서버로 전송
+        })
+            .then(function (response) {
+                // 서버 응답을 처리하는 코드
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                // 오류를 처리하는 코드
+                console.error(error);
+            });
+
+
+        if (currentQuantity >= 0 && currentQuantity <= 999999) {
+            quantityInput.value = currentQuantity;
+
+            // 제품 가격과 수량을 가져와서 총 가격 계산
+            var productPrice = parseFloat(initPriceInput.value);
+            var total = productPrice * currentQuantity;
+            totalPriceSpan.textContent = total.toFixed(0) + ' 원'; // 총 가격 업데이트
+
+            // 총 가격 업데이트 후 전체 총 가격도 다시 계산
+            updateTotalAmount();
+
+            // // 체크박스가 체크된 경우에만 할인 가격 업데이트
+            // if (checkbox.checked) {
+            //     updateProductDiscount(productId);
+            // }
+
+            // 가격 고정
+            priceSpan.textContent = productPrice.toFixed(0) + ' 원';
+        }
+
+
+
+
+    }
+
+
+
+
+</script>
+<script>
+    window.onload = function () {
+        updateTotalAmount();
+        updateTotalDiscountAmount();
+        updateFinalAmount();
+    }
+
+    var selectAllCheckbox = document.getElementById('selectAllCheckbox');
+    var productCheckboxes = document.querySelectorAll('input[type="checkbox"][value]');
+
+    selectAllCheckbox.addEventListener('change', function () {
+        var isChecked = selectAllCheckbox.checked;
+        for (var i = 0; i < productCheckboxes.length; i++) {
+            productCheckboxes[i].checked = isChecked;
+        }
+        updateTotalAmount();
+        updateTotalDiscountAmount();
+    });
+
+    for (var i = 0; i < productCheckboxes.length; i++) {
+        productCheckboxes[i].addEventListener('change', function () {
+            updateTotalAmount();
+            updateSelectAllCheckbox();
+            updateTotalDiscountAmount();
+        });
+    }
+
+    // 각 상품의 수량 input 요소에 대한 이벤트 리스너 추가
+    var quantityInputs = document.querySelectorAll('input[type="number"][id^="quantity_"]');
+    for (var i = 0; i < quantityInputs.length; i++) {
+        quantityInputs[i].addEventListener('change', function () {
+            updateTotalAmount();
+            updateTotalDiscountAmount();
+
+        });
+    }
+
+    function updateTotalDiscountAmount() {
+        var totalDiscountAmount = 0;
+        for (var i = 0; i < productCheckboxes.length; i++) {
+            var checkbox = productCheckboxes[i];
+            if (checkbox.checked) {
+                var productId = checkbox.value;
+                var discountPriceInput = document.getElementById('detailDiscountPrice_' + productId);
+                var discountPrice = Math.floor(parseFloat(discountPriceInput.value));
+                totalDiscountAmount += discountPrice;
+
+            }
+        }
+
+        var totalDiscountAmountSpan = document.getElementById('totalDiscountAmount');
+        totalDiscountAmountSpan.textContent = '-' + totalDiscountAmount + '원';
+
+        updateFinalAmount();
+    }
+
+    function updateTotalAmount() {
+        var totalAmount = 0;
+        var totalDiscountAmount = 0; // 각 상품의 할인 금액을 누적할 변수 추가
+
+        for (var i = 0; i < productCheckboxes.length; i++) {
+            var checkbox = productCheckboxes[i];
+            if (checkbox.checked) {
+                var productId = checkbox.value;
+                var quantityInput = document.getElementById('quantity_' + productId);
+                var initPriceInput = document.getElementById('detailInitPrice_' + productId);
+                var currentQuantity = parseInt(quantityInput.value);
+                var productPrice = parseFloat(initPriceInput.value);
+
+                // 할인율을 가져옵니다.
+                var discountRateInput = document.getElementById('detailDiscount_' + productId);
+                var discountRate = parseFloat(discountRateInput.value);
+
+                // 할인 가격 계산 (상품 가격 * 할인율 * 수량)
+                var discountPrice = Math.floor(productPrice * discountRate / 100 * currentQuantity);
+
+                // 할인 가격을 할인 가격 input에 저장
+                var discountPriceInput = document.getElementById('detailDiscountPrice_' + productId);
+                discountPriceInput.value = discountPrice;
+
+                totalAmount += productPrice * currentQuantity;
+                totalDiscountAmount += discountPrice; // 각 상품의 할인 금액을 누적
+            }
+        }
+
+        var totalAmountSpan = document.getElementById('totalAmount');
+        totalAmountSpan.textContent = totalAmount.toFixed(0) + '원';
+
+        // 수정된 총 할인 금액을 화면에 표시합니다.
+        var totalDiscountAmountSpan = document.getElementById('totalDiscountAmount');
+        totalDiscountAmountSpan.textContent = '-' + totalDiscountAmount.toFixed(0) + '원';
+
+        updateFinalAmount();
+    }
+
+
+
+
+
+        function updateSelectAllCheckbox() {
+        var allChecked = true;
+        for (var i = 0; i < productCheckboxes.length; i++) {
+            if (!productCheckboxes[i].checked) {
+                allChecked = false;
+                break;
+            }
+        }
+        selectAllCheckbox.checked = allChecked;
+    }
+
+    // JavaScript 코드
+    function updateFinalAmount() {
+        var totalAmountSpan = document.getElementById('totalAmount');
+        var discountAmountSpan = document.getElementById('totalDiscountAmount');
+        var finalAmountSpan = document.getElementById('finalAmount');
+        var deliveryFeeSpan = document.getElementById('deliveryFee'); // 배송비 출력하는 span
+
+        var totalAmountText = totalAmountSpan.textContent;
+        var discountAmountText = discountAmountSpan.textContent;
+
+        var totalAmount = parseInt(totalAmountText.replace(/원/g, '').replace(/,/g, ''));
+        var discountAmount = parseInt(discountAmountText.replace(/원/g, '').replace(/,/g, ''));
+
+        // 배송비 설정 (50,000원 이상 무료배송, 미만은 3,000원)
+        var deliveryFee = (totalAmount >= 50000) ? 0 : 3000;
+
+        var finalAmount = totalAmount + discountAmount + deliveryFee;
+
+        // 최종 금액과 배송비를 출력합니다.
+        finalAmountSpan.textContent = finalAmount.toLocaleString() + '원';
+        deliveryFeeSpan.textContent = (deliveryFee === 0) ? '무료' : '3,000원';
+    }
+
+    // 최종 금액 업데이트 함수 호출
+    updateFinalAmount();
+
+
+    // 개별 상품의 할인 가격을 계산하고 갱신하는 함수
+
+    function updateProductDiscount(productId) {
+        var quantityInput = document.getElementById('quantity_' + productId);
+        var initPriceInput = document.getElementById('detailInitPrice_' + productId);
+        var discountRateInput = document.getElementById('detailDiscount_' + productId);
+        var discountPriceInput = document.getElementById('detailDiscountPrice_' + productId);
+        var priceSpan = document.getElementById('price_' + productId);
+
+        var currentQuantity = parseInt(quantityInput.value);
+        var productPrice = parseFloat(initPriceInput.value);
+        var discountRate = parseFloat(discountRateInput.value);
+
+        // 할인 가격 계산 (상품 가격 * 할인율 * 수량)
+        var discountPrice = Math.floor(productPrice * discountRate / 100 * currentQuantity);
+
+
+
+        // 할인 가격을 할인 가격 input에 저장
+        discountPriceInput.value = discountPrice;
+
+
+        priceSpan.textContent = productPrice.toFixed(0) + ' 원'; // 이 부분을 고정 값으로 설정
+
+// 총 할인 금액 업데이트
+        updateTotalDiscountAmount();
+    }
+
+    // 총 할인금액 업데이트 함수
+    function updateTotalDiscountAmount() {
+        var totalDiscountAmount = 0;
+
+        // 각 상품의 할인금액을 더합니다.
+        for (var i = 0; i < productCheckboxes.length; i++) {
+            var checkbox = productCheckboxes[i];
+            if (checkbox.checked) {
+                var productId = checkbox.value;
+                var discountPriceInput = document.getElementById('detailDiscountPrice_' + productId);
+                var discountPrice = parseFloat(discountPriceInput.value);
+                totalDiscountAmount += discountPrice;
+
+
+            }
+        }
+
+
+
+        // 총 할인금액을 화면에 표시합니다.
+        var totalDiscountAmountSpan = document.getElementById('totalDiscountAmount');
+        totalDiscountAmountSpan.textContent = '-' + totalDiscountAmount.toFixed(0) + '원';
+
+        // 최종 금액 업데이트
+        updateFinalAmount();
+    }
+
+    // 개별 상품 체크박스 상태가 변경될 때 할인 가격 업데이트
+    for (var i = 0; i < productCheckboxes.length; i++) {
+        productCheckboxes[i].addEventListener('change', function () {
+            updateProductDiscount(this.value);
+            updateTotalAmount();
+            updateTotalDiscountAmount(); // 할인 금액을 업데이트
+        });
+    }
+
+</script>
+
+<script>
+    function deleteCart(productId) {
+        // 보낼 JSON 데이터 생성
+        var data = {
+            productId: productId
+        };
+
+
+        axios({
+            method: 'post', // 또는 다른 HTTP 메서드
+            url: '/delete_cart', // 실제 서버 엔드포인트 주소
+            data: JSON.stringify(data), // 데이터를 JSON 문자열로 변환
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+
+            if(response.data != null) {
+
+                location.reload();
+            }
+
+
+
+
+
+        }).catch(error => {
+            // 오류 처리
+            console.error('오류:', error);
+        });
+    }
+</script>
+
+
+
+</html>

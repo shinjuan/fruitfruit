@@ -29,8 +29,12 @@ public class MainController {
     public String hello(Model model, HttpSession session, HttpServletRequest request,
                         @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "9") int pageSize) {
 
+        // 세션에서 로그인 정보를 가져옵니다.
+        String loggedInEmail = (String) session.getAttribute("email");
+
         HashMap<String, Object> test = new HashMap<>();
 
+        test.put("email",loggedInEmail);
         test.put("pageNum", pageNum);
         test.put("pageSize", pageSize);
 
@@ -38,11 +42,29 @@ public class MainController {
 
         PageInfo<HashMap<String, Object>> pageInfo = new PageInfo<>(list);
 
+
+        if(loggedInEmail != null) {
+
+            String cart_total = adminService.countCartList(loggedInEmail);
+            String like_total = adminService.countLikeList(loggedInEmail);
+
+            System.out.println("카트토탈:"+cart_total);
+            System.out.println("라이크토탈:"+like_total);
+
+            model.addAttribute("cart_total", cart_total);
+            model.addAttribute("like_total", like_total);
+        }
+
+
+
+        System.out.println("메인페이지리스트:"+list);
+        System.out.println("메인페이지인포:"+pageInfo);
+
         model.addAttribute("pageInfo", pageInfo);
 
 
-        // 세션에서 로그인 정보를 가져옵니다.
-        String loggedInEmail = (String) session.getAttribute("email");
+
+
 
         // 쿠키에서 이메일 정보를 가져옵니다.
         Cookie[] cookies = request.getCookies();
@@ -103,9 +125,16 @@ public class MainController {
 
     @ResponseBody
     @PostMapping("/main")
-    public HashMap<String, Object> product(@RequestBody HashMap<String, Object> requestData) {
+    public HashMap<String, Object> product(@RequestBody HashMap<String, Object> requestData, HttpSession session) {
 
-        System.out.println("메인테스트" + requestData);
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+
+
+        requestData.put("email",loggedInEmail);
+
+
 
         int pageNum = (int) requestData.get("currentPage");
         int pageSize = (int) requestData.get("selectedTab");
@@ -115,16 +144,144 @@ public class MainController {
         List<HashMap<String, Object>> data = adminService.selectProductList(requestData);
         PageInfo<HashMap<String, Object>> pageInfo = new PageInfo<>(data);
 
-
         HashMap<String, Object> data_count = new HashMap<>();
 
         data_count.put("data", data);
         data_count.put("pageInfo", pageInfo);
 
+        if(loggedInEmail != null) {
+
+            String cart_total = adminService.countCartList(loggedInEmail);
+            String like_total = adminService.countLikeList(loggedInEmail);
+
+            System.out.println("카트토탈:"+cart_total);
+            System.out.println("라이크토탈:"+like_total);
+
+            data_count.put("cart_total", cart_total);
+            data_count.put("like_total", like_total);
+
+        }
+
+
+
+
         log.info("메인페이지인포" + pageInfo);
 
         return data_count;
     }
+
+
+    @ResponseBody
+    @PostMapping("/like")
+    public HashMap<String,Object> like(@RequestBody HashMap<String, Object> requestData, HttpSession session) {
+        System.out.println("찜확인"+requestData);
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        requestData.put("email",loggedInEmail);
+
+        String likeCheck = adminService.likeCheck(requestData);
+
+
+
+
+
+
+
+
+
+
+            if (likeCheck != null) {
+                adminService.likeDelete(requestData);
+                String cart_total = adminService.countCartList(loggedInEmail);
+                String like_total = adminService.countLikeList(loggedInEmail);
+                requestData.put("cart_total",cart_total);
+                requestData.put("like_total",like_total);
+                requestData.put("like", 1);
+                return requestData;
+            } else {
+                adminService.likeAdd(requestData);
+                String cart_total = adminService.countCartList(loggedInEmail);
+                String like_total = adminService.countLikeList(loggedInEmail);
+                requestData.put("cart_total",cart_total);
+                requestData.put("like_total",like_total);
+                requestData.put("like", 2);
+                return requestData;
+            }
+
+
+
+
+
+    }
+
+
+    @ResponseBody
+    @PostMapping("/cart")
+    public HashMap<String,Object> cart(@RequestBody HashMap<String, Object> requestData, HttpSession session) {
+
+        System.out.println("장바구니확인"+requestData);
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        requestData.put("email",loggedInEmail);
+
+        String cartCheck = adminService.cartCheck(requestData);
+
+
+
+        if(cartCheck != null) {
+            adminService.cartDelete(requestData);
+            String cart_total = adminService.countCartList(loggedInEmail);
+            String like_total = adminService.countLikeList(loggedInEmail);
+            requestData.put("cart_total",cart_total);
+            requestData.put("like_total",like_total);
+            requestData.put("cart",1);
+            return requestData;
+        } else {
+            adminService.cartAdd(requestData);
+            String cart_total = adminService.countCartList(loggedInEmail);
+            String like_total = adminService.countLikeList(loggedInEmail);
+            requestData.put("cart_total",cart_total);
+            requestData.put("like_total",like_total);
+            requestData.put("cart",2);
+            return requestData;
+        }
+
+
+
+
+    }
+
+
+    @ResponseBody
+    @PostMapping("/cart_update")
+    public HashMap<String,Object> cart_update(@RequestBody HashMap<String, Object> requestData, HttpSession session) {
+
+        System.out.println("장바구니확인"+requestData);
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        requestData.put("email",loggedInEmail);
+
+        String cartCheck = adminService.cartCheck(requestData);
+
+
+
+        if(cartCheck != null) {
+            adminService.cartUpdate(requestData);
+            requestData.put("cart",1);
+            return requestData;
+        }
+
+        return null;
+
+
+
+
+    }
+
+
 
     @PostMapping("/save-product-info")
     @ResponseBody

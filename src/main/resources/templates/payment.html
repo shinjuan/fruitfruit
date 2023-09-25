@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프룻프룻 쇼핑몰</title>
+
+    <!--Open Graph-->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="프룻프룻 Shopping Mall" />
+    <meta property="og:title" content="프룻프룻 Shopping Mall" />
+    <meta property="og:description" content="프룻프룻 Shopping Mall 입니다." />
+    <meta property="og:image" content="/user/img/openGraph.png" />
+    <meta property="og:url" content="https://prpr-shopping-mall.co.kr" />
+
+    <!--파비콘-->
+    <link rel="icon" href="./favicon.ico" />
+
+    <!--브라우저 스타일 초기화-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css" />
+
+    <!--Google Fonts - 나눔고딕-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <!-- Google Fonts Noto Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+
+    <!-- Google Fonts - Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+
+    <!--Google Material Icons-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <link rel="stylesheet" href="./css/style.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
+        integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"
+        integrity="sha512-cOH8ndwGgPo+K7pTvMrqYbmI8u8k6Sho3js0gOqVWTmQMlLIi6TbqGWRTpf1ga8ci9H3iPsvDLr4X7xwhC/+DQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- SWIPER -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+    <script defer src="./js/main.js"></script>
+
+    <th:block th:insert="~{includes/library}"></th:block>
+    <th:block th:insert="~{includes/style}"></th:block>
+    <th:block th:insert="~{includes/scripts}"></th:block>
+    
+</head>
+
+<body>
+
+    <header id="header">
+        <div class="inner">
+
+            <a href="./index.html" class="logo">
+                <img src="/user/img/푸릇푸릇 로고.png" alt="logo" />
+            </a>
+
+            <div class="sub-menu">
+                <ul class="menu">
+                    <li>
+                        <a href="./login.html">Sign In</a>
+                    </li>
+                    <li>
+                        <a href="./join.html">Join</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">language</a>
+                    </li>
+                </ul>
+            </div>
+
+            <ul class="main-menu">
+                <li class="item">
+                    <div class="item__name">HOME</div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name">
+                        <a href="./search.html">상품소개</a>
+                    </div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name">
+                        <a href="./search.html">구매내역</a>
+                    </div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name">마이페이지</div>
+                </li>
+
+                <li class="item">
+                    <a href="./cart.html">
+                        <div class="item__name red">
+                            장바구니
+                            <span class="material-icons">
+                                shopping_cart
+                            </span>
+
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </header>
+
+    <div id="payment">
+        <div class="inner">
+
+            <h2> 주문결제 </h2>
+
+            <div class="txt">
+                <div class="left">
+                    <span>전체 <span class="orange" th:text="${cartCountAll}">5</span>개</span>
+                </div>
+
+                <div class="right">
+                    <p>01 장바구니</p>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                    <p>02 주문/결제</p>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                    <p>03 결제완료</p>
+                </div>
+            </div>
+
+            <div class="box">
+                <img th:src="${firstCartName.file_name}" alt="망고스틴">
+                <span th:text="${firstCartName.name}+'외 '+${cartCount}+'개의 상품을 주문합니다.'">열대과일 생과 망고스틴 5kg의 상품을 주문합니다.</span>
+            </div>
+
+            <p class="title">배송정보</p>
+
+            <div class="input">
+                <label for="where">
+                    <p>배송지 선택</p>
+                    <select name="where" id="where">
+                        <option value="우리집(기본배송지)">우리집(기본배송지)</option>
+                    </select>
+                    <button>+ 신규배송지</button>
+                </label>
+
+                <label for="name">
+                    <p>이름</p>
+                    <input type="textbox" name="receiverName" id="receiverName" placeholder="예) 홍길동">
+                </label>
+
+                <label for="phone" class="phone">
+                    <p>연락처</p>
+                    <input type="textbox" name="receiverPhone" id="receiverPhone" placeholder="예) 01012345678">
+                </label>
+
+                <label for="add" class="add">
+                    <p>주소</p>
+                    <input type="textbox" name="add" id="add" class="postalCode">
+                    <input type="textbox" name="add2" id="add2" class="postalCode2">
+                </label>
+
+                <label for="ask">
+                    <p>배송 요청 사항</p>
+                    <select name="ask" id="ask" class="deliveryAsk">
+                        <option value="배송 시 요청사항 선택">배송 시 요청사항 선택</option>
+                        <option value="배송 전 연락 바랍니다">배송 전 연락 바랍니다.</option>
+                        <option value="택배함에 넣어주세요">택배함에 넣어주세요.</option>
+                        <option value="문 앞에 놔주세요">문 앞에 놔주세요.</option>
+                        <option value="직접 수령하곘습니다">직접 수령하곘습니다.</option>
+                        <option value="직접입력">직접입력</option>
+                    </select>
+                </label>
+            </div>
+
+
+            <!-- 모달 알림창 -->
+            <div class="txt04" style="display: none;">
+                <div class="inner">
+                    <h4>알림</h4>
+                    <h5 id="modalMessage"></h5>
+                    <h5><a href="#" onclick="hideModal();">확인</a></h5>
+                </div>
+            </div>
+
+
+            <!-- 배송지추가 모달 창 -->
+            <div class="delivery__add" style="display: none;">
+                <div class="delivery__add__inner">
+
+                    <div class="top">
+                        <span>배송지추가</span>
+                    </div>
+
+                    <div class="bottom">
+                        <label for="title">
+                            <p>배송지명</p>
+                            <input type="textbox" name="title" id="title">
+                        </label>
+
+                        <label for="name">
+                            <p>이름</p>
+                            <input type="textbox" name="name" id="name">
+                        </label>
+
+                        <label for="phone" class="phone">
+                            <p>연락처</p>
+                            <input type="textbox" name="phone1" id="phone1">
+                            <input type="textbox" name="phone2" id="phone2">
+                        </label>
+
+                        <label for="add" class="add">
+                            <p>주소</p>
+                            <button>우편번호</button>
+                            <input type="textbox" name="add" id="add" class="postalCode">
+                            <input type="textbox" name="add2" id="add2" class="postalCode2">
+                            <input type="textbox" name="add3" id="add3" class="postalCode2">
+                        </label>
+
+
+                        <div class="delivery__add__buttons">
+                            <button class="delivery__add__cancel">
+                                작성취소
+                            </button>
+
+                            <button class="delivery__add__confirm">
+                                배송지추가
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <table>
+                <tr class="title">
+                    <th scope="col">상품정보</th>
+                    <th scope="col">할인율</th>
+                    <th scope="col">상품금액</th>
+                    <th scope="col">상품별 할인</th>
+                </tr>
+
+                <tr th:each="c : ${CheckboxCartList}">
+
+                    <div class="cart-item">
+
+                    <input type="hidden" th:id="'productImg_'+${c.id}" th:value="${c.file_name}">
+                    <input type="hidden" th:id="'productName_'+${c.id}" th:value="${c.name}">
+                    <input type="hidden" th:id="'productId_'+${c.id}" th:value="${c.id}">
+                    <input type="hidden" th:id="'Discount_'+${c.id}" th:value="${c.rate}">
+                    <input type="hidden" th:id="'InitPrice_'+${c.id}" th:value="${c.price}">
+                    <input type="hidden" th:id="'DiscountPrice_'+${c.id}" th:value="${c.price * c.rate }/ 100">
+                    <input type="hidden" th:id="'DiscountedPrice_'+${c.id}" th:value="${c.price - (c.price * c.rate / 100)}">
+                    <input type="hidden" class="item-price" th:id="'Price_'+${c.id}" th:value="${c.price * c.cart_count}">
+                    <input type="hidden" class="item-discount-price" th:id="'DiscountPriceALL_'+${c.id}" th:value="${c.price * c.rate / 100 * c.cart_count}">
+
+                    </div>
+
+                    <td>
+                        <div class="td_wrap">
+                            <img th:src="${c.file_name}" alt="수박">
+
+                            <div class="txt">
+                                <span th:text="${c.name}">열대과일 생과 망고스틴 5kg</span>
+                                <span th:text="${c.price}+' 원'">50,000원</span>
+                            </div>
+
+                            <div class="price">
+                                <span th:text="'구매수량: '+${c.cart_count}+'개'">구매수량 1개</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td th:text="${c.rate}+'%'">10%</td>
+                    <td th:text="${c.price * c.cart_count}+' 원'">계산해야함</td>
+                    <td th:text="${c.price * c.rate / 100 * c.cart_count} + ' 원'">계산해야함</td>
+                </tr>
+
+
+
+
+                <tr class="totalPrice border">
+                    <td colspan="2" rowspan="3">
+                        <span class="total">총 주문 금액</span>
+                    </td>
+
+                    <td>
+                        <span class="total02">총 상품금액</span>
+                    </td>
+
+                    <td>
+                        <span id="totalPriceSpan">계산해야함</span>
+                    </td>
+                </tr>
+
+                <tr class="totalPrice">
+                    <td>
+                        <span class="total02">즉시 할인 금액</span>
+                    </td>
+
+                    <td>
+                        <span id="totalDiscountPriceSpan">-계산해야함</span>
+                    </td>
+                </tr>
+
+                <tr class="totalPrice">
+                    <td class="br">
+                        <span class="total02">배송비</span>
+                        <br>
+                        <span class="small">(50,000원 이상 무료배송)</span>
+                    </td>
+
+                    <td>
+                        <span id="deliveryFee">계산해야함</span>
+                    </td>
+                </tr>
+
+                <tr class="totalPrice">
+                    <td colspan="2" class="lastTotalPrice">
+                        <span class="total">결제 예상 금액</span>
+                    </td>
+
+                    <td class="lastTotalPrice">
+
+                    </td>
+
+                    <td class="lastTotalPrice">
+                        <span class="orange" id="finalAmount">계산해야함</span>
+                    </td>
+                </tr>
+            </table>
+
+            <p class="title">결제수단</p>
+
+            <div class="paymentWrap">
+                <p>일반결제
+                    <span id="payPriceSpan">계산해야함</span>
+                </p>
+
+                <div class="paymentButtons">
+                    <button>신용카드</button>
+                    <button>휴대폰 결제</button>
+                    <button>실시간 계좌이체</button>
+                </div>
+
+                <div class="paymentBackground">
+                    <div class="box1">
+                        <span>카드 구분</span>
+
+                        <input type="radio" id="개인카드" name="개인카드" value="개인카드">
+                        <label for="개인카드">개인카드</label>
+
+                        <input type="radio" id="법인카드" name="법인카드" value="법인카드">
+                        <label for="법인카드">법인카드</label>
+                    </div>
+
+                    <div class="box2">
+                        <span>카드 선택</span>
+
+                        <select name="card" id="card">
+                            <option value="국민카드">국민카드</option>
+                            <option value="삼성카드">삼성카드</option>
+                            <option value="하나카드">하나카드</option>
+                            <option value="신한카드">신한카드</option>
+                            <option value="현대카드">현대카드</option>
+                        </select>
+                    </div>
+
+                    <div class="box3">
+                        <span>할부 기간</span>
+
+                        <select name="howlong" id="howlong">
+                            <option value="일시불">일시불</option>
+                            <option value="2개월">2개월(무이자)</option>
+                            <option value="3개월">3개월(무이자)</option>
+                            <option value="4개월">4개월</option>
+                            <option value="5개월">5개월</option>
+                            <option value="6개월">6개월</option>
+                            <option value="7개월">7개월</option>
+                            <option value="8개월">8개월</option>
+                            <option value="9개월">9개월</option>
+                            <option value="10개월">10개월</option>
+                            <option value="11개월">11개월</option>
+                            <option value="12개월">12개월</option>
+
+                        </select>
+                    </div>
+
+                    <div class="box4">
+                        <span class="hidden">hidden</span>
+
+                        <input type="checkbox" checked>
+                        <span>선택한 결제방법을 다음에도 사용</span>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <p class="title">약관동의</p>
+
+            <div class="terms">
+                <input type="checkbox" name="status" value= "7" id="chk7">
+                <label for="chk7">전체 동의하기</label>
+            </div>
+
+            <div class="terms2">
+                <div class="terms2__1">
+                    <input type="checkbox" name="status" value="8" id="chk8">
+                    <label for="chk8">개인정보 제 3자 제공에 동의합니다.</label>
+                    <p>상세보기</p>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </div>
+
+                <div class="terms2__2">
+                    <input type="checkbox" name="status" value="9" id="chk9">
+                    <label for="chk9">주문할 상품 설명에 명시된 내용과 사용 조건을 확인하였으며, 취소/환불 규정에 동의합니다.</label>
+                </div>
+
+            </div>
+
+
+            <div class="buttons">
+                <button>결제취소</button>
+                <a>
+                    <button id="paymentBtn_final">결제하기</button>
+                </a>
+            </div>
+
+
+            <!-- 결제취소. 모달 창 -->
+            <div class="payment__cancel" style="display: none;">
+                <div class="payment__cancel__inner">
+
+                    <div class="top">
+                        <span>알림</span>
+                    </div>
+
+                    <div class="bottom">
+                        <span>변경중이던 사항이 초기화됩니다. <br>
+                            취소 하시겠습니까? </span>
+
+
+                        <div class="payment__cancel__buttons">
+                            <button>취소하기</button>
+                            <button>계속작성</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 결제가 취소되었습니다. 모달 창 -->
+            <div class="payment__cancel__confirm" style="display: none;">
+                <div class="payment__cancel__confirm__inner">
+
+                    <div class="top">
+                        <span>알림</span>
+                    </div>
+
+                    <div class="bottom">
+                        <span>결제가 취소되었습니다.</span>
+
+
+                        <div class="payment__cancel__confirm__buttons">
+                            <button>확인</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+
+
+
+    // 모든 상품의 가격과 할인 가격을 합산할 변수 초기화
+    var totalItemPrice = 0;
+    var totalDiscountPrice = 0;
+
+    // 각 상품의 가격을 가져와서 합산
+    var cartItems = document.querySelectorAll('.cart-item'); // 각 상품을 나타내는 엘리먼트의 클래스명을 조절하세요
+    cartItems.forEach(function (cartItem) {
+        var priceInput = cartItem.querySelector('.item-price');
+        var discountPriceInput = cartItem.querySelector('.item-discount-price');
+
+        var itemPrice = parseFloat(priceInput.value);
+        var itemDiscountPrice = parseFloat(discountPriceInput.value);
+
+        totalItemPrice += itemPrice;
+        totalDiscountPrice += itemDiscountPrice;
+    });
+
+
+    // 합계를 페이지에 출력
+    var totalPriceSpan = document.getElementById('totalPriceSpan');
+    var totalDiscountPriceSpan = document.getElementById('totalDiscountPriceSpan');
+    var payPriceSpan = document.getElementById('payPriceSpan');
+
+    totalPriceSpan.textContent = totalItemPrice.toFixed(0) + ' 원';
+    totalDiscountPriceSpan.textContent = '-' + totalDiscountPrice.toFixed(0) + ' 원';
+
+    // totalPriceSpan과 totalDiscountPriceSpan의 값을 가져와서 숫자로 변환
+    var totalPrice = parseFloat(totalPriceSpan.textContent.replace(' 원', ''));
+    // '-'를 제외한 값을 가져와서 숫자로 변환
+    var totalDiscountPrice = Math.floor(parseFloat(totalDiscountPriceSpan.textContent.replace('-', '').replace(' 원', '')));
+
+    // 계산한 결과
+    var finalAmount = totalPrice - totalDiscountPrice;
+
+    // 결과를 finalAmount를 갖고 있는 <span> 엘리먼트에 출력
+    var finalAmountSpan = document.getElementById('finalAmount');
+    finalAmountSpan.textContent = finalAmount.toFixed(0) + ' 원';
+
+    // 배송비 계산
+    var deliveryFee = 3000; // 배송비
+    if (totalPrice >= 50000) {
+        deliveryFee = 0; // 50,000원 이상일 경우 무료 배송
+    }
+
+    // 배송비 메시지 업데이트
+    var deliveryFeeSpan = document.getElementById('deliveryFee');
+    if (deliveryFee === 0) {
+        deliveryFeeSpan.textContent = '무료';
+    } else {
+        deliveryFeeSpan.textContent = deliveryFee.toFixed(0) + ' 원';
+    }
+
+    // 배송비를 totalPrice에 추가
+
+    finalAmount += deliveryFee;
+
+    // totalPrice를 갖고 있는 <span> 엘리먼트 업데이트
+
+    payPriceSpan.textContent = finalAmount.toFixed(0) + ' 원';
+    finalAmountSpan.textContent = finalAmount.toFixed(0) + ' 원';
+</script>
+
+
+
+</html>

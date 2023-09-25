@@ -1,5 +1,6 @@
 package com.example.project_03.user;
 
+import com.example.project_03.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final AdminService adminService;
 
 
 
@@ -167,5 +169,153 @@ public class UserController {
             return null;
         }
     }
+
+    @GetMapping("/detail/{product_no}")
+    public String detail(Model model, @PathVariable String product_no, HttpSession session) {
+
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        HashMap<String,Object> detail = new HashMap<>();
+
+        detail.put("email",loggedInEmail);
+        detail.put("product_no",product_no);
+
+        HashMap<String,Object> productDetail = userService.selectProductDetail(detail);
+
+        model.addAttribute("detail",productDetail);
+
+        return "detail";
+    }
+
+    @ResponseBody
+    @PostMapping("/detail_like")
+    public HashMap<String,Object> like(@RequestBody HashMap<String, Object> requestData, HttpSession session) {
+        System.out.println("찜확인"+requestData);
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        requestData.put("email",loggedInEmail);
+
+        String likeCheck = adminService.likeCheck(requestData);
+
+
+
+
+        if (likeCheck != null) {
+            adminService.likeDelete(requestData);
+
+            requestData.put("like", 1);
+            return requestData;
+        } else {
+            adminService.likeAdd(requestData);
+
+            requestData.put("like", 2);
+            return requestData;
+        }
+
+
+    }
+
+
+    @PostMapping("/detail_cart")
+    public String cart(@RequestBody HashMap<String, Object> requestData, HttpSession session) {
+
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        requestData.put("email",loggedInEmail);
+
+        String cartCheck = adminService.cartCheck(requestData);
+
+
+        if (cartCheck != null) {
+
+
+            return "modal/cart_not_ok";
+        } else {
+            adminService.cartAdd(requestData);
+
+
+            return "modal/cart_ok";
+        }
+
+
+    }
+
+
+    @GetMapping("/cart_list")
+    public String cart(HttpSession session, Model model) {
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        List<HashMap<String,Object>> cart_list = userService.selectCartList(loggedInEmail);
+        HashMap<String,Object> carted_count = userService.countCarted(loggedInEmail);
+
+        model.addAttribute("cart_list",cart_list);
+        model.addAttribute("carted_count",carted_count);
+
+        return "cart";
+    }
+
+    @ResponseBody
+    @PostMapping("/delete_cart")
+    public String delete_cart(HttpSession session, Model model,@RequestBody HashMap<String, Object> requestData) {
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        requestData.put("email",loggedInEmail);
+
+        adminService.cartDelete(requestData);
+
+        return "장바구니삭제";
+    }
+
+
+    @RequestMapping("/payment")
+    public String payment(Model model, HttpSession session,
+                          @RequestParam List<String> checkbox, @RequestParam int selectedCount) {
+
+        System.out.println("체크박스확인"+checkbox);
+        System.out.println("카운트"+selectedCount);
+
+
+
+
+        if (!checkbox.isEmpty()) {
+            String loggedInEmail = (String) session.getAttribute("email");
+
+            String firstProductId = checkbox.get(0);
+
+            // 이제 firstProductId를 이용하여 원하는 조회 작업 수행
+            // 예를 들어, 상품 조회 로직을 여기에 추가할 수 있습니다.
+
+            System.out.println("첫 번째 상품 번호: " + firstProductId);
+
+            HashMap<String,Object> firstCartName = userService.selectFirstCart(firstProductId);
+            int cartCount = selectedCount - 1;
+
+            HashMap<String,Object> selectedCart = new HashMap<>();
+            selectedCart.put("checkbox",checkbox);
+            selectedCart.put("email",loggedInEmail);
+
+            List<HashMap<String,Object>> CheckboxCartList = userService.selectCheckboxCartList(selectedCart);
+
+            System.out.println("첫번째 상품이름:"+firstCartName);
+            System.out.println("상품외갯수:"+cartCount);
+            System.out.println("체크박스된장바구니:"+CheckboxCartList);
+
+            model.addAttribute("firstCartName",firstCartName);
+            model.addAttribute("cartCountAll",selectedCount);
+            model.addAttribute("cartCount",cartCount);
+            model.addAttribute("CheckboxCartList",CheckboxCartList);
+        }
+
+
+
+        return "payment";
+    }
+
+
 
 }

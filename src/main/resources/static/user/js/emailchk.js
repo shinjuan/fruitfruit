@@ -1,7 +1,7 @@
 $(document).on('blur', '#email', () => {
     // Axios 사용해 Post 요청
 
-    let email = document.getElementById("email").value;
+    var productId =
 
     axios({
         method: "post",

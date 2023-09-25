@@ -30,8 +30,81 @@
        UPDATE USER SET password=#{encodedPassword2} where email=#{email}
   </update>
 
+    <select id="selectProductDetail" parameterType="java.util.Map">
+        SELECT
+        p.id,
+        p.name,
+        p.price,
+        p.rate,
+        p.stock_quantity,
+        p.content,
+        pi.file_name
+        <if test="email != null || email != ''">
+            , CASE
+            WHEN likes.product_id IS NOT NULL THEN 'liked'
+            ELSE 'not liked'
+            END AS like_status,
+            CASE
+            WHEN carts.product_id IS NOT NULL THEN 'carted'
+            ELSE 'not carted'
+            END AS cart_status,
+            COALESCE(carts.cart_count, 0) AS cart_count
+        </if>
+        FROM
+        product p
+        JOIN product_image pi ON p.id = pi.product_id
+        <if test="email != null || email != ''">
+            LEFT JOIN likes ON p.id = likes.product_id AND likes.user_email = #{email}
+            LEFT JOIN carts ON p.id = carts.product_id AND carts.user_email = #{email}
+        </if>
+        WHERE p.id = ${product_no}
+    </select>
+
+    <select id="selectCartList" parameterType="java.util.Map">
+        SELECT
+            pi.file_name,
+            p.price,
+            p.stock_quantity,
+            p.rate,
+            p.name,
+            p.id,
+            c.cart_count
+        FROM
+            carts c
+                JOIN product p ON c.product_id = p.id
+                JOIN product_image pi ON p.id = pi.product_id
+        WHERE
+            c.user_email = '${email}'
+    </select>
+
+    <select id="countCarted" resultType="java.util.Map">
+        SELECT
+            COUNT(*) AS carted_count
+        FROM carts
+        where user_email = '${email}'
+    </select>
+
+    <select id="selectFirstCart" resultType="java.util.Map">
+        SELECT
+        p.name,
+        pi.file_name
+    FROM product p
+    JOIN product_image pi ON p.id = pi.product_id
+        where p.id = ${firstProductId}
+    </select>
 
 
+    <select id="selectCheckboxCartList" resultType="java.util.Map">
+        SELECT p.id, pi.file_name, p.name, p.price, c.cart_count, p.rate
+        FROM product p
+        INNER JOIN product_image pi ON p.id = pi.product_id
+        INNER JOIN carts c ON p.id = c.product_id
+        WHERE c.user_email = #{email}
+        <!-- checkbox 리스트의 값을 동적으로 바인딩 -->
+        <foreach collection="checkbox" item="productId" open="AND p.id IN (" close=")" separator=",">
+            #{productId}
+        </foreach>
+    </select>
 
 
 </mapper>

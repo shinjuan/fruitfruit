@@ -54,6 +54,8 @@ public class AdminService implements AdminMapper {
         int pageNum = Integer.parseInt(test.get("pageNum").toString());
         int pageSize = Integer.parseInt(test.get("pageSize").toString());
 
+        System.out.println("서비스쪽email테스트"+test);
+
         PageHelper.startPage(pageNum, pageSize);
 
         return adminMapper.selectProductListAll(test);
@@ -82,5 +84,42 @@ public class AdminService implements AdminMapper {
 
     public List<HashMap<String, Object>> selectProductListAll_excel() {
         return adminMapper.selectProductListAll_excel();
+    }
+
+    public String likeCheck(HashMap<String, Object> requestData) {
+
+        return adminMapper.likeCheck(requestData);
+    }
+
+    public void likeDelete(HashMap<String, Object> requestData) {
+        adminMapper.likeDelete(requestData);
+    }
+
+    public void likeAdd(HashMap<String, Object> requestData) {
+        adminMapper.likeAdd(requestData);
+    }
+
+    public String cartCheck(HashMap<String, Object> requestData) {
+        return adminMapper.cartCheck(requestData);
+    }
+
+    public void cartDelete(HashMap<String, Object> requestData) {
+        adminMapper.cartDelete(requestData);
+    }
+
+    public void cartAdd(HashMap<String, Object> requestData) {
+        adminMapper.cartAdd(requestData);
+    }
+
+    public void cartUpdate(HashMap<String, Object> requestData) {
+        adminMapper.cartUpdate(requestData);
+    }
+
+    public String countCartList(String loggedInEmail) {
+        return adminMapper.countCartList(loggedInEmail);
+    }
+
+    public String countLikeList(String loggedInEmail) {
+        return adminMapper.countLikeList(loggedInEmail);
     }
 }

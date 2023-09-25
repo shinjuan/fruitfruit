@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프룻프룻 쇼핑몰</title>
+
+    <!--Open Graph-->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="프룻프룻 Shopping Mall" />
+    <meta property="og:title" content="프룻프룻 Shopping Mall" />
+    <meta property="og:description" content="프룻프룻 Shopping Mall 입니다." />
+    <meta property="og:image" content="/user/img/openGraph.png" />
+    <meta property="og:url" content="https://prpr-shopping-mall.co.kr" />
+
+    <!--파비콘-->
+<!--    <link rel="icon" href="./favicon.ico" />-->
+
+    <!--브라우저 스타일 초기화-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css" />
+
+    <!--Google Fonts - 나눔고딕-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <!-- Google Fonts - Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+
+    <!--Google Material Icons-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <link rel="stylesheet" href="./css/style.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
+        integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"
+        integrity="sha512-cOH8ndwGgPo+K7pTvMrqYbmI8u8k6Sho3js0gOqVWTmQMlLIi6TbqGWRTpf1ga8ci9H3iPsvDLr4X7xwhC/+DQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- SWIPER -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+    <script defer src="./js/main.js"></script>
+
+
+    <th:block th:insert="~{includes/library}"></th:block>
+    <th:block th:insert="~{includes/style}"></th:block>
+    <th:block th:insert="~{includes/scripts}"></th:block>
+
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header id="header">
+        <div class="inner">
+
+            <a href="./index.html" class="logo">
+                <img src="/user/img/푸릇푸릇 로고.png" alt="logo" />
+            </a>
+
+            <div class="sub-menu">
+                <ul class="menu">
+                    <li>
+                        <a href="./login.html">Sign In</a>
+                    </li>
+                    <li>
+                        <a href="./join.html">Join</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">language</a>
+                    </li>
+                </ul>
+            </div>
+
+            <ul class="main-menu">
+                <li class="item">
+                    <div class="item__name">HOME</div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name">
+                        <a href="./search.html">상품소개</a>
+                    </div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name">
+                        <a href="./search.html">구매내역</a>
+                    </div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name">마이페이지</div>
+                </li>
+
+                <li class="item">
+                    <a href="./cart.html">
+                        <div class="item__name red">
+                            장바구니
+                            <span class="material-icons">
+                                shopping_cart
+                            </span>
+
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </header>
+
+    <section id="detail">
+        <div class="inner detail__inner">
+
+            <div class="box01">
+                <div class="left">
+                    <img th:src="${detail.file_name}" alt="망고스틴 상세페이지">
+                </div>
+
+                <div class="right">
+
+                    <input type="hidden" id="productId" th:value="${detail.id}">
+                    <input type="hidden" id="detailDiscount" th:value="${detail.rate}">
+                    <input type="hidden" id="detailInitPrice" th:value="${detail.price}">
+                    <input type="hidden" id="detailDiscountPrice" th:value="${detail.price * detail.rate }/ 100">
+                    <input type="hidden" id="detailDiscountedPrice" th:value="${detail.price - (detail.price * detail.rate / 100)}">
+
+                    <div class="right__txt01">
+                        <h2 th:text="${detail.name}"> </h2>
+                        <a  th:id="'like_'+${detail.id}" th:if="${detail.like_status == 'liked'}">
+                            <span th:id="${detail.id}" class="material-icons red__heart" onclick="handleFavoriteClick(this)">favorite</span>
+                        </a>
+
+                        <a  th:id="'like_'+${detail.id}" th:if="${detail.like_status == 'not liked'}">
+                            <span th:id="${detail.id}" class="material-symbols-outlined" onclick="handleFavoriteClick(this)">favorite</span>
+                        </a>
+                    </div>
+
+                    <div class="right__txt02">
+                        <div class="right__txt02__01">
+                            <span th:text="${detail.rate}+' %'"></span>
+                            <p>
+                                <span th:text="${detail.price}+' 원'"></span>
+                                <span th:text="${detail.price - (detail.price * detail.rate / 100)}+' 원'"></span>
+                            </p>
+                        </div>
+
+                        <div class="right__txt02__02">
+                            <p>배송비 3,000원
+                                <span class="free">(50,000원이상 결제시 무료배송)</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="right__txt03">
+                        <!-- 장바구니 클릭 시 수량 증감버튼 -->
+                        <div class="cart">
+                            <div class="inner">
+                                <button id="decrement">-</button>
+                                <input type="text" id="quantity" value="1">
+                                <button id="increment">+</button>
+                            </div>
+                            <span th:text="'남은수량 '+${detail.stock_quantity}+'개'"></span>
+                        </div>
+
+                        <div class="right__txt03__01">
+                            <span>총 상품 금액</span>
+                            <span id="totalPrice"></span>
+                        </div>
+
+                        <div class="right__txt03__02">
+                            <span>배송비</span>
+                            <span id="deliveryFee"></span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="right__buttons">
+                        <button><span th:id="${detail.id}" onclick="handleFavoriteClick2(this)">장바구니</span></button>
+                        <button>바로구매</button>
+                    </div>
+
+                    <!-- 장바구니에 담겼습니다. 모달 창 -->
+                    <div class="txt04 right__modal" style="display: none;">
+                        <div class="inner">
+
+                            <h4>알림</h4>
+
+                            <h5>
+                                <span>장바구니에 담겼습니다.</span>
+
+                                <div class="buttons" style="display: inline-block;">
+                                    <a href="./detail.html">
+                                        <button>계속 쇼핑하기</button>
+                                    </a>
+
+                                    <a href="#">
+                                        <button>장바구니로 이동</button>
+                                    </a>
+                                </div>
+
+                            </h5>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="box02">
+                <a href="./detail.html">
+                    <div class="detailed__info">
+                        <p>상세정보</p>
+                    </div>
+                </a>
+
+
+                <a href="./review.html">
+                    <div class="review">
+                        <p>상품리뷰</p>
+                    </div>
+                </a>
+
+            </div>
+
+            <div class="box03" th:utext="${detail.content}">
+<!--                <img src="/user/img/망고스틴_상세페이지.png" alt="망고스틴 상세페이지">-->
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    var quantityInput = document.getElementById("quantity");
+    var decrementButton = document.getElementById("decrement");
+
+    // 초기값이 1 이하인 경우 - 버튼 비활성화
+    if (parseInt(quantityInput.value) <= 1) {
+        decrementButton.disabled = true;
+    }
+
+    // + 버튼 클릭 시 처리
+    document.getElementById("increment").addEventListener("click", function () {
+        var currentValue = parseInt(quantityInput.value);
+
+        // 현재 값에 1을 더하고 입력 필드 업데이트
+        quantityInput.value = currentValue + 1;
+
+        // + 버튼을 누를 때 - 버튼 활성화
+        decrementButton.disabled = false;
+    });
+
+    // - 버튼 클릭 시 처리
+    decrementButton.addEventListener("click", function () {
+        var currentValue = parseInt(quantityInput.value);
+
+        // 현재 값이 1 이상일 때만 1을 빼고 입력 필드 업데이트
+        if (currentValue > 1) {
+            quantityInput.value = currentValue - 1;
+        }
+
+        // 값이 1 이하인 경우 - 버튼 비활성화
+        if (currentValue <= 2) {
+            decrementButton.disabled = true;
+        }
+    });
+</script>
+<script>
+    // 필요한 요소들을 가져옵니다.
+    var decrementButton = document.getElementById('decrement');
+    var incrementButton = document.getElementById('increment');
+    var quantityInput = document.getElementById('quantity');
+    var totalPriceSpan = document.getElementById('totalPrice');
+    var productPrice = document.getElementById('detailDiscountedPrice').value;
+    var deliveryFeeSpan = document.getElementById('deliveryFee');
+
+    // 초기 총 상품 금액을 설정합니다.
+    var total = parseFloat(quantityInput.value) * productPrice;
+    totalPriceSpan.textContent = total.toFixed(0) + ' 원';
+
+    // 배송비 기준 가격 (50,000원 이상일 때 무료 배송)
+    var freeDeliveryThreshold = 50000;
+
+    // 배송비를 업데이트하는 함수
+    function updateDeliveryFee(totalAmount) {
+        if (totalAmount >= freeDeliveryThreshold) {
+            deliveryFeeSpan.textContent = '무료';
+        } else {
+            deliveryFeeSpan.textContent = '3000원';
+        }
+    }
+
+
+
+    // + 버튼 클릭 시
+    incrementButton.addEventListener('click', function() {
+        var currentQuantity = parseFloat(quantityInput.value);
+        if (currentQuantity < 999999) {
+
+
+
+            quantityInput.value = currentQuantity;
+            updateDeliveryFee(currentQuantity * productPrice);
+            updateTotalPrice(currentQuantity);
+        }
+    });
+
+
+    // - 버튼 클릭 시
+    decrementButton.addEventListener('click', function() {
+        var currentQuantity = parseFloat(quantityInput.value);
+        if (currentQuantity > 0) {
+
+            quantityInput.value = currentQuantity;
+            updateDeliveryFee(currentQuantity * productPrice);
+            updateTotalPrice(currentQuantity);
+        }
+    });
+
+
+
+    // 수량이 변경될 때 총 상품 금액을 업데이트하는 함수
+    function updateTotalPrice(quantity) {
+        var total = quantity * productPrice;
+        totalPriceSpan.textContent = total.toFixed(0) + ' 원';
+    }
+
+    // 페이지 로드 시 초기 배송비 설정
+    updateDeliveryFee(total);
+</script>
+<script>
+    function handleFavoriteClick(element) {
+        // 클릭된 요소에서 아이디 값을 가져옵니다.
+        var productId = element.id;
+
+        // 아이디 값을 axios로 서버로 전송하거나 원하는 동작을 수행합니다.
+        // 예를 들어, axios를 사용하여 서버로 전송할 경우:
+
+        // 데이터 객체 생성
+        var data = {
+            productId: productId
+        };
+
+        axios({
+            method: 'post', // 또는 다른 HTTP 메서드
+            url: '/detail_like', // 실제 서버 엔드포인트 주소
+            data: JSON.stringify(data), // 데이터를 JSON 문자열로 변환
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+
+
+            // 서버 응답 처리
+            console.log('서버 응답:', response);
+
+
+
+
+
+            const html_1 = `
+                <span id="${response.data.productId}" class="material-icons red__heart" onclick="handleFavoriteClick(this)">favorite</span>
+
+            `
+
+
+
+            const html_2 = `
+                <span id="${response.data.productId}" class="material-symbols-outlined" onclick="handleFavoriteClick(this)">favorite</span>
+
+            `
+
+
+
+
+
+
+
+            if(response.data.like == 1) {
+
+
+                $("#" + "like_" + response.data.productId).empty()
+                $("#" + "like_" + response.data.productId).append(html_2);
+
+
+            }
+
+            if(response.data.like == 2) {
+
+
+                $("#" + "like_" + response.data.productId).empty()
+                $("#" + "like_" + response.data.productId).append(html_1);
+
+
+            }
+
+
+// 서버에서 반환한 아이디를 가진 태그를 식별하여 클래스 변경
+
+
+        }).catch(error => {
+            // 오류 처리
+            console.error('오류:', error);
+        });
+    }
+
+</script>
+<script>
+    function handleFavoriteClick2(element) {
+        // 클릭된 요소에서 아이디 값을 가져옵니다.
+        var productId = element.id;
+        var quantity = document.getElementById('quantity').value;
+
+
+
+
+        // 데이터 객체 생성
+        var data = {
+            productId: productId,
+            quantity: quantity
+        };
+
+        axios({
+            method: 'post', // 또는 다른 HTTP 메서드
+            url: '/detail_cart', // 실제 서버 엔드포인트 주소
+            data: JSON.stringify(data), // 데이터를 JSON 문자열로 변환
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+
+
+            // 서버 응답 처리
+            console.log('서버 응답:', response);
+
+
+
+            $("body").append(response.data);
+
+
+
+// 서버에서 반환한 아이디를 가진 태그를 식별하여 클래스 변경
+
+
+        }).catch(error => {
+            // 오류 처리
+            console.error('오류:', error);
+        });
+    }
+
+</script>
+
+</html>

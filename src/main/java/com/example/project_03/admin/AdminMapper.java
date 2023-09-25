@@ -33,4 +33,22 @@ public interface AdminMapper {
     HashMap<String, Object> countProductAll();
 
     List<HashMap<String, Object>> selectProductListAll_excel();
+
+    String likeCheck(HashMap<String, Object> requestData);
+
+    void likeDelete(HashMap<String, Object> requestData);
+
+    void likeAdd(HashMap<String, Object> requestData);
+
+    String cartCheck(HashMap<String, Object> requestData);
+
+    void cartDelete(HashMap<String, Object> requestData);
+
+    void cartAdd(HashMap<String, Object> requestData);
+
+    void cartUpdate(HashMap<String, Object> requestData);
+
+    String countCartList(String loggedInEmail);
+
+    String countLikeList(String loggedInEmail);
 }

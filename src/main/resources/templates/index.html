@@ -188,7 +188,7 @@
                 <a href="#">
                     <span class="material-symbols-outlined">shopping_cart</span>
                     <p>장바구니</p>
-                    <div class="cart__count">5</div>
+                    <div class="cart__count" th:if="${cart_total != null}" th:text="${cart_total}"></div>
                 </a>
             </li>
 
@@ -197,7 +197,7 @@
                 <a href="#">
                     <span class="material-icons">favorite</span>
                     <p>찜</p>
-                    <div class="favorite__count">3</div>
+                    <div class="favorite__count" th:if="${like_total != null}" th:text="${like_total}"></div>
                 </a>
 
                 <div class="line"></div>
@@ -230,7 +230,7 @@
 
             <!-- 오렌지 -->
             <!--            class="cart__click"-->
-            <li  th:each="p : ${pageInfo.list}" >
+            <li class="cart__click" th:each="p : ${pageInfo.list}" >
                 <input class="productInitPrice" type="hidden" th:value="${p.price}">
                 <input class="productDiscountPrice" type="hidden" th:value="${p.price * p.rate} / 100">
                 <input class="productDiscountedPrice" type="hidden" th:value="${p.price - (p.price * p.rate / 100)}">
@@ -238,41 +238,44 @@
 
                 <!-- 클릭 시 상세페이지 이동 -->
 <!--                <a th:href="@{user/productDetail(productId=${p.id})}">-->
-                <a>
+                <a th:href="@{detail/{id}(id=${p.id})}">
 
                     <!-- 상품 사진 -->
                     <img class="productImage" th:src="${p.file_name}" th:value="${p.id}" alt="상품 이미지" onclick="saveImageInfo(this)">
 
                 </a>
-<!--                <div class="icons" >-->
-<!--                    &lt;!&ndash; 좋아요 기능 눌렀을때 빨간 하트 아이콘&ndash;&gt;-->
-<!--                    &lt;!&ndash; (기본 하트 아이콘은 두번 째 li (과일세트)에 있어요) &ndash;&gt;-->
-<!--                    &lt;!&ndash;                        <span class="material-icons red__heart">favorite</span>&ndash;&gt;-->
-<!--                    &lt;!&ndash; 좋아요 기능 기본 하트 아이콘&ndash;&gt;-->
-<!--                    <a th:id="productLike" th:data-product-id="${p.PRODUCT_ID}" th:if="${sessionId==null}">-->
-<!--                        <span class="material-icons material-symbols-outlined">favorite</span>-->
-<!--                    </a>-->
-<!--                    <a th:id="productLike" th:data-product-id="${p.PRODUCT_ID}" th:if="${sessionId!=null}">-->
-<!--                        <span th:if="${p.LIKE_ID != null}" class="material-icons red__heart">favorite</span>-->
-<!--                        <span th:if="${p.LIKE_ID == null}" class="material-icons material-symbols-outlined">favorite</span>-->
-<!--                    </a>-->
 
-<!--                    &lt;!&ndash; 장바구니 카트 아이콘 &ndash;&gt;-->
-<!--                    <a th:id="productCart" th:data-product-id="${p.PRODUCT_ID}">-->
-<!--                        <span class="material-symbols-outlined">shopping_cart</span>-->
-<!--                    </a>-->
-<!--                </div>-->
+
+                <div class="icons">
+                    <!-- 좋아요 기능 기본 하트 아이콘-->
+                    <a  th:id="'like_'+${p.id}" th:if="${p.like_status == 'liked'}">
+                        <span th:id="${p.id}" class="material-icons red__heart" onclick="handleFavoriteClick(this)">favorite</span>
+                    </a>
+
+                    <a  th:id="'like_'+${p.id}" th:if="${p.like_status == 'not liked'}">
+                        <span th:id="${p.id}" class="material-symbols-outlined" onclick="handleFavoriteClick(this)">favorite</span>
+                    </a>
 
 
 
-                <!-- 장바구니 클릭 시 수량 증감버튼 -->
-                <!--                <div class="cart">-->
-                <!--                    <div class="inner">-->
-                <!--                        <button>+</button>-->
-                <!--                        <input type="text" value="2">-->
-                <!--                        <button>-</button>-->
-                <!--                    </div>-->
-                <!--                </div>-->
+
+                    <!-- 장바구니 카트 아이콘 -->
+                    <a th:id="'cart_'+${p.id}" th:if="${p.cart_status == 'carted'}">
+                        <span th:id="${p.id}" class="material-icons" onclick="handleFavoriteClick2(this)">shopping_cart</span>
+                    </a>
+                    <a th:id="'cart_'+${p.id}" th:if="${p.cart_status == 'not carted'}">
+                        <span th:id="${p.id}" class="material-symbols-outlined" onclick="handleFavoriteClick2(this)">shopping_cart</span>
+                    </a>
+                </div>
+
+                <!-- 수량 증감 버튼 -->
+                <div class="cart">
+                    <div class="inner">
+                        <button th:id="'decrement_'+${p.id}" th:data="${p.id}" onclick="handleQuantityChange(this, -1)">-</button>
+                        <input type="text" th:id="'quantity_'+${p.id}" th:value="${p.cart_count}" onchange="handleQuantityChange(this, 0)">
+                        <button th:id="'increment_'+${p.id}" th:data="${p.id}" onclick="handleQuantityChange(this, 1)">+</button>
+                    </div>
+                </div>
 
                 <!-- 상품 -->
                 <div class="txt">
@@ -366,14 +369,14 @@
 </footer>
 
 </body>
+
 <script>
     function saveImageInfo(imgElement) {
         // 이미지 태그로부터 p.file_name과 p.id 값을 읽어옵니다.
         var imageUrl = imgElement.getAttribute('src');
         var product_id = imgElement.getAttribute('value');
 
-        alert( imageUrl);
-        alert(product_id);
+
 
 
         // 데이터 객체 생성
@@ -391,10 +394,244 @@
             }
         }).then(response => {
             if (response.data != null) {
-                alert('성공');
+
             }
         });
     };
 </script>
+<!-- Swiper 슬라이더 스크립트 초기화 -->
+<script>
+    var swiper = new Swiper('.swiper', {
+        loop: true, // 무한 루프
+        pagination: {
+            el: '.swiper-pagination', // 페이징 요소
+            clickable: true, // 페이징 클릭 가능하도록
+        },
+        navigation: {
+            nextEl: '.swiper-button-next', // 다음 버튼
+            prevEl: '.swiper-button-prev', // 이전 버튼
+        },
+        autoplay: {
+            delay: 3000, // 슬라이드 간의 딜레이 시간 (밀리초 단위)
+            disableOnInteraction: false, // 사용자 상호 작용 후에도 자동 재생 유지
+        },
+    });
+</script>
+<script>
+    function handleFavoriteClick(element) {
+        // 클릭된 요소에서 아이디 값을 가져옵니다.
+        var productId = element.id;
+
+        // 아이디 값을 axios로 서버로 전송하거나 원하는 동작을 수행합니다.
+        // 예를 들어, axios를 사용하여 서버로 전송할 경우:
+
+        // 데이터 객체 생성
+        var data = {
+            productId: productId
+        };
+
+        axios({
+            method: 'post', // 또는 다른 HTTP 메서드
+            url: '/like', // 실제 서버 엔드포인트 주소
+            data: JSON.stringify(data), // 데이터를 JSON 문자열로 변환
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+
+
+            // 서버 응답 처리
+            console.log('서버 응답:', response);
+
+            $(".cart__count").empty();
+            $(".cart__count").append(response.data.cart_total);
+
+            $(".favorite__count").empty();
+            $(".favorite__count").append(response.data.like_total);
+
+
+
+            const html_1 = `
+                <span id="${response.data.productId}" class="material-icons red__heart" onclick="handleFavoriteClick(this)">favorite</span>
+
+            `
+
+
+
+            const html_2 = `
+                <span id="${response.data.productId}" class="material-symbols-outlined" onclick="handleFavoriteClick(this)">favorite</span>
+
+            `
+
+
+
+
+
+
+
+            if(response.data.like == 1) {
+
+
+                $("#" + "like_" + response.data.productId).empty()
+                $("#" + "like_" + response.data.productId).append(html_2);
+
+
+            }
+
+            if(response.data.like == 2) {
+
+
+                $("#" + "like_" + response.data.productId).empty()
+                $("#" + "like_" + response.data.productId).append(html_1);
+
+
+            }
+
+
+// 서버에서 반환한 아이디를 가진 태그를 식별하여 클래스 변경
+
+
+        }).catch(error => {
+            // 오류 처리
+            console.error('오류:', error);
+        });
+    }
+
+</script>
+<script>
+    function handleFavoriteClick2(element) {
+        // 클릭된 요소에서 아이디 값을 가져옵니다.
+        var productId = element.id;
+
+        var quantityInput = document.getElementById(`quantity_${productId}`);
+        var quantity = quantityInput.value;
+
+
+
+
+        // 데이터 객체 생성
+        var data = {
+            productId: productId,
+            quantity: quantity
+        };
+
+        axios({
+            method: 'post', // 또는 다른 HTTP 메서드
+            url: '/cart', // 실제 서버 엔드포인트 주소
+            data: JSON.stringify(data), // 데이터를 JSON 문자열로 변환
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+
+
+            // 서버 응답 처리
+            console.log('서버 응답:', response);
+
+
+            $(".cart__count").empty();
+            $(".cart__count").append(response.data.cart_total);
+
+            $(".favorite__count").empty();
+            $(".favorite__count").append(response.data.like_total);
+
+
+            const html_1 = `
+                <span id="${response.data.productId}" class="material-icons" onclick="handleFavoriteClick2(this)">shopping_cart</span>
+
+            `
+
+
+
+            const html_2 = `
+                <span id="${response.data.productId}" class="material-symbols-outlined" onclick="handleFavoriteClick2(this)">shopping_cart</span>
+
+            `
+
+
+
+
+
+
+
+            if(response.data.cart == 1) {
+
+
+                $("#" + "cart_" + response.data.productId).empty()
+                $("#" + "cart_" + response.data.productId).append(html_2);
+
+
+            }
+
+            if(response.data.cart == 2) {
+
+
+                $("#" + "cart_" + response.data.productId).empty()
+                $("#" + "cart_" + response.data.productId).append(html_1);
+
+
+            }
+
+
+// 서버에서 반환한 아이디를 가진 태그를 식별하여 클래스 변경
+
+
+        }).catch(error => {
+            // 오류 처리
+            console.error('오류:', error);
+        });
+    }
+
+</script>
+<script>
+    function handleQuantityChange(element, change) {
+        // 클릭된 요소에서 아이디 값을 가져옵니다.
+        var productId = element.getAttribute('data');
+
+        var quantityInput = document.getElementById(`quantity_${productId}`);
+        var quantity = parseInt(quantityInput.value);
+
+        // change 값이 1 또는 -1이 아닌 경우, 기본값 1로 설정
+        if (change !== 1 && change !== -1) {
+            change = 1;
+        }
+
+        // 수량 증감 처리
+        quantity += change;
+
+        // 수량이 0 미만으로 내려가지 않도록 처리
+        if (quantity < 1) {
+            quantity = 1;
+        }
+
+        // 업데이트된 수량을 입력 필드에 설정
+        quantityInput.value = quantity;
+
+
+        // 데이터 객체 생성
+        var data = {
+            productId: productId,
+            quantity: quantity
+        };
+
+        axios({
+            method: 'post',
+            url: '/cart_update',
+            data: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            // 서버 응답 처리
+            console.log('서버 응답:', response);
+        }).catch(error => {
+            // 오류 처리
+            console.error('오류:', error);
+        });
+    }
+
+</script>
+
+
 
 </html>

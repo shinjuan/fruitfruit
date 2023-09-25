@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -82,4 +83,23 @@ public class UserService implements UserMapper {
     }
 
 
+    public HashMap<String, Object> selectProductDetail(HashMap<String,Object> detail) {
+       return userMapper.selectProductDetail(detail);
+    }
+
+    public List<HashMap<String, Object>> selectCartList(String email) {
+       return userMapper.selectCartList(email);
+    }
+
+    public HashMap<String, Object> countCarted(String email) {
+       return userMapper.countCarted(email);
+    }
+
+    public HashMap<String,Object> selectFirstCart(String firstProductId) {
+       return userMapper.selectFirstCart(firstProductId);
+    }
+
+    public List<HashMap<String,Object>> selectCheckboxCartList(HashMap<String,Object> selectedCart) {
+       return userMapper.selectCheckboxCartList(selectedCart);
+    }
 }

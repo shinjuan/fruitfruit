@@ -61,11 +61,26 @@
         product.created_at,
         product.updated_at,
         category.category_name,
-        product_image.file_name
-        FROM product product
-        JOIN category category
+        product_image.file_name,
+        <if test="email != null || email != ''">
+            CASE
+            WHEN likes.product_id IS NOT NULL THEN 'liked'
+            ELSE 'not liked'
+            END AS like_status,
+            CASE
+            WHEN carts.product_id IS NOT NULL THEN 'carted'
+            ELSE 'not carted'
+            END AS cart_status,
+            COALESCE(carts.cart_count, 0) AS cart_count -- cart_count 컬럼 값이 null인 경우 0으로 대체
+        </if>
+        FROM product
+        JOIN category
         ON product.category_id = category.id
         LEFT JOIN product_image product_image ON product.id = product_image.product_id
+        <if test="email != null || email != ''">
+            LEFT JOIN likes ON product.id = likes.product_id AND likes.user_email = #{email}
+            LEFT JOIN carts ON product.id = carts.product_id AND carts.user_email = #{email}
+        </if>
 
         <where>
             <if test="selectedStatus != null and selectedStatus != ''">
@@ -88,25 +103,38 @@
     <select id="selectProductListAll" resultType="java.util.Map">
 
         SELECT
-            product.id,
-            CASE product.status
-                WHEN 1 THEN 'sale'
-                WHEN 2 THEN 'stop sale'
-                WHEN 3 THEN 'sold out'
-
-                END AS status,
-            product.name,
-            product.price,
-            product.rate,
-            product.created_at,
-            product.updated_at,
-            category.category_name,
-            product_image.file_name
-        FROM product product
-                 JOIN category category
-                      ON product.category_id = category.id
-                 LEFT JOIN product_image product_image ON product.id = product_image.product_id -- product_image와 조인
-        where product.status = 1 or product.status = 2 or product.status = 3
+        product.id,
+        CASE product.status
+        WHEN 1 THEN 'sale'
+        WHEN 2 THEN 'stop sale'
+        WHEN 3 THEN 'sold out'
+        END AS status,
+        product.name,
+        product.price,
+        product.rate,
+        product.created_at,
+        product.updated_at,
+        category.category_name,
+        product_image.file_name,
+        <if test="email != null || email != ''">
+            CASE
+            WHEN likes.product_id IS NOT NULL THEN 'liked'
+            ELSE 'not liked'
+            END AS like_status,
+            CASE
+            WHEN carts.product_id IS NOT NULL THEN 'carted'
+            ELSE 'not carted'
+            END AS cart_status,
+            COALESCE(carts.cart_count, 1) AS cart_count -- cart_count 컬럼 값이 null인 경우 1으로 대체
+        </if>
+        FROM product
+        JOIN category ON product.category_id = category.id
+        LEFT JOIN product_image ON product.id = product_image.product_id
+        <if test="email != null || email != ''">
+            LEFT JOIN likes ON product.id = likes.product_id AND likes.user_email = #{email}
+            LEFT JOIN carts ON product.id = carts.product_id AND carts.user_email = #{email}
+        </if>
+        WHERE product.status = 1 OR product.status = 2 OR product.status = 3
         ORDER BY product.id DESC
 
 
@@ -138,6 +166,20 @@
         FROM product product
             JOIN category category ON product.category_id = category.id
         WHERE product.status = 1 OR product.status = 2 OR product.status = 3
+    </select>
+
+    <select id="countCartList" resultType="string" parameterType="string">
+        SELECT
+            COUNT(*) AS cart_total
+        FROM carts
+        where user_email = '${loggedInEmail}'
+    </select>
+
+    <select id="countLikeList" resultType="string" parameterType="string">
+        SELECT
+            COUNT(*) AS like_total
+        FROM likes
+        where user_email = '${loggedInEmail}'
     </select>
 
 
@@ -181,5 +223,47 @@
         select * from product where id=#{id}
 
     </select>
+
+    <select id="likeCheck" resultType="String">
+        select * from likes where user_email = #{email} and product_id = #{productId}
+
+    </select>
+
+    <delete id="likeDelete" parameterType="java.util.Map">
+        DELETE FROM likes
+        WHERE user_email = #{email}
+          AND product_id = #{productId}
+
+    </delete>
+
+    <insert id="likeAdd" parameterType="java.util.Map">
+        INSERT INTO likes (user_email, product_id)
+        VALUES (#{email}, #{productId})
+
+    </insert>
+
+    <select id="cartCheck" resultType="String">
+        select * from carts where user_email = #{email} and product_id = #{productId}
+
+    </select>
+
+    <delete id="cartDelete" parameterType="java.util.Map">
+        DELETE FROM carts
+        WHERE user_email = #{email}
+          AND product_id = #{productId}
+
+    </delete>
+
+    <insert id="cartAdd" parameterType="java.util.Map">
+        INSERT INTO carts (user_email, product_id, cart_count)
+        VALUES (#{email}, #{productId}, #{quantity})
+
+    </insert>
+
+    <update id="cartUpdate" parameterType="java.util.Map">
+        update carts set cart_count = #{quantity} where product_id = #{productId}
+
+    </update>
+
 
 </mapper>
