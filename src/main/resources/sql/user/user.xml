@@ -18,6 +18,13 @@
         VALUES (#{email}, #{nickname}, #{encodedPassword})
     </insert>
 
+
+    <insert id="insertDelivery" parameterType="java.util.Map">
+        INSERT INTO deliver (user_email, place, name, phone, postcode, address, detail_address)
+        VALUES (#{email}, #{title}, #{name}, #{phone1}, #{postCode}, #{roadAddr}, #{detailAddr})
+    </insert>
+
+
     <insert id="insertMemberTerm" parameterType="java.util.Map">
         INSERT INTO USER_TERM (user_email, term_id)
         VALUES
@@ -105,6 +112,24 @@
             #{productId}
         </foreach>
     </select>
+
+
+    <select id="selectBasicDeliver" parameterType="java.util.Map">
+        select * from deliver where user_email=#{email} and place='우리집(기본배송지)'
+    </select>
+
+    <select id="selectDeliverList" parameterType="java.util.Map">
+        SELECT * FROM deliver
+        WHERE user_email = #{email}
+          AND place != '우리집(기본배송지)'
+    </select>
+
+    <select id="selectDelivery" parameterType="java.util.Map">
+        SELECT * FROM deliver
+        WHERE user_email = #{email}
+          AND place = #{selectedValue}
+    </select>
+
 
 
 </mapper>

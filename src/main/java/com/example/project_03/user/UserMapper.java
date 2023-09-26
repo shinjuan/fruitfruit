@@ -30,4 +30,12 @@ public interface UserMapper {
     HashMap<String,Object> selectFirstCart(String firstProductId);
 
     List<HashMap<String,Object>> selectCheckboxCartList(HashMap<String,Object> selectedCart);
+
+    void insertDelivery(HashMap<String, String> formData);
+
+    HashMap<String, Object> selectBasicDeliver(String email);
+
+    List<HashMap<String, Object>> selectDeliverList(String email);
+
+    HashMap<String, Object> selectDelivery(HashMap<String, String> selectedValue);
 }

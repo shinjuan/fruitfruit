@@ -282,6 +282,8 @@ public class UserController {
 
 
 
+
+
         if (!checkbox.isEmpty()) {
             String loggedInEmail = (String) session.getAttribute("email");
 
@@ -301,9 +303,20 @@ public class UserController {
 
             List<HashMap<String,Object>> CheckboxCartList = userService.selectCheckboxCartList(selectedCart);
 
+
+            HashMap<String,Object>  BasicDeliver = userService.selectBasicDeliver(loggedInEmail);
+            List<HashMap<String,Object>> DeliverList = userService.selectDeliverList(loggedInEmail);
+
+
             System.out.println("첫번째 상품이름:"+firstCartName);
             System.out.println("상품외갯수:"+cartCount);
             System.out.println("체크박스된장바구니:"+CheckboxCartList);
+
+
+
+            model.addAttribute("DeliverList", DeliverList);
+            model.addAttribute("BasicDeliver",BasicDeliver);
+
 
             model.addAttribute("firstCartName",firstCartName);
             model.addAttribute("cartCountAll",selectedCount);
@@ -316,6 +329,42 @@ public class UserController {
         return "payment";
     }
 
+
+
+    @ResponseBody
+    @PostMapping("/delivery_ok")
+    public String delivery_ok(HttpSession session, Model model,@RequestBody HashMap<String, String> formData
+    ) {
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        formData.put("email",loggedInEmail);
+
+        System.out.println("배송지확인:"+formData);
+
+        userService.insertDelivery(formData);
+
+        return "배송지추가";
+
+    }
+
+
+    @ResponseBody
+    @PostMapping("/delivery_change")
+    public HashMap<String,Object> delivery_change(HttpSession session, Model model,@RequestBody HashMap<String, String> selectedValue
+    ) {
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        selectedValue.put("email",loggedInEmail);
+
+        System.out.println("배송지확인:"+selectedValue);
+
+        HashMap<String,Object>  changeDeliver = userService.selectDelivery(selectedValue);
+
+        return changeDeliver;
+
+    }
 
 
 }

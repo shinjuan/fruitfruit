@@ -3604,8 +3604,10 @@ header .inner .main-menu .item .red .material-icons {
   width: 30%;
 }
 #payment .inner .delivery__add .delivery__add__inner .bottom .phone input:last-child {
-  width: 45%;
-  margin-left: 5%;
+  /*width: 45%;*/
+  /*margin-left: 5%;*/
+  width: 100%;
+  margin-left: 4%;
 }
 #payment .inner .delivery__add .delivery__add__inner .bottom .add {
   flex-wrap: wrap;

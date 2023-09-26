@@ -102,4 +102,20 @@ public class UserService implements UserMapper {
     public List<HashMap<String,Object>> selectCheckboxCartList(HashMap<String,Object> selectedCart) {
        return userMapper.selectCheckboxCartList(selectedCart);
     }
+
+    public void insertDelivery(HashMap<String, String> formData) {
+       userMapper.insertDelivery(formData);
+    }
+
+    public HashMap<String, Object> selectBasicDeliver(String email) {
+       return userMapper.selectBasicDeliver(email);
+    }
+
+    public List<HashMap<String, Object>> selectDeliverList(String email) {
+       return userMapper.selectDeliverList(email);
+    }
+
+    public  HashMap<String,Object> selectDelivery(HashMap<String, String> selectedValue) {
+       return userMapper.selectDelivery(selectedValue);
+    }
 }
