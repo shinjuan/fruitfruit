@@ -18,6 +18,11 @@
         VALUES (#{email}, #{nickname}, #{encodedPassword})
     </insert>
 
+    <insert id="insertOrder" parameterType="java.util.Map">
+        INSERT INTO orders (deliver_id, order_type, card_type, card_name, card_installment, requirement, order_price)
+        VALUES (#{selectedValue}, '신용카드', #{cardType}, #{card}, #{howlong}, #{selectedAsk}, #{pay})
+    </insert>
+
 
     <insert id="insertDelivery" parameterType="java.util.Map">
         INSERT INTO deliver (user_email, place, name, phone, postcode, address, detail_address)
@@ -129,6 +134,64 @@
         WHERE user_email = #{email}
           AND place = #{selectedValue}
     </select>
+
+    <select id="selectPaymentList" parameterType="java.util.Map">
+        SELECT op.*
+        FROM order_product op
+                 INNER JOIN orders o ON op.order_id = o.id
+                 INNER JOIN deliver d ON o.deliver_id = d.id
+        WHERE d.user_email = #{email}
+    </select>
+
+    <select id="selectSearchPaymentList" parameterType="java.util.Map">
+        SELECT op.*
+        FROM order_product op
+        INNER JOIN orders o ON op.order_id = o.id
+        INNER JOIN deliver d ON o.deliver_id = d.id
+        <where>
+            <!-- date1과 date2가 주어진 경우 -->
+            <if test="date1 != null and date2 != null">
+                AND op.created_at <![CDATA[>=]]> #{date1}   AND op.created_at <![CDATA[<=]]> #{date2}
+            </if>
+            <!-- searchType이 productName인 경우 -->
+            <if test="searchType == 'productName' and searchInput != ''">
+                AND op.name LIKE CONCAT('%', #{searchInput}, '%')
+
+            </if>
+            <!-- searchType이 orderNo인 경우 -->
+            <if test="searchType == 'orderNo' and searchInput != ''">
+                AND op.order_id LIKE CONCAT('%', #{searchInput}, '%')
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectOrderId" parameterType="java.util.Map">
+        SELECT id
+        FROM orders
+        WHERE deliver_id IN (
+            SELECT id
+            FROM deliver
+            WHERE user_email = '${email}'
+        )
+        ORDER BY created_at DESC
+            LIMIT 1
+    </select>
+
+    <insert id="insertOrder_Product" parameterType="java.util.Map">
+        INSERT INTO order_product (product_id, order_id, quantity, price, name, Image)
+        VALUES
+        <foreach collection="productIds" item="productId" index="idx" separator=",">
+            (
+            #{productId},
+            #{order_id},
+            #{productCounts[${idx}]},
+            #{productPrices[${idx}]},
+            #{productNames[${idx}]},
+            #{productImgs[${idx}]}
+            )
+        </foreach>
+    </insert>
 
 
 

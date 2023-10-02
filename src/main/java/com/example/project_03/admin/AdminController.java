@@ -65,6 +65,7 @@ public class AdminController {
         List<HashMap<String, Object>> list = adminService.selectProductListAll(test);
 
 
+
         PageInfo<HashMap<String, Object>> pageInfo = new PageInfo<>(list);
 
         log.info("카운트 : " + count);

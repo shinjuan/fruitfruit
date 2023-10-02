@@ -118,4 +118,27 @@ public class UserService implements UserMapper {
     public  HashMap<String,Object> selectDelivery(HashMap<String, String> selectedValue) {
        return userMapper.selectDelivery(selectedValue);
     }
+
+    public void insertOrder(HashMap<String, Object> requestData) {
+       userMapper.insertOrder(requestData);
+    }
+
+    public int selectOrderId(String email) {
+       return userMapper.selectOrderId(email);
+    }
+
+    public void insertOrder_Product(HashMap<String, Object> requestData) {
+       userMapper.insertOrder_Product(requestData);
+    }
+
+    public List<HashMap<String, Object>> selectPaymentList(String email) {
+       return userMapper.selectPaymentList(email);
+    }
+
+    public List<HashMap<String, Object>> selectSearchPaymentList(HashMap<String, Object> mypageSearch) {
+
+        System.out.println("서비스쪽검색확인:"+mypageSearch);
+
+       return userMapper.selectSearchPaymentList(mypageSearch);
+    }
 }

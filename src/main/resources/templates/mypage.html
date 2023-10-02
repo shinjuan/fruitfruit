@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프룻프룻 쇼핑몰</title>
+
+    <!--Open Graph-->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="프룻프룻 Shopping Mall" />
+    <meta property="og:title" content="프룻프룻 Shopping Mall" />
+    <meta property="og:description" content="프룻프룻 Shopping Mall 입니다." />
+    <meta property="og:image" content="/user/img/openGraph.png" />
+    <meta property="og:url" content="https://prpr-shopping-mall.co.kr" />
+
+    <!--파비콘-->
+    <link rel="icon" href="./favicon.ico" />
+
+    <!--브라우저 스타일 초기화-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css" />
+
+    <!--Google Fonts - 나눔고딕-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <!-- Google Fonts Noto Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+
+    <!-- Google Fonts - Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+
+    <!--Google Material Icons-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <link rel="stylesheet" href="./css/style.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
+        integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"
+        integrity="sha512-cOH8ndwGgPo+K7pTvMrqYbmI8u8k6Sho3js0gOqVWTmQMlLIi6TbqGWRTpf1ga8ci9H3iPsvDLr4X7xwhC/+DQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- SWIPER -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+    <script defer src="./js/main.js"></script>
+
+
+    <th:block th:insert="~{includes/library}"></th:block>
+    <th:block th:insert="~{includes/style}"></th:block>
+    <th:block th:insert="~{includes/scripts}"></th:block>
+</head>
+
+<body>
+
+    <header id="header">
+        <div class="inner">
+
+            <a href="./index.html" class="logo">
+                <img src="/user/img/푸릇푸릇 로고.png" alt="logo" />
+            </a>
+
+            <div class="sub-menu">
+                <ul class="menu">
+                    <li>
+                        <a href="./login.html">Sign In</a>
+                    </li>
+                    <li>
+                        <a href="./join.html">Join</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">language</a>
+                    </li>
+                </ul>
+            </div>
+
+            <ul class="main-menu">
+                <li class="item">
+                    <div class="item__name">HOME</div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name">
+                        <a href="./search.html">상품소개</a>
+                    </div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name">
+                        <a href="./search.html">구매내역</a>
+                    </div>
+                </li>
+
+                <li class="item">
+                    <div class="item__name">마이페이지</div>
+                </li>
+
+                <li class="item">
+                    <a href="./cart.html">
+                        <div class="item__name red">
+                            장바구니
+                            <span class="material-icons">
+                                shopping_cart
+                            </span>
+
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </header>
+
+    <div id="mypage">
+        <div class="inner">
+
+            <h2> 마이페이지 </h2>
+
+            <div class="tab__menu">
+                <a href="./mypage.html">
+                    <div class="history">
+                        <p>구매내역</p>
+                    </div>
+                </a>
+
+
+                <a href="./mypage_delivery.html">
+                    <div class="delivery">
+                        <p>배송지관리</p>
+                    </div>
+                </a>
+
+
+                <a href="./mypageEdit.html">
+                    <div class="memberInfo">
+                        <p>회원정보</p>
+                    </div>
+                </a>
+
+            </div>
+
+
+
+
+            <div class="search__box">
+                <div class="first">
+                    <span>기간검색</span>
+
+                    <div class="search__box__buttons">
+                        <button class="period-button" type="button" value="1">1개월</button>
+                        <button class="period-button" type="button" value="3">3개월</button>
+                        <button class="period-button" type="button" value="6">6개월</button>
+                        <button class="period-button" type="button" value="12">1년</button>
+                        <button class="period-button" type="button" value="36">3년</button>
+                    </div>
+
+                    <div class="date">
+                        <label for="date1">
+                            <input type="date" id="date1" name="date1" th:value="${date1}">
+                        </label>
+                        <span>~</span>
+                        <label for="date2">
+                            <input type="date" id="date2" name="date2" th:value="${date2}">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="second">
+                    <select name="products" id="products">
+                        <option value="productName">상품명</option>
+                        <option value="orderNo">주문번호</option>
+                    </select>
+                    <label for="search">
+                        <input type="text" name="searchInput">
+                    </label>
+                    <button id="reset-button" type="button">초기화</button>
+                    <button type="submit" id="search-button">검색</button>
+                </div>
+            </div>
+
+            <form id="search-form" action="/mypage_serach" method="post">
+
+                <input type="hidden" id="pageNum" name="pageNum" value="1">
+
+                    <!-- 숨겨진(hidden) 입력 필드로 값을 저장합니다 -->
+                    <input type="hidden" id="hidden-date1" name="date1" th:value="${date1}">
+                    <input type="hidden" id="hidden-date2" name="date2" th:value="${date2}">
+                    <input type="hidden" id="hidden-products" name="products" value="productName">
+                    <input type="hidden" id="hidden-searchInput" name="searchInput" value="">
+
+            </form>
+
+
+
+            <div class="history2">
+                <h4>상품구매 내역</h4>
+
+                <div class="history__line"></div>
+
+                <div class="historyContents">
+                    <ul>
+                        <li th:each="p : ${payment_list}">
+                            <div class="txt">
+                                <span th:text="${p.order_id}">12345678</span>
+                                <span th:text="${p.created_at}">2023. 07. 01</span>
+                            </div>
+
+                            <div class="img">
+                                <img th:src="${p.Image}" alt="망고스틴">
+                                <div class="img__txt">
+                                    <p th:text="${p.name}">프리미엄 고당도 꿀수박 4kg</p>
+
+                                    <div class="group">
+                                        <span th:text="${p.price}+' 원'" class="orange">50,000원</span>
+                                        <span th:text="'구매수량 '+${p.quantity}+' 개'">구매수량 1개</span>
+                                    </div>
+
+                                    <div class="group2">
+                                        <p>배송지 확인
+                                            <span class="material-symbols-outlined">double_arrow</span>
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="buttons">
+                                <button>재구매</button>
+                                <button th:if="${p.review_status == 'N'}">리뷰작성</button>
+                                <button th:if="${p.review_status == 'Y'}" style="background-color: #fedbc5; color: darkorange; ">리뷰보기</button>
+                            </div>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pagination" id="pagination">
+
+
+                <th:block th:if="${pageInfo.hasPreviousPage}">
+                    <a th:href="@{/page(pageNum=${pageInfo.prePage} )}" class="prevBtn" th:value="${pageInfo.prePage}">
+                        <span class="material-symbols-outlined">chevron_left</span>
+                    </a>
+                </th:block>
+
+
+                <p class="numbers">
+                    <span th:each="pageNumber : ${pageInfo.navigatepageNums}" th:if="${pageNumber <= pageInfo.total}">
+                      <a th:text="${pageNumber}" th:href="'#'" class="numberBtn" th:attr="value=${pageNumber}" th:classappend="${pageNumber == pageInfo.pageNum ? 'bold large-text' : ''}"
+                         style="font-size: 16px; font-weight: bold;"></a>
+                    </span>
+                </p>
+
+                <th:block th:if="${pageInfo.hasNextPage}">
+                    <a th:href="'#'" class="nextBtn" th:value="${pageInfo.nextPage}">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </a>
+                </th:block>
+            </div>
+
+
+
+
+
+            <!-- 장바구니에 담겼습니다. 모달 창 -->
+            <div class="txt04" style="display: none;">
+                <div class="inner">
+
+                    <h4>알림</h4>
+
+                    <h5>장바구니에 담겼습니다.</h5>
+
+                    <div class="buttons">
+                        <button>닫기</button>
+                        <button>장바구니로 이동</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 리뷰작성 모달 창 -->
+            <div class="txt05" style="display: none;">
+                <div class="inner">
+
+                    <h4>알림</h4>
+
+                    <h5>상품에 대한 리뷰를 남겨주세요.</h5>
+
+                    <div class="input">
+                        <input type="text" placeholder="10자이상 500자 미만으로 작성해주세요.">
+                        <span>15/500</span>
+                    </div>
+
+                    <div class="buttons">
+                        <button>작성취소</button>
+                        <button>리뷰등록</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 리뷰작성 취소. 모달 창 -->
+            <div class="txt06" style="display: none;">
+                <div class="inner">
+
+                    <h4>알림</h4>
+
+                    <h5>작성중인 내용이 모두 삭제됩니다. <br>
+                        취소 하시겠습니까?
+                    </h5>
+
+                    <div class="buttons">
+                        <button>취소하기</button>
+                        <button>계속작성</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 리뷰작성 완료. 모달 창 -->
+            <div class="txt07" style="display: none;">
+                <div class="inner">
+
+                    <h4>알림</h4>
+
+                    <h5>리뷰 작성이 완료 되었습니다.</h5>
+
+                    <div class="buttons">
+                        <button>확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+
+
+    const date1Input = document.getElementById('date1');
+
+    const periodButtons = document.querySelectorAll('.period-button');
+    periodButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            // 선택한 버튼의 값에 따라 date1Input 값을 설정
+            const selectedValue = parseInt(button.value);
+            const currentDate = new Date();
+            const targetDate = new Date(currentDate);
+            targetDate.setMonth(currentDate.getMonth() - selectedValue);
+            const formattedDate = targetDate.toISOString().substr(0, 10);
+            date1Input.value = formattedDate;
+        });
+    });
+</script>
+
+<script>
+    document.getElementById('search-button').addEventListener('click', function () {
+        // 숨겨진(hidden) 입력 필드의 값을 업데이트
+        document.getElementById('hidden-date1').value = document.getElementById('date1').value;
+        document.getElementById('hidden-date2').value = document.getElementById('date2').value;
+        document.getElementById('hidden-products').value = document.getElementById('products').value;
+        document.getElementById('hidden-searchInput').value = document.querySelector('input[name="searchInput"]').value;
+
+        // 폼을 서버로 제출
+        document.getElementById('search-form').submit();
+    });
+</script>
+
+
+
+
+
+
+</html>

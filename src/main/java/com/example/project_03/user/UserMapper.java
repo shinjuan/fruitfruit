@@ -38,4 +38,14 @@ public interface UserMapper {
     List<HashMap<String, Object>> selectDeliverList(String email);
 
     HashMap<String, Object> selectDelivery(HashMap<String, String> selectedValue);
+
+    void insertOrder(HashMap<String, Object> requestData);
+
+    int selectOrderId(String email);
+
+    void insertOrder_Product(HashMap<String, Object> requestData);
+
+    List<HashMap<String, Object>> selectPaymentList(String email);
+
+    List<HashMap<String, Object>> selectSearchPaymentList(HashMap<String, Object> mypageSearch);
 }

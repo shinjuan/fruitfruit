@@ -1,9 +1,12 @@
 package com.example.project_03.user;
 
 import com.example.project_03.admin.AdminService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -11,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -365,6 +369,140 @@ public class UserController {
         return changeDeliver;
 
     }
+    @Transactional
+    @RequestMapping("/final")
+    public String payment_final(HttpSession session, Model model, RedirectAttributes redirectAttributes,
+                                @RequestParam HashMap<String ,Object> requestData,
+                                @RequestParam List<String> status,
+                                @RequestParam List<Integer> productIds,
+                                @RequestParam List<Integer> productCount,
+                                @RequestParam List<Integer> productPrice,
+                                @RequestParam List<String> productName,
+                                @RequestParam List<String> productImg
+    ) {
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        System.out.println("결제테스트"+ requestData);
+        System.out.println("결제테스트2"+ status);
+        System.out.println("결제테스트3"+ productIds);
+        System.out.println("결제테스트4"+ productCount);
+        System.out.println("결제테스트5"+ productPrice);
+        System.out.println("결제테스트6"+ productName);
+
+        userService.insertOrder(requestData);
+
+        requestData.put("term", status);
+        requestData.put("productIds", productIds); // 수정
+        requestData.put("productCounts", productCount); // 수정
+        requestData.put("productPrices", productPrice); // 수정
+        requestData.put("productNames", productName); // 수정
+        requestData.put("productImgs", productImg); // 수정
+
+        int orderId = userService.selectOrderId(loggedInEmail);
+
+        requestData.put("order_id",orderId);
+
+        System.out.println("결제최종확인"+requestData);
+
+        userService.insertOrder_Product(requestData);
+
+
+        System.out.println("성공확인1:"+requestData.get("pay"));
+        System.out.println("성공확인2:"+requestData.get("cardType"));
+        System.out.println("성공확인3:"+requestData.get("howlong"));
+        System.out.println("성공확인4:"+requestData.get("order_id"));
+
+        redirectAttributes.addAttribute("pay",requestData.get("pay"));
+        redirectAttributes.addAttribute("cardType",requestData.get("cardType"));
+        redirectAttributes.addAttribute("howlong",requestData.get("howlong"));
+        redirectAttributes.addAttribute("order_id",requestData.get("order_id"));
+
+        return "redirect:/paymentSuccess";
+    }
+
+
+
+    @GetMapping("/mypage")
+    public String mypage(HttpSession session, Model model,
+                         @RequestParam(defaultValue = "1") int pageNum,
+                         @RequestParam(defaultValue = "2") int pageSize
+                         ) {
+        LocalDate currentDate = LocalDate.now();
+
+        // yyyy-MM-dd 형식의 문자열로 변환
+        String formattedDate = currentDate.toString();
+
+        // 모델에 날짜 문자열 추가
+        model.addAttribute("date1", formattedDate);
+        model.addAttribute("date2", formattedDate);
+
+
+        PageHelper.startPage(pageNum, pageSize);
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        List<HashMap<String,Object>> payment_list = userService.selectPaymentList(loggedInEmail);
+
+        PageInfo<HashMap<String, Object>> pageInfo = new PageInfo<>(payment_list);
+
+        System.out.println("마이페이지확인:"+payment_list);
+
+        model.addAttribute("payment_list",payment_list);
+        model.addAttribute("pageInfo", pageInfo);
+
+        return "mypage";
+    }
+
+    @PostMapping("/mypage_serach")
+    public String mypage_serach(HttpSession session, Model model,
+                                @RequestParam("date1") String date1,
+                                @RequestParam("date2") String date2,
+                                @RequestParam("products") String searchType,
+                                @RequestParam("searchInput") String searchInput,
+                                @RequestParam(defaultValue = "1") int pageNum,
+                                @RequestParam(defaultValue = "2") int pageSize
+                                ) {
+
+        PageHelper.startPage(pageNum, pageSize);
+
+
+        model.addAttribute("date1",date1);
+        model.addAttribute("date2",date2);
+        model.addAttribute("searchType",searchType);
+
+        // 날짜에 '00:00:00'와 '23:59:59' 추가
+        date1 += " 00:00:00";
+        date2 += " 23:59:59";
+
+        System.out.println("date1="+date1);
+        System.out.println("date2="+date2);
+        System.out.println("searchType="+searchType);
+        System.out.println("searchInput="+searchInput);
+
+        HashMap<String,Object> mypage_search = new HashMap<>();
+
+        mypage_search.put("date1",date1);
+        mypage_search.put("date2",date2);
+        mypage_search.put("searchType",searchType);
+        mypage_search.put("searchInput",searchInput);
+
+        List<HashMap<String,Object>> payment_list = userService.selectSearchPaymentList(mypage_search);
+
+        PageInfo<HashMap<String, Object>> pageInfo = new PageInfo<>(payment_list);
+
+        System.out.println("마이페이지검색테스트:"+pageInfo);
+
+
+        model.addAttribute("pageInfo", pageInfo);
+
+
+        return "mypage_search";
+    }
+
+
+
+
 
 
 }

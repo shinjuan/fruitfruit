@@ -146,7 +146,13 @@
                 <span th:text="${firstCartName.name}+'외 '+${cartCount}+'개의 상품을 주문합니다.'">열대과일 생과 망고스틴 5kg의 상품을 주문합니다.</span>
             </div>
 
+
+
+
+
             <p class="title">배송정보</p>
+
+
 
 
 
@@ -154,15 +160,15 @@
                 <label for="where">
                     <p>배송지 선택</p>
                     <select name="where" id="where" onchange="sendSelectedValue()">
-                        <option value="우리집(기본배송지)">우리집(기본배송지)</option>
-                        <option th:each="d : ${DeliverList}" th:value="${d.place}" th:text="${d.place}" ></option>
+                        <option value="우리집(기본배송지)" th:data="${BasicDeliver.id}">우리집(기본배송지)</option>
+                        <option th:each="d : ${DeliverList}" th:value="${d.place}" th:text="${d.place}" th:data="${d.id}"></option>
                     </select>
                     <button id="new_delivery">+ 신규배송지</button>
                 </label>
 
-                <input type="hidden" id="deliver_id" name="deliver_id" th:if="${BasicDeliver != null}" th:value="${BasicDeliver.id}">
 
-                <label for="name" class="name">
+
+                <label for="name" class="name" id="name">
                     <p>이름</p>
                     <input type="textbox" name="receiverName" id="receiverName"
                             th:if="${BasicDeliver != null}" th:value="${BasicDeliver.name}" disabled>
@@ -170,7 +176,7 @@
                            th:if="${BasicDeliver == null}" value="" disabled>
                 </label>
 
-                <label for="phone" class="phone">
+                <label for="phone" class="phone" id="phone">
                     <p>연락처</p>
                     <input type="textbox" name="receiverPhone" id="receiverPhone"
                            th:if="${BasicDeliver != null}" th:value="${BasicDeliver.phone}" disabled>
@@ -179,7 +185,7 @@
 
                 </label>
 
-                <label for="add" class="add">
+                <label for="add" class="add" id="address">
                     <p>주소</p>
                     <input type="textbox" name="add" id="add" class="postalCode"
                            th:if="${BasicDeliver != null}" th:value="${BasicDeliver.postcode}" disabled>
@@ -197,7 +203,7 @@
 
                 <label for="ask">
                     <p>배송 요청 사항</p>
-                    <select name="ask" id="ask" class="deliveryAsk">
+                    <select name="ask" id="ask" class="deliveryAsk" onchange="sendSelectedAsk()">
                         <option value="배송 시 요청사항 선택">배송 시 요청사항 선택</option>
                         <option value="배송 전 연락 바랍니다">배송 전 연락 바랍니다.</option>
                         <option value="택배함에 넣어주세요">택배함에 넣어주세요.</option>
@@ -210,19 +216,17 @@
 
 
             <!-- 모달 알림창 -->
-            <div class="txt04" style="display: none;">
+            <div class="txt05" style="display: none;">
                 <div class="inner">
                     <h4>알림</h4>
                     <h5 id="modalMessage"></h5>
-                    <h5><a href="#" onclick="hideModal();">확인</a></h5>
+                    <h5><a href="#" onclick="hideModal2();">확인</a></h5>
                 </div>
             </div>
 
 
             <!-- 배송지추가 모달 창 -->
             <div class="delivery__add" style="display: none;">
-
-                <form id="deliveryForm">
 
                 <div class="delivery__add__inner">
 
@@ -233,27 +237,27 @@
                     <div class="bottom">
                         <label for="title">
                             <p>배송지명</p>
-                            <input type="textbox" name="title" id="title" th:if="${BasicDeliver == null}" value="우리집(기본배송지)" disabled required>
-                            <input type="textbox" name="title" id="title" th:if="${BasicDeliver != null}" value="" required>
+                            <input type="textbox" name="title" id="title" th:if="${BasicDeliver == null}" value="우리집(기본배송지)" disabled >
+                            <input type="textbox" name="title" id="title" th:if="${BasicDeliver != null}" value="" >
                         </label>
 
                         <label for="name">
                             <p>이름</p>
-                            <input type="textbox" name="name" id="name" required>
+                            <input type="textbox" name="name" id="name" >
                         </label>
 
-                        <label for="phone" class="phone">
+                        <label for="phone" class="phone1">
                             <p>연락처</p>
-                            <input type="textbox" name="phone1" id="phone1"  required>
+                            <input type="textbox" name="phone1" id="phone1"  >
 
                         </label>
 
                         <label for="add" class="add">
                             <p>주소</p>
                             <button onclick="sample6_execDaumPostcode()">우편번호</button>
-                            <input type="textbox" name="postCode" id="postCode" class="postalCode" required>
-                            <input type="textbox" name="roadAddr" id="roadAddr" class="postalCode2" required>
-                            <input type="textbox" name="detailAddr" id="detailAddr" class="postalCode2" required>
+                            <input type="textbox" name="postCode" id="postCode" class="postalCode" >
+                            <input type="textbox" name="roadAddr" id="roadAddr" class="postalCode2" >
+                            <input type="textbox" name="detailAddr" id="detailAddr" class="postalCode2" >
                             <input type="hidden" id="sample6_extraAddress" placeholder="참고항목" value=" ">
                         </label>
 
@@ -271,7 +275,6 @@
 
                 </div>
 
-                </form>
 
             </div>
 
@@ -309,7 +312,7 @@
                             </div>
 
                             <div class="price">
-                                <span th:text="'구매수량: '+${c.cart_count}+'개'">구매수량 1개</span>
+                                <span th:value="${c.cart_count}" th:text="'구매수량: '+${c.cart_count}+'개'">구매수량 1개</span>
                             </div>
                         </div>
                     </td>
@@ -372,17 +375,24 @@
                 </tr>
             </table>
 
+
+
+            <form method="post" action="/final">
+
+
+
             <p class="title">결제수단</p>
 
             <div class="paymentWrap">
                 <p>일반결제
                     <span id="payPriceSpan">계산해야함</span>
+                    <input type="hidden" name="pay" id="payPriceInput" value="">
                 </p>
 
                 <div class="paymentButtons">
                     <button>신용카드</button>
-                    <button>휴대폰 결제</button>
-                    <button>실시간 계좌이체</button>
+<!--                    <button>휴대폰 결제</button>-->
+<!--                    <button>실시간 계좌이체</button>-->
                 </div>
 
                 <div class="paymentBackground">
@@ -465,9 +475,34 @@
             <div class="buttons">
                 <button>결제취소</button>
                 <a>
-                    <button id="paymentBtn_final">결제하기</button>
+                    <button id="paymentBtn_final2" type="submit">결제하기</button>
                 </a>
             </div>
+
+
+                <!-- 선택된 값을 저장할 hidden input -->
+                <input type="hidden" name="selectedAsk" id="selectedAsk" value="">
+
+
+                <!-- 선택된 값을 저장할 hidden input -->
+                <input type="hidden" name="selectedValue" id="selectedValue" value="">
+
+                <!-- CheckboxCartList에서 input 태그들의 value 값 설정 -->
+                <tr th:each="c : ${CheckboxCartList}">
+                    <input type="hidden" name="productIds" th:value="${c.id}">
+                    <input type="hidden" name="productCount" th:value="${c.cart_count}">
+                    <input type="hidden" name="productPrice" th:value="${c.price}">
+                    <input type="hidden" name="productName" th:value="${c.name}">
+                    <input type="hidden" name="productImg" th:value="${c.file_name}">
+
+                </tr>
+
+                <!-- 나머지 폼 요소들을 여기에 추가 -->
+
+
+            </form>
+
+
 
 
             <!-- 결제취소. 모달 창 -->
@@ -578,6 +613,7 @@
 
     // totalPrice를 갖고 있는 <span> 엘리먼트 업데이트
 
+    document.getElementById('payPriceInput').value = finalAmount.toFixed(0)
     payPriceSpan.textContent = finalAmount.toFixed(0) + ' 원';
     finalAmountSpan.textContent = finalAmount.toFixed(0) + ' 원';
 </script>
@@ -663,7 +699,25 @@
             });
     }
 
+
+    // 페이지 로드 시 초기 설정 값을 가져오는 함수
+    window.onload = function() {
+        var selectElement = document.getElementById("where");
+        var selectedValue = selectElement.options[selectElement.selectedIndex].getAttribute("data");
+        document.getElementById("selectedValue").value = selectedValue;
+    };
+
     function sendSelectedValue() {
+
+
+        // 선택 값이 변경될 때마다 호출되는 함수
+
+            var selectElement = document.getElementById("where");
+            var selectedValue = selectElement.options[selectElement.selectedIndex].getAttribute("data");
+            document.getElementById("selectedValue").value = selectedValue;
+
+
+
         // 선택한 옵션의 값을 가져옴
         var selectedValue = document.getElementById("where").value;
 
@@ -680,9 +734,9 @@
 
 
                 $("#deliver_id").empty();
-                $(".name").empty();
-                $(".phone").empty();
-                $(".add").empty();
+                $("#name").empty();
+                $("#phone").empty();
+                $("#address").empty();
 
 
                 const deliver_id = `<input type="hidden" id="deliver_id" name="deliver_id" value="${response.data.id}" >`
@@ -714,9 +768,9 @@
 
 
                 $("#deliver_id").append(deliver_id);
-                $(".name").append(name);
-                $(".phone").append(phone);
-                $(".add").append(add);
+                $("#name").append(name);
+                $("#phone").append(phone);
+                $("#address").append(add);
 
 
             })
@@ -725,6 +779,18 @@
                 console.error(error);
             });
     }
+
+    // 선택 값이 변경될 때마다 호출되는 함수
+    function sendSelectedAsk() {
+        var selectElement = document.getElementById("ask");
+        var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+        document.getElementById("selectedAsk").value = selectedValue;
+    }
+
+
+
+
+
 </script>
 
 
