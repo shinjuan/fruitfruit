@@ -282,14 +282,14 @@ public class UserController {
 
         System.out.println("체크박스확인"+checkbox);
         System.out.println("카운트"+selectedCount);
+        String loggedInEmail = (String) session.getAttribute("email");
 
+        int countDelivery = userService.countDelivery(loggedInEmail);
 
-
-
-
+        model.addAttribute("countDelivery", countDelivery);
 
         if (!checkbox.isEmpty()) {
-            String loggedInEmail = (String) session.getAttribute("email");
+
 
             String firstProductId = checkbox.get(0);
 
@@ -346,9 +346,54 @@ public class UserController {
 
         System.out.println("배송지확인:"+formData);
 
-        userService.insertDelivery(formData);
+        int countDelivery = userService.countDelivery(loggedInEmail);
 
-        return "배송지추가";
+        if(countDelivery > 3) {
+            userService.insertDelivery(formData);
+
+            return "배송지추가";
+        } else {
+            return "배송지초과";
+        }
+
+
+    }
+
+    @ResponseBody
+    @PostMapping("/delivery_edit_ok")
+    public String delivery_edit_ok(HttpSession session, Model model,@RequestBody HashMap<String, String> formData
+    ) {
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        formData.put("email",loggedInEmail);
+
+        System.out.println("배송지수정확인:"+formData);
+
+        userService.updateDelivery(formData);
+
+        return "배송지수정";
+
+
+
+    }
+
+    @ResponseBody
+    @PostMapping("/delivery_delete_ok")
+    public String delivery_delete_ok(HttpSession session, Model model,@RequestBody HashMap<String, String> formData
+    ) {
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        formData.put("email",loggedInEmail);
+
+        System.out.println("배송지삭제확인:"+formData);
+
+        userService.deleteDelivery(formData);
+
+        return "배송지삭제";
+
+
 
     }
 
@@ -406,6 +451,7 @@ public class UserController {
         System.out.println("결제최종확인"+requestData);
 
         userService.insertOrder_Product(requestData);
+
 
 
         System.out.println("성공확인1:"+requestData.get("pay"));
@@ -501,8 +547,62 @@ public class UserController {
     }
 
 
+    @GetMapping("/mypage_delivery")
+    public String mypage_delivery(HttpSession session, Model model) {
 
 
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        int countDelivery = userService.countDelivery(loggedInEmail);
+
+        List<HashMap<String,Object>> delivery_all_list = userService.selectDeliverAllList(loggedInEmail);
+
+        model.addAttribute("delivery_all_list", delivery_all_list);
+        model.addAttribute("countDelivery", countDelivery);
+
+        return "mypage_delivery";
+    }
+
+
+    @GetMapping("/mypageEdit")
+    public String mypage_edit(HttpSession session, Model model) {
+
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        if(loggedInEmail != null) {
+
+            return "mypageEdit";
+        } else {
+            return "login";
+        }
+    }
+
+    @PostMapping("/mypageEdit_ok")
+    public String mypage_edit_ok(HttpSession session, Model model,@RequestParam HashMap<String, Object> requestData) {
+
+
+        String loggedInEmail = (String) session.getAttribute("email");
+        requestData.put("email",loggedInEmail);
+
+        HashMap<String, Object> result = userService.loginChk(requestData);
+
+        String loginResult = (String) result.get("result");
+
+        if (loginResult.equals("success")) {
+            model.addAttribute("email", requestData.get("email"));
+            model.addAttribute("nickname", requestData.get("nickname"));
+            model.addAttribute("email", requestData.get("email"));
+
+            return "/mypageEdit02"; // 로그인 성공 시 이동할 뷰 페이지
+
+        } else if (loginResult.equals("fail")) {
+            model.addAttribute("failMessage", "비밀번호가 일치하지 않습니다.");
+            return "mypageEdit";
+        }
+
+        return loginResult;
+    }
 
 
 }

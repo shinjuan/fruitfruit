@@ -141,4 +141,20 @@ public class UserService implements UserMapper {
 
        return userMapper.selectSearchPaymentList(mypageSearch);
     }
+
+    public List<HashMap<String, Object>> selectDeliverAllList(String email) {
+       return userMapper.selectDeliverAllList(email);
+    }
+
+    public int countDelivery(String email) {
+       return userMapper.countDelivery(email);
+    }
+
+    public void updateDelivery(HashMap<String, String> formData) {
+       userMapper.updateDelivery(formData);
+    }
+
+    public void deleteDelivery(HashMap<String, String> formData) {
+       userMapper.deleteDelivery(formData);
+    }
 }

@@ -11,7 +11,7 @@
     <meta property="og:site_name" content="프룻프룻 Shopping Mall" />
     <meta property="og:title" content="프룻프룻 Shopping Mall" />
     <meta property="og:description" content="프룻프룻 Shopping Mall 입니다." />
-    <meta property="og:image" content="./img/openGraph.png" />
+    <meta property="og:image" content="/user/img/openGraph.png" />
     <meta property="og:url" content="https://prpr-shopping-mall.co.kr" />
 
     <!--파비콘-->
@@ -55,6 +55,11 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
     <script defer src="./js/main.js"></script>
+
+
+    <th:block th:insert="~{includes/library}"></th:block>
+    <th:block th:insert="~{includes/style}"></th:block>
+    <th:block th:insert="~{includes/scripts}"></th:block>
 </head>
 
 <body>
@@ -63,7 +68,7 @@
         <div class="inner">
 
             <a href="./index.html" class="logo">
-                <img src="./img/푸릇푸릇 로고.png" alt="logo" />
+                <img src="/user/img/푸릇푸릇 로고.png" alt="logo" />
             </a>
 
             <div class="sub-menu">
@@ -150,139 +155,91 @@
                     <span>* 배송지는 3개까지만 저장됩니다.</span>
                 </p>
 
-                <button>+ 배송지추가</button>
+                <button th:if="${countDelivery < 3}" id="new_delivery_my">+ 배송지추가</button>
+                <button th:if="${countDelivery >= 3}" id="new_delivery_my" disabled style="background-color: #888888">+ 배송지추가</button >
             </div>
 
-            <div class="delivery__wrap">
+            <div class="delivery__wrap" th:each="d : ${delivery_all_list}">
                 <div class="buttons">
-                    <button>수정</button>
-                    <button>삭제</button>
+                    <button id="edit_delivery" th:value="${d.id}">수정</button>
+                    <button id="delete_delivery" th:value="${d.id}">삭제</button>
                 </div>
 
                 <ul>
                     <li>
                         <span class="li__title">배송지명</span>
-                        <span>우리집</span>
+                        <span th:text="${d.place}">우리집</span>
 
                     </li>
                     <li>
                         <span class="li__title">수령인</span>
-                        <span>홍길동 팀장</span>
+                        <span th:text="${d.name}">홍길동 팀장</span>
                     </li>
                     <li>
                         <span class="li__title">연락처</span>
-                        <span>010-1234-5678</span>
+                        <span th:text="${d.phone}">010-1234-5678</span>
                     </li>
                     <li>
                         <span class="li__title">배송주소</span>
-                        <span>12345 서울시 강남구 강남로 123 강남빌딩</span>
+                        <span th:text="${d.postcode}+' '+${d.address}+' '+${d.detail_address}">12345 서울시 강남구 강남로 123 강남빌딩</span>
                     </li>
                 </ul>
             </div>
 
-            <div class="delivery__wrap">
-                <div class="buttons">
-                    <button>수정</button>
-                    <button>삭제</button>
-                </div>
-
-                <ul>
-                    <li>
-                        <span class="li__title">배송지명</span>
-                        <span>우리집</span>
-
-                    </li>
-                    <li>
-                        <span class="li__title">수령인</span>
-                        <span>홍길동 팀장</span>
-                    </li>
-                    <li>
-                        <span class="li__title">연락처</span>
-                        <span>010-1234-5678</span>
-                    </li>
-                    <li>
-                        <span class="li__title">배송주소</span>
-                        <span>12345 서울시 강남구 강남로 123 강남빌딩</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="delivery__wrap">
-                <div class="buttons">
-                    <button>수정</button>
-                    <button>삭제</button>
-                </div>
-
-                <ul>
-                    <li>
-                        <span class="li__title">배송지명</span>
-                        <span>우리집</span>
-
-                    </li>
-                    <li>
-                        <span class="li__title">수령인</span>
-                        <span>홍길동 팀장</span>
-                    </li>
-                    <li>
-                        <span class="li__title">연락처</span>
-                        <span>010-1234-5678</span>
-                    </li>
-                    <li>
-                        <span class="li__title">배송주소</span>
-                        <span>12345 서울시 강남구 강남로 123 강남빌딩</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
 
 
-        <!-- 배송지추가 모달 창 -->
-        <div class="delivery__add" style="display: none;">
-            <div class="delivery__add__inner">
 
-                <div class="top">
-                    <span>배송지추가</span>
-                </div>
+            <!-- 배송지추가 모달 창 -->
+            <div class="delivery__add" style="display: none;">
 
-                <div class="bottom">
-                    <label for="title">
-                        <p>배송지명</p>
-                        <input type="textbox" name="title" id="title">
-                    </label>
+                <div class="delivery__add__inner">
 
-                    <label for="name">
-                        <p>이름</p>
-                        <input type="textbox" name="name" id="name">
-                    </label>
-
-                    <label for="phone" class="phone">
-                        <p>연락처</p>
-                        <input type="textbox" name="phone1" id="phone1">
-                        <input type="textbox" name="phone2" id="phone2">
-                    </label>
-
-                    <label for="add" class="add">
-                        <p>주소</p>
-                        <button>우편번호</button>
-                        <input type="textbox" name="add" id="add" class="postalCode">
-                        <input type="textbox" name="add2" id="add2" class="postalCode2">
-                        <input type="textbox" name="add3" id="add3" class="postalCode2">
-                    </label>
-
-
-                    <div class="delivery__add__buttons">
-                        <button class="delivery__add__cancel">
-                            작성취소
-                        </button>
-
-                        <button class="delivery__add__confirm">
-                            저장하기
-                        </button>
+                    <div class="top">
+                        <span>배송지추가</span>
                     </div>
+
+                    <div class="bottom">
+                        <label for="title">
+                            <p>배송지명</p>
+                            <input type="textbox" name="title" id="title" value="" >
+                        </label>
+
+                        <label for="name">
+                            <p>이름</p>
+                            <input type="textbox" name="name" id="name" >
+                        </label>
+
+                        <label for="phone" class="phone1">
+                            <p>연락처</p>
+                            <input type="textbox" name="phone1" id="phone1"  >
+
+                        </label>
+
+                        <label for="add" class="add">
+                            <p>주소</p>
+                            <button onclick="sample6_execDaumPostcode()">우편번호</button>
+                            <input type="textbox" name="postCode" id="postCode" class="postalCode" >
+                            <input type="textbox" name="roadAddr" id="roadAddr" class="postalCode2" >
+                            <input type="textbox" name="detailAddr" id="detailAddr" class="postalCode2" >
+                            <input type="hidden" id="sample6_extraAddress" placeholder="참고항목" value=" ">
+                        </label>
+
+
+                        <div class="delivery__add__buttons">
+                            <button class="delivery__add__cancel" onclick="hideModal()">
+                                작성취소
+                            </button>
+
+                            <button type="button" class="delivery__add__confirm" onclick="submitForm()">
+                                저장
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
 
+
             </div>
-        </div>
 
         <!-- 배송지저장이 완료되었습니다. 모달 창 -->
         <div class="delivery__add__confirm" style="display: none;">
@@ -362,42 +319,46 @@
             <div class="delivery__edit__inner">
 
                 <div class="top">
-                    <span>배송지추가</span>
+                    <span>배송지수정</span>
                 </div>
+
+                <!-- hidden 입력 필드 -->
+                <input type="hidden" name="buttonValue "id="buttonValue" value="">
 
                 <div class="bottom">
                     <label for="title">
                         <p>배송지명</p>
-                        <input type="textbox" name="title" id="title">
+                        <input type="textbox" name="title" id="title_e" value="" >
                     </label>
 
                     <label for="name">
                         <p>이름</p>
-                        <input type="textbox" name="name" id="name">
+                        <input type="textbox" name="name" id="name_e" >
                     </label>
 
-                    <label for="phone" class="phone">
+                    <label for="phone" class="phone1">
                         <p>연락처</p>
-                        <input type="textbox" name="phone1" id="phone1">
-                        <input type="textbox" name="phone2" id="phone2">
+                        <input type="textbox" name="phone1" id="phone1_e"  >
+
                     </label>
 
                     <label for="add" class="add">
                         <p>주소</p>
-                        <button>우편번호</button>
-                        <input type="textbox" name="add" id="add" class="postalCode">
-                        <input type="textbox" name="add2" id="add2" class="postalCode2">
-                        <input type="textbox" name="add3" id="add3" class="postalCode2">
+                        <button onclick="sample6_execDaumPostcode2()">우편번호</button>
+                        <input type="textbox" name="postCode" id="postCode_e" class="postalCode" >
+                        <input type="textbox" name="roadAddr" id="roadAddr_e" class="postalCode2" >
+                        <input type="textbox" name="detailAddr" id="detailAddr_e" class="postalCode2" >
+                        <input type="hidden" id="sample6_extraAddress_e" placeholder="참고항목" value=" ">
                     </label>
 
 
                     <div class="delivery__edit__buttons">
-                        <button class="delivery__edit__cancel">
-                            <a href="#">작성취소</a>
+                        <button class="delivery__edit__cancel" onclick="hideModal2();">
+                            작성취소
                         </button>
 
-                        <button class="delivery__edit__confirm">
-                            <a href="#">수정하기</a>
+                        <button class="delivery__edit__confirm" onclick="submitForm2()">
+                            수정하기
                         </button>
                     </div>
                 </div>
@@ -407,5 +368,208 @@
     </div>
 
 </body>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function sample6_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("sample6_extraAddress").value = extraAddr;
+
+                } else {
+                    document.getElementById("sample6_extraAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('postCode').value = data.zonecode;
+                document.getElementById("roadAddr").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("detailAddr").focus();
+            }
+        }).open();
+    }
+
+    function sample6_execDaumPostcode2() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("sample6_extraAddress_e").value = extraAddr;
+
+                } else {
+                    document.getElementById("sample6_extraAddress_e").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('postCode_e').value = data.zonecode;
+                document.getElementById("roadAddr_e").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("detailAddr_e").focus();
+            }
+        }).open();
+    }
+
+
+    function submitForm() {
+        // 폼 데이터를 직접 JSON 형태로 구성
+        const formData = {
+            title: document.getElementById("title").value,
+            name: document.getElementById("name").value,
+            phone1: document.getElementById("phone1").value,
+            postCode: document.getElementById("postCode").value,
+            roadAddr: document.getElementById("roadAddr").value,
+            detailAddr: document.getElementById("detailAddr").value,
+            // 다른 필드들도 필요한 대로 추가
+        };
+
+        // Axios를 사용하여 JSON 데이터를 서버로 전송
+        axios.post("/delivery_ok", formData)
+            .then(response => {
+                // 요청 성공 시 처리
+                console.log(response.data);
+                // 필요한 리다이렉트 또는 다른 동작 수행
+                if (response.data != null) {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                // 요청 실패 시 처리
+                console.error(error);
+            });
+    }
+
+
+</script>
+<script>
+
+    // "수정" 버튼 클릭 이벤트 핸들러
+    const editButton = document.querySelector("#edit_delivery");
+    editButton.addEventListener("click", function() {
+        // "수정하기" 버튼의 value 속성을 가져와 hidden 입력 필드에 설정합니다.
+        const buttonValue = this.getAttribute("value");
+        document.getElementById("buttonValue").value = buttonValue;
+
+
+    });
+
+    // "삭제" 버튼 클릭 이벤트 핸들러
+    const deleteButton = document.querySelector("#delete_delivery");
+    deleteButton.addEventListener("click", function() {
+        // "삭제" 버튼의 value 속성을 가져와서 buttonValue 변수에 할당합니다.
+        const buttonValue = this.getAttribute("value");
+
+        // 폼 데이터를 직접 JSON 형태로 구성
+        const formData = {
+            buttonValue: buttonValue // 클릭한 "삭제" 버튼의 값
+            // 다른 필드들도 필요한 대로 추가
+        };
+
+        // Axios를 사용하여 JSON 데이터를 서버로 전송
+        axios.post("/delivery_delete_ok", formData)
+            .then(response => {
+                // 요청 성공 시 처리
+                console.log(response.data);
+                // 필요한 리다이렉트 또는 다른 동작 수행
+                if (response.data != null) {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                // 요청 실패 시 처리
+                console.error(error);
+            });
+    });
+
+    function submitForm2() {
+
+        // 폼 데이터를 직접 JSON 형태로 구성
+        const formData = {
+            title: document.getElementById("title_e").value,
+            name: document.getElementById("name_e").value,
+            phone1: document.getElementById("phone1_e").value,
+            postCode: document.getElementById("postCode_e").value,
+            roadAddr: document.getElementById("roadAddr_e").value,
+            detailAddr: document.getElementById("detailAddr_e").value,
+            buttonValue: document.getElementById("buttonValue").value
+
+            // 다른 필드들도 필요한 대로 추가
+        };
+
+        // Axios를 사용하여 JSON 데이터를 서버로 전송
+        axios.post("/delivery_edit_ok", formData)
+            .then(response => {
+                // 요청 성공 시 처리
+                console.log(response.data);
+                // 필요한 리다이렉트 또는 다른 동작 수행
+                if (response.data != null) {
+                   location.reload();
+                }
+            })
+            .catch(error => {
+                // 요청 실패 시 처리
+                console.error(error);
+            });
+    }
+
+
+
+</script>
 
 </html>

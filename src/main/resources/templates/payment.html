@@ -163,7 +163,8 @@
                         <option value="우리집(기본배송지)" th:data="${BasicDeliver.id}">우리집(기본배송지)</option>
                         <option th:each="d : ${DeliverList}" th:value="${d.place}" th:text="${d.place}" th:data="${d.id}"></option>
                     </select>
-                    <button id="new_delivery">+ 신규배송지</button>
+                    <button th:if="${countDelivery < 3}" id="new_delivery">+ 신규배송지</button>
+                    <button th:if="${countDelivery >= 3}" id="new_delivery" disabled style="background-color: #888888">+ 신규배송지</button >
                 </label>
 
 
@@ -698,6 +699,7 @@
                 console.error(error);
             });
     }
+
 
 
     // 페이지 로드 시 초기 설정 값을 가져오는 함수

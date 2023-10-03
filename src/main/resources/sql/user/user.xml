@@ -120,20 +120,51 @@
 
 
     <select id="selectBasicDeliver" parameterType="java.util.Map">
-        select * from deliver where user_email=#{email} and place='우리집(기본배송지)'
+        select * from deliver where user_email=#{email} and place='우리집(기본배송지)' and status='use'
     </select>
 
     <select id="selectDeliverList" parameterType="java.util.Map">
         SELECT * FROM deliver
-        WHERE user_email = #{email}
+        WHERE user_email = #{email} and status='use'
           AND place != '우리집(기본배송지)'
+    </select>
+
+    <select id="selectDeliverAllList" parameterType="java.util.Map">
+        SELECT * FROM deliver
+        WHERE user_email = #{email} and status='use'
     </select>
 
     <select id="selectDelivery" parameterType="java.util.Map">
         SELECT * FROM deliver
         WHERE user_email = #{email}
-          AND place = #{selectedValue}
+          AND place = #{selectedValue} and status='use'
     </select>
+
+    <select id="countDelivery" resultType="Integer">
+        SELECT COUNT(*) FROM deliver
+        WHERE user_email = #{email} and status='use'
+
+    </select>
+
+
+    <update id="updateDelivery">
+        UPDATE deliver
+        SET
+            place = #{title}
+          , name = #{name}
+          , phone = #{phone1}
+          , postcode = #{postCode}
+          , address = #{roadAddr}
+          , detail_address = #{detailAddr}
+        WHERE id = #{buttonValue} and user_email = #{email}
+    </update>
+
+    <update id="deleteDelivery">
+        UPDATE deliver
+        SET
+            status = 'deleted'
+        WHERE id = #{buttonValue} and user_email = #{email}
+    </update>
 
     <select id="selectPaymentList" parameterType="java.util.Map">
         SELECT op.*

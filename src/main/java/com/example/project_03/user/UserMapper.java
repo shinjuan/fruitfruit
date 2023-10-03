@@ -48,4 +48,12 @@ public interface UserMapper {
     List<HashMap<String, Object>> selectPaymentList(String email);
 
     List<HashMap<String, Object>> selectSearchPaymentList(HashMap<String, Object> mypageSearch);
+
+    List<HashMap<String, Object>> selectDeliverAllList(String email);
+
+    int countDelivery(String email);
+
+    void updateDelivery(HashMap<String, String> formData);
+
+    void deleteDelivery(HashMap<String, String> formData);
 }

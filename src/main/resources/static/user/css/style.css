@@ -2031,11 +2031,11 @@
   color: #fff;
 }
 #mypage_delivery .delivery__add__confirm {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  /*position: fixed;*/
+  /*top: 0;*/
+  /*left: 0;*/
+  /*width: 100vw;*/
+  /*height: 100vh;*/
   background: rgba(0, 0, 0, 0.7) fixed;
   z-index: 9;
   display: flex;
@@ -4232,5 +4232,442 @@ header .inner .main-menu .item .red .material-icons {
   border: 1px solid #ff7d04;
 }
 
+#mypageEdit .inner .input .input_wrap {
+  display: flex;
+  align-items: center;
+}
+#mypageEdit .inner .input .input_wrap input {
+  width: 450px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  border: 1px solid #f0f0f0;
+}
+#mypageEdit .inner .input .input_wrap span {
+  position: absolute;
+  right: 380px;
+}
 
+#mypageEdit .inner .input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+#mypageEdit .inner .input p {
+  font: 600 14px/2.5 "Noto Sans";
+  padding-left: 10px;
+}
+#mypageEdit .inner .input p:last-child {
+  color: red;
+  font: 600 12px/2 "Noto Sans";
+  padding-left: 10px;
+}
 
+#mypageEdit02 {
+  margin-top: 120px;
+}
+#mypageEdit02 .inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 147px;
+}
+#mypageEdit02 .inner h2 {
+  font: 700 30px/1 "Noto Sans";
+  margin-bottom: 52px;
+}
+#mypageEdit02 .inner .tab__menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  margin-bottom: 25px;
+}
+#mypageEdit02 .inner .tab__menu a {
+  margin-right: 3px;
+  width: 100%;
+  height: 100%;
+}
+#mypageEdit02 .inner .tab__menu a .history,
+#mypageEdit02 .inner .tab__menu a .delivery,
+#mypageEdit02 .inner .tab__menu a .memberInfo {
+  text-align: center;
+  font: 700 18px/50px "Nanum Gothic";
+  color: #fff;
+  letter-spacing: 1px;
+}
+#mypageEdit02 .inner .tab__menu a .memberInfo {
+  background-color: #252525;
+}
+#mypageEdit02 .inner .tab__menu a .delivery,
+#mypageEdit02 .inner .tab__menu a .history {
+  background-color: #f0f0f0;
+  color: #6c6c6c;
+}
+#mypageEdit02 .inner .tab__menu a .memberInfo {
+  margin-right: 0px;
+}
+#mypageEdit02 .inner .txt_box {
+  font: 600 25px/1 "Noto Sans";
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 40px;
+}
+#mypageEdit02 .inner .txt_box p {
+  margin-bottom: 30px;
+}
+#mypageEdit02 .inner .txt_box span {
+  font: 500 16px/1.5 "Noto Sans";
+}
+#mypageEdit02 .inner label {
+  width: 500px;
+}
+#mypageEdit02 .inner label p {
+  font: bold 14px/1 "Nanum Gothic";
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+#mypageEdit02 .inner label input {
+  width: 400px;
+  padding: 10px;
+  font: normal 12px/1 "Nanum Gothic";
+  color: #bbb;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 30px;
+  margin-right: 10px;
+}
+#mypageEdit02 .inner label button {
+  width: 70px;
+  background-color: #252525;
+  color: #fff;
+  border-radius: 5px;
+  padding: 8px 20px;
+  border: none;
+  cursor: pointer;
+}
+#mypageEdit02 .inner .phone input {
+  width: 485px;
+}
+#mypageEdit02 .inner .email input {
+  width: 485px;
+}
+#mypageEdit02 .inner .change__PW {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+#mypageEdit02 .inner .change__PW p {
+  font: bold 14px/1 "Nanum Gothic";
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+#mypageEdit02 .inner .change__PW .button__box {
+  border: 1px solid #b8b8b8;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  margin-bottom: 80px;
+}
+#mypageEdit02 .inner .change__PW .button__box button {
+  border-radius: 5px;
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+#mypageEdit02 .inner .change__PW__button {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+#mypageEdit02 .inner .change__PW__button .button1 p {
+  font: bold 14px/1 "Nanum Gothic";
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+#mypageEdit02 .inner .change__PW__button .button1 .button__box {
+  border: 1px solid #b8b8b8;
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 30px;
+  gap: 30px;
+}
+#mypageEdit02 .inner .change__PW__button .button1 .button__box button {
+  border-radius: 5px;
+  padding: 10px 20px;
+  background-color: #333;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 30px;
+}
+#mypageEdit02 .inner .change__PW__button .button1 .button__box .input__box {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-left: 20px;
+}
+#mypageEdit02 .inner .change__PW__button .button1 .button__box .input__box .box01,
+#mypageEdit02 .inner .change__PW__button .button1 .button__box .input__box .box02 {
+  display: flex;
+  flex-direction: column;
+}
+#mypageEdit02 .inner .change__PW__button .button1 .button__box .input__box .box01 p,
+#mypageEdit02 .inner .change__PW__button .button1 .button__box .input__box .box02 p {
+  font: 600 14px/1 "Noto Sans";
+  padding-left: 5px;
+}
+#mypageEdit02 .inner .change__PW__button .button1 .button__box .input__box .box01 .input_wrap,
+#mypageEdit02 .inner .change__PW__button .button1 .button__box .input__box .box02 .input_wrap {
+  display: flex;
+  align-items: center;
+}
+#mypageEdit02 .inner .change__PW__button .button1 .button__box .input__box .box01 .input_wrap input,
+#mypageEdit02 .inner .change__PW__button .button1 .button__box .input__box .box02 .input_wrap input {
+  width: 380px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  border: 1px solid #f0f0f0;
+}
+#mypageEdit02 .inner .change__PW__button .button1 .button__box .input__box .box01 .input_wrap span,
+#mypageEdit02 .inner .change__PW__button .button1 .button__box .input__box .box02 .input_wrap span {
+  position: absolute;
+  right: 430px;
+}
+#mypageEdit02 .inner .change__PW__button .button1 .button__box .input__box .box02 {
+  margin-bottom: 30px;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 p {
+  font: bold 14px/1 "Nanum Gothic";
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box {
+  border: 1px solid #b8b8b8;
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 30px;
+  gap: 30px;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box button {
+  border-radius: 5px;
+  padding: 10px 20px;
+  background-color: #333;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 30px;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-left: 20px;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box01,
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box02 {
+  display: flex;
+  flex-direction: column;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box01 p,
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box02 p {
+  font: 600 14px/1 "Noto Sans";
+  padding-left: 5px;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box01 .input_wrap,
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box02 .input_wrap {
+  display: flex;
+  align-items: center;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box01 .input_wrap input,
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box02 .input_wrap input {
+  width: 380px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  border: 1px solid #f0f0f0;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box01 .input_wrap span,
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box02 .input_wrap span {
+  position: absolute;
+  right: 430px;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box02 {
+  margin-bottom: 20px;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box02 p:last-child {
+  color: red;
+  font: 600 12px/2 "Noto Sans";
+  padding-left: 5px;
+}
+#mypageEdit02 .inner .change__PW__buttonWrong .button1 .button__box .input__box .box02 .input_wrap input {
+  border: 1px solid red;
+}
+#mypageEdit02 .inner .mypageEdit__button {
+  margin-top: 50px;
+  display: flex;
+  width: 500px;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 80px;
+}
+#mypageEdit02 .inner .mypageEdit__button button {
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  width: 200px;
+  padding: 13px;
+  border-radius: 5px;
+}
+#mypageEdit02 .inner .mypageEdit__button button a {
+  color: #fff;
+  font: bold 16px/1 "Nanum Gothic";
+}
+#mypageEdit02 .inner .mypageEdit__button button:first-child {
+  background-color: #fff;
+  border: 1px solid #252525;
+}
+#mypageEdit02 .inner .mypageEdit__button button:first-child a {
+  color: #252525;
+}
+#mypageEdit02 .mypageEdit__cancel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7) fixed;
+  z-index: 9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#mypageEdit02 .mypageEdit__cancel .mypageEdit__cancel__inner {
+  width: 600px;
+}
+#mypageEdit02 .mypageEdit__cancel .mypageEdit__cancel__inner .top {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  height: 60px;
+  font: 800 18px/60px "Noto Sans";
+}
+#mypageEdit02 .mypageEdit__cancel .mypageEdit__cancel__inner .bottom {
+  background-color: #fff;
+  width: 100%;
+  height: 250px;
+  padding: 50px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#mypageEdit02 .mypageEdit__cancel .mypageEdit__cancel__inner .bottom span {
+  font: 400 18px/1.5 "Noto Sans";
+  margin-bottom: 20px;
+  text-align: center;
+}
+#mypageEdit02 .mypageEdit__cancel .mypageEdit__cancel__inner .mypageEdit__cancel__buttons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-top: 30px;
+  justify-content: center;
+}
+#mypageEdit02 .mypageEdit__cancel .mypageEdit__cancel__inner .mypageEdit__cancel__buttons button {
+  border: 1px solid #252525;
+  cursor: pointer;
+  font: 600 16px/1 "Noto Sans";
+  padding: 13px 30px;
+  background-color: var(--primary-color);
+  border-radius: 5px;
+  border: none;
+}
+#mypageEdit02 .mypageEdit__cancel .mypageEdit__cancel__inner .mypageEdit__cancel__buttons button a {
+  color: #fff;
+}
+#mypageEdit02 .mypageEdit__cancel .mypageEdit__cancel__inner .mypageEdit__cancel__buttons button:first-child {
+  border: 1px solid #252525;
+  background-color: #fff;
+}
+#mypageEdit02 .mypageEdit__cancel .mypageEdit__cancel__inner .mypageEdit__cancel__buttons button:first-child a {
+  color: #252525;
+}
+#mypageEdit02 .mypageEdit__confirm {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7) fixed;
+  z-index: 9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#mypageEdit02 .mypageEdit__confirm .mypageEdit__confirm__inner {
+  width: 600px;
+}
+#mypageEdit02 .mypageEdit__confirm .mypageEdit__confirm__inner .top {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  height: 60px;
+  font: 800 18px/60px "Noto Sans";
+}
+#mypageEdit02 .mypageEdit__confirm .mypageEdit__confirm__inner .bottom {
+  background-color: #fff;
+  width: 100%;
+  height: 250px;
+  padding: 50px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#mypageEdit02 .mypageEdit__confirm .mypageEdit__confirm__inner .bottom span {
+  font: 400 18px/1.5 "Noto Sans";
+  margin-bottom: 20px;
+  text-align: center;
+}
+#mypageEdit02 .mypageEdit__confirm .mypageEdit__confirm__inner .mypageEdit__confirm__buttons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-top: 30px;
+  justify-content: center;
+}
+#mypageEdit02 .mypageEdit__confirm .mypageEdit__confirm__inner .mypageEdit__confirm__buttons button {
+  border: 1px solid #252525;
+  cursor: pointer;
+  font: 600 16px/1 "Noto Sans";
+  padding: 13px 50px;
+  background-color: var(--primary-color);
+  border-radius: 5px;
+  border: none;
+}
+#mypageEdit02 .mypageEdit__confirm .mypageEdit__confirm__inner .mypageEdit__confirm__buttons button a {
+  color: #fff;
+}
