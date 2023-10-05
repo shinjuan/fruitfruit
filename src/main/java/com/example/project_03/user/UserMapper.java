@@ -56,4 +56,12 @@ public interface UserMapper {
     void updateDelivery(HashMap<String, String> formData);
 
     void deleteDelivery(HashMap<String, String> formData);
+
+    List<HashMap<String, Object>> selectReviewList(String productNo);
+
+    HashMap<String, Object> payCheckConfirm(HashMap<String, Object> emailAndProductNo);
+
+    HashMap<String, Object> reviewCheckConfirm(HashMap<String, Object> emailAndProductNo);
+
+    void insertReview(HashMap<String, Object> reviewData);
 }

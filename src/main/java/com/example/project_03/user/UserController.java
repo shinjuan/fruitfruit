@@ -192,6 +192,59 @@ public class UserController {
         return "detail";
     }
 
+    @GetMapping("detail/review/{product_no}")
+    public String review(Model model, @PathVariable String product_no, HttpSession session) {
+
+
+        String loggedInEmail = (String) session.getAttribute("email");
+
+        HashMap<String,Object> detail = new HashMap<>();
+
+        detail.put("email",loggedInEmail);
+        detail.put("product_no",product_no);
+
+        HashMap<String,Object> productDetail = userService.selectProductDetail(detail);
+
+        model.addAttribute("detail",productDetail);
+
+        List<HashMap<String,Object>> reviewList = userService.selectReviewList(product_no);
+
+        model.addAttribute("reviewList",reviewList);
+        model.addAttribute("email",loggedInEmail);
+
+        HashMap<String,Object> emailAndProductNo = new HashMap<>();
+
+        emailAndProductNo.put("email",loggedInEmail);
+        emailAndProductNo.put("product_no",product_no);
+
+        HashMap<String,Object> payCheckConfirm = userService.payCheckConfirm(emailAndProductNo);
+        HashMap<String,Object> reviewCheckConfirm = userService.reviewCheckConfirm(emailAndProductNo);
+
+        model.addAttribute("payCheckConfirm",payCheckConfirm);
+        model.addAttribute("reviewCheckConfirm",reviewCheckConfirm);
+        model.addAttribute("email",loggedInEmail);
+
+
+
+        return "review";
+    }
+
+    @PostMapping("review_ok")
+    public String review_ok(Model model, @RequestParam HashMap<String,Object> reviewData, HttpSession session) {
+
+        System.out.println("리뷰데이터확인:"+reviewData);
+
+
+        userService.insertReview(reviewData);
+
+
+
+
+
+
+        return "redirect:/detail/review/"+reviewData.get("product_id");
+    }
+
     @ResponseBody
     @PostMapping("/detail_like")
     public HashMap<String,Object> like(@RequestBody HashMap<String, Object> requestData, HttpSession session) {

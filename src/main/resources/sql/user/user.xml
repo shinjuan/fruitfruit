@@ -24,6 +24,14 @@
     </insert>
 
 
+    <insert id="insertReview" parameterType="java.util.Map">
+        INSERT INTO review (product_id, user_email, review_text, created_at, updated_at)
+        VALUES
+            (#{product_id}, #{user_email}, #{review_text}, NOW(), NOW());
+
+    </insert>
+
+
     <insert id="insertDelivery" parameterType="java.util.Map">
         INSERT INTO deliver (user_email, place, name, phone, postcode, address, detail_address)
         VALUES (#{email}, #{title}, #{name}, #{phone1}, #{postCode}, #{roadAddr}, #{detailAddr})
@@ -118,6 +126,10 @@
         </foreach>
     </select>
 
+    <select id="selectReviewList" parameterType="java.util.Map">
+        select * from review where product_id=#{productNo}
+    </select>
+
 
     <select id="selectBasicDeliver" parameterType="java.util.Map">
         select * from deliver where user_email=#{email} and place='우리집(기본배송지)' and status='use'
@@ -165,6 +177,19 @@
             status = 'deleted'
         WHERE id = #{buttonValue} and user_email = #{email}
     </update>
+
+    <select id="reviewCheckConfirm" parameterType="java.util.Map">
+        select * from review where user_email=#{email} and product_id = #{product_no}
+    </select>
+
+    <select id="payCheckConfirm" parameterType="java.util.Map">
+        SELECT op.*
+        FROM order_product op
+                 INNER JOIN orders o ON op.order_id = o.id
+                 INNER JOIN deliver d ON o.deliver_id = d.id
+        WHERE d.user_email = #{email} and product_id = #{product_no}
+    </select>
+
 
     <select id="selectPaymentList" parameterType="java.util.Map">
         SELECT op.*
@@ -223,6 +248,8 @@
             )
         </foreach>
     </insert>
+
+
 
 
 

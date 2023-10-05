@@ -14,7 +14,7 @@
     <meta property="og:image" content="/user/img/openGraph.png" />
     <meta property="og:url" content="https://prpr-shopping-mall.co.kr" />
 
-    <!--파비콘-->
+<!--    &lt;!&ndash;파비콘&ndash;&gt;-->
 <!--    <link rel="icon" href="./favicon.ico" />-->
 
     <!--브라우저 스타일 초기화-->
@@ -51,12 +51,9 @@
 
     <script defer src="./js/main.js"></script>
 
-
     <th:block th:insert="~{includes/library}"></th:block>
     <th:block th:insert="~{includes/style}"></th:block>
     <th:block th:insert="~{includes/scripts}"></th:block>
-
-
 </head>
 
 <body>
@@ -120,7 +117,7 @@
         </div>
     </header>
 
-    <section id="detail">
+    <section id="review">
         <div class="inner detail__inner">
 
             <div class="box01">
@@ -226,7 +223,8 @@
                     </div>
                 </a>
 
-                <a th:href="@{review/{id}(id=${detail.id})}">
+
+                <a href="./review.html">
                     <div class="review">
                         <p>상품리뷰</p>
                     </div>
@@ -234,8 +232,149 @@
 
             </div>
 
-            <div class="box03" th:utext="${detail.content}">
-<!--                <img src="/user/img/망고스틴_상세페이지.png" alt="망고스틴 상세페이지">-->
+            <div class="write">
+                <button id="write_review" th:if="${payCheckConfirm != null && reviewCheckConfirm == null}">
+                    <span class="material-symbols-outlined">rate_review</span>
+                    <span >리뷰작성하기</span>
+                </button>
+
+
+                <form action="/review_ok" method="post">
+
+                <input type="hidden" name="product_id" th:value="${detail.id}">
+                <input type="hidden" name="user_email"  th:value="${email}">
+
+                <!-- 리뷰작성 모달 창 -->
+                <div id="modal_write_review" class="review__modal" style="display: none;">
+                    <div class="inner">
+
+                        <h4>알림</h4>
+
+                        <div class="modal__wrap">
+                            <h5>상품에 대한 리뷰를 남겨주세요.</h5>
+
+                            <input type="text" name="review_text" placeholder="10자 이상 500자 미만으로 작성해주세요.">
+                            <span class="count">15/500</span>
+
+
+                            <div class="review__buttons">
+                                <button class="review__cancel" onclick="hideModal_write_review()">
+                                    <a href="#">작성취소</a>
+                                </button>
+
+                                <button type="submit" class="review__confirm">
+                                    <a href="#">리뷰등록</a>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                </form>
+
+                <!-- 리뷰작성 취소 모달 창 -->
+                <div class="review__cancel__modal" style="display: none;">
+                    <div class="inner">
+
+                        <h4>알림</h4>
+
+                        <div class="cancel__modal__wrap">
+                            <h5>작성중인 내용이 모두 삭제됩니다. <br>
+                                취소 하시겠습니까?</h5>
+
+
+                            <div class="review__buttons">
+                                <button class="review__cancel">
+                                    <a href="#">취소하기</a>
+                                </button>
+
+                                <button class="review__confirm">
+                                    <a href="#">계속작성</a>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 리뷰작성 완료 모달 창 -->
+                <div class="review__confirm__modal" style="display: none;">
+                    <div class="inner">
+
+                        <h4>알림</h4>
+
+                        <div class="confirm__modal__wrap">
+                            <h5>리뷰 작성이 완료 되었습니다.</h5>
+
+
+                            <div class="review__buttons">
+                                <button class="review__confirm">
+                                    <a href="#">확인</a>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="box03">
+                <ul th:each="r : ${reviewList}">
+                    <li >
+                        <span class="id" th:text="${r.user_email}">Chan****</span>
+                        <span class="date" th:text="${r.created_at}">2023. 07. 17</span>
+                        <button id="edit_review" th:if="${r.user_email == email}">수정하기</button>
+                        <button th:id="${r.id}" th:if="${r.review_reply != null}" onclick="toggleReply(this.id)">답글보기</button>
+                        <button th:if="${r.user_email == 'admin' && r.review_reply == null}">답글달기</button>
+
+                        <p th:text="${r.review_text}">
+                            배송빨라서 좋았어요! <br>
+                            몇개는 상했고 대부분 괜찮았어요 ㅎㅎ <br>
+                            베트남에서 너무 맛있어서 사봤는데 역시 맛있네요.
+
+                            <button>답글달기</button>
+                        </p>
+                    </li>
+                    <li th:id="'reply_'+${r.id}" class="seller" style="display: none;">
+                        <span class="id">판매자</span>
+                        <span class="date" th:text="${r.updated_at}">2023. 07. 17</span>
+
+                        <p th:text="${r.review_reply}">
+                            고객님 소중한 리뷰 작성 감사합니다^^ <br>
+                            앞으로도 더 좋은 품질의 상품들로 찾아뵙겠습니다! <br>
+                            다음에도 또 이용해주세요~!
+
+                        </p>
+                    </li>
+                    <br>
+                </ul>
+
+
+
+                <div class="pagination">
+                    <a href="#" class="prev">
+                        <span class="material-symbols-outlined">
+                            chevron_left
+                        </span>
+                    </a>
+
+                    <p class="numbers">
+                        <a href="#">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">
+                            <span class="bold">4</span>
+                        </a>
+                        <a href="#">5</a>
+                    </p>
+
+                    <a href="#" class="next">
+                        <span class="material-symbols-outlined">
+                            chevron_right
+                        </span>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -458,6 +597,20 @@
         });
     }
 
+</script>
+<script>
+
+    function toggleReply(reviewId) {
+
+
+        const replyElement = document.querySelector(`#reply_${reviewId}`);
+
+        if (replyElement.style.display === "none" || replyElement.style.display === "") {
+            replyElement.style.display = "block";
+        } else {
+            replyElement.style.display = "none";
+        }
+    }
 </script>
 
 </html>

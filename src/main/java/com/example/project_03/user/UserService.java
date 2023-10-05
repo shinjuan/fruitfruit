@@ -157,4 +157,21 @@ public class UserService implements UserMapper {
     public void deleteDelivery(HashMap<String, String> formData) {
        userMapper.deleteDelivery(formData);
     }
+
+    public List<HashMap<String, Object>> selectReviewList(String productNo) {
+
+       return userMapper.selectReviewList(productNo);
+    }
+
+    public HashMap<String, Object> payCheckConfirm(HashMap<String, Object> emailAndProductNo) {
+       return userMapper.payCheckConfirm(emailAndProductNo);
+    }
+
+    public HashMap<String, Object> reviewCheckConfirm(HashMap<String, Object> emailAndProductNo) {
+       return userMapper.reviewCheckConfirm(emailAndProductNo);
+    }
+
+    public void insertReview(HashMap<String, Object> reviewData) {
+       userMapper.insertReview(reviewData);
+    }
 }
