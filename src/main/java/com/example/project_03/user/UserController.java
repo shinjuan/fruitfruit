@@ -193,21 +193,31 @@ public class UserController {
     }
 
     @GetMapping("detail/review/{product_no}")
-    public String review(Model model, @PathVariable String product_no, HttpSession session) {
+    public String review(Model model, @PathVariable String product_no, HttpSession session,@RequestParam(defaultValue = "1") int pageNum,
+                         @RequestParam(defaultValue = "1") int pageSize) {
 
 
         String loggedInEmail = (String) session.getAttribute("email");
+
+        PageHelper.startPage(pageNum, pageSize);
+
 
         HashMap<String,Object> detail = new HashMap<>();
 
         detail.put("email",loggedInEmail);
         detail.put("product_no",product_no);
 
+
+
+        List<HashMap<String,Object>> reviewList = userService.selectReviewList(product_no);
+
+        PageInfo<HashMap<String, Object>> pageInfo = new PageInfo<>(reviewList);
+        System.out.println("마이페이지검색테스트:"+pageInfo);
+        model.addAttribute("pageInfo", pageInfo);
+
         HashMap<String,Object> productDetail = userService.selectProductDetail(detail);
 
         model.addAttribute("detail",productDetail);
-
-        List<HashMap<String,Object>> reviewList = userService.selectReviewList(product_no);
 
         model.addAttribute("reviewList",reviewList);
         model.addAttribute("email",loggedInEmail);
@@ -234,8 +244,20 @@ public class UserController {
 
         System.out.println("리뷰데이터확인:"+reviewData);
 
+        //유저 리뷰수정
+        if("edit".equals(reviewData.get("review_type"))) {
+            userService.updateReview(reviewData);
+        }
 
-        userService.insertReview(reviewData);
+        //유저 리뷰작성
+        else if (!"admin".equals(reviewData.get("user_email"))) {
+            userService.insertReview(reviewData);
+        } else if("admin".equals(reviewData.get("user_email"))){ //어드민 유저 답글
+            adminService.updateReviewReply(reviewData);
+        }
+
+
+
 
 
 
@@ -525,7 +547,7 @@ public class UserController {
     @GetMapping("/mypage")
     public String mypage(HttpSession session, Model model,
                          @RequestParam(defaultValue = "1") int pageNum,
-                         @RequestParam(defaultValue = "2") int pageSize
+                         @RequestParam(defaultValue = "1") int pageSize
                          ) {
         LocalDate currentDate = LocalDate.now();
 

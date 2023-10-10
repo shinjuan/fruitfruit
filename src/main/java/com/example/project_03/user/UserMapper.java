@@ -64,4 +64,6 @@ public interface UserMapper {
     HashMap<String, Object> reviewCheckConfirm(HashMap<String, Object> emailAndProductNo);
 
     void insertReview(HashMap<String, Object> reviewData);
+
+    void updateReview(HashMap<String, Object> reviewData);
 }

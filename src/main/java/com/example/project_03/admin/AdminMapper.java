@@ -51,4 +51,13 @@ public interface AdminMapper {
     String countCartList(String loggedInEmail);
 
     String countLikeList(String loggedInEmail);
+
+    void updateReviewReply(HashMap<String, Object> reviewData);
+
+
+    List<HashMap<String, Object>> selectReviewListAll();
+
+    List<HashMap<String, Object>> selectSearchReviewList(HashMap<String, Object> reviewSearch);
+
+    HashMap<String, Object> selectOneReview(HashMap<String, Object> reviewId);
 }

@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -239,6 +241,95 @@ public class AdminController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
         }
+
+
+    @GetMapping("/admin/review")
+    public String review(Model model, @RequestParam HashMap<String,Object> reviewData) {
+
+
+
+
+        LocalDate currentDate = LocalDate.now();
+
+        // yyyy-MM-dd 형식의 문자열로 변환
+        String formattedDate = currentDate.toString();
+
+        // 모델에 날짜 문자열 추가
+        model.addAttribute("date1", formattedDate);
+        model.addAttribute("date2", formattedDate);
+
+
+        List<HashMap<String,Object>> ReviewList = adminService.selectReviewListAll();
+
+        model.addAttribute("ReviewList",ReviewList);
+
+        return "admin/review";
+    }
+
+    @PostMapping("/review_serach")
+    public String mypage_serach(HttpSession session, Model model,
+                                @RequestParam("date1") String date1,
+                                @RequestParam("date2") String date2,
+                                @RequestParam("reviews") String searchType,
+                                @RequestParam("howmanys") String howmanys,
+                                @RequestParam("searchInput") String searchInput,
+                                @RequestParam("buttonStatus") String buttonStatus
+    ) {
+
+
+
+
+        model.addAttribute("date1",date1);
+        model.addAttribute("date2",date2);
+        model.addAttribute("searchType",searchType);
+
+//         날짜에 '00:00:00'와 '23:59:59' 추가
+        date1 += " 00:00:00";
+        date2 += " 23:59:59";
+
+        System.out.println("date1="+date1);
+        System.out.println("date2="+date2);
+        System.out.println("reviews="+searchType);
+        System.out.println("howmanys="+howmanys);
+        System.out.println("buttonStatus="+buttonStatus);
+        System.out.println("searchInput="+searchInput);
+
+        HashMap<String,Object> review_search = new HashMap<>();
+
+        review_search.put("date1",date1);
+        review_search.put("date2",date2);
+        review_search.put("howmanys",howmanys);
+        review_search.put("searchInput",searchInput);
+        review_search.put("reviews",searchType);
+        review_search.put("buttonStatus",buttonStatus);
+//
+        List<HashMap<String,Object>> review_list = adminService.selectSearchReviewList(review_search);
+//
+//        PageInfo<HashMap<String, Object>> pageInfo = new PageInfo<>(payment_list);
+//
+//        System.out.println("마이페이지검색테스트:"+pageInfo);
+//
+//
+        model.addAttribute("review_list", review_list);
+
+
+        return "admin/review_search";
+    }
+
+
+    @RequestMapping("/admin/showReview")
+    public String showReview(@RequestBody HashMap<String, Object> reviewId, Model model) {
+
+
+        System.out.println("리뷰보기확인:"+reviewId);
+
+        HashMap<String,Object> showReview = adminService.selectOneReview(reviewId);
+
+        model.addAttribute("showReview", showReview);
+
+
+        return "modal/admin/showReview";
+    }
 
 
     }

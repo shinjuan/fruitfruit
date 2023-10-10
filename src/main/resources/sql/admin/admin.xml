@@ -265,5 +265,119 @@
 
     </update>
 
+    <update id="updateReviewReply">
+        UPDATE review SET review_reply=#{review_text} where id=#{review_id}
+    </update>
+
+
+    <select id="selectReviewListAll" resultType="java.util.Map">
+
+        SELECT
+        r.id AS review_id,
+        r.product_id,
+        p.name AS product_name,
+        r.user_email,
+        r.review_text,
+        r.review_reply,
+        r.created_at,
+        r.updated_at,
+        CASE
+        WHEN r.review_reply IS NULL OR r.review_reply = '' THEN '미답변'
+        ELSE '답변완료'
+        END AS status,
+        CASE
+        WHEN r.review_reply IS NULL OR r.review_reply = '' THEN '답변등록'
+        ELSE '답변보기'
+        END AS reply_registration
+        FROM
+        review r
+        JOIN
+        product p ON r.product_id = p.id
+
+
+
+    </select>
+
+    <select id="selectOneReview" resultType="java.util.Map">
+
+        SELECT
+            r.id AS review_id,
+            r.product_id,
+            p.name AS product_name,
+            r.user_email,
+            r.review_text,
+            r.review_reply,
+            r.created_at,
+            r.updated_at,
+            CASE
+                WHEN r.review_reply IS NULL OR r.review_reply = '' THEN '미답변'
+                ELSE '답변완료'
+                END AS status,
+            CASE
+                WHEN r.review_reply IS NULL OR r.review_reply = '' THEN '답변등록'
+                ELSE '답변보기'
+                END AS reply_registration
+        FROM
+            review r
+                JOIN
+            product p ON r.product_id = p.id
+        WHERE
+            r.id = #{reviewId}
+
+
+
+    </select>
+
+    <select id="selectSearchReviewList" resultType="java.util.Map">
+
+        SELECT
+            r.id AS review_id,
+            r.product_id,
+            p.name AS product_name,
+            r.user_email,
+            r.review_text,
+            r.review_reply,
+            r.created_at,
+            r.updated_at,
+            CASE
+                WHEN r.review_reply IS NULL OR r.review_reply = '' THEN '미답변'
+                ELSE '답변완료'
+                END AS status,
+            CASE
+                WHEN r.review_reply IS NULL OR r.review_reply = '' THEN '답변등록'
+                ELSE '답변보기'
+                END AS reply_registration
+        FROM
+            review r
+                JOIN
+            product p ON r.product_id = p.id
+        <where>
+            <!-- date1과 date2가 주어진 경우 -->
+            <if test="date1 != null and date2 != null">
+                AND r.created_at <![CDATA[>=]]> #{date1}   AND r.created_at <![CDATA[<=]]> #{date2}
+            </if>
+
+            <!-- buttonStatus가 주어진 경우 -->
+            <if test="buttonStatus != null and buttonStatus !=''">
+                AND (CASE
+                WHEN r.review_reply IS NULL OR r.review_reply = '' THEN '미답변'
+                ELSE '답변완료'
+                END) = #{buttonStatus}
+            </if>
+            <!-- searchType이 productName인 경우 -->
+            <if test="reviews == 'productName' and searchInput != ''">
+                AND p.name LIKE CONCAT('%', #{searchInput}, '%')
+
+            </if>
+            <!-- searchType이 userId인 경우 -->
+            <if test="reviews == 'userId' and searchInput != ''">
+                AND r.user_email LIKE CONCAT('%', #{searchInput}, '%')
+            </if>
+
+        </where>
+
+
+    </select>
+
 
 </mapper>

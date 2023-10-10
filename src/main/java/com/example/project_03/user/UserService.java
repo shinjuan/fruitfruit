@@ -174,4 +174,8 @@ public class UserService implements UserMapper {
     public void insertReview(HashMap<String, Object> reviewData) {
        userMapper.insertReview(reviewData);
     }
+
+    public void updateReview(HashMap<String, Object> reviewData) {
+       userMapper.updateReview(reviewData);
+    }
 }

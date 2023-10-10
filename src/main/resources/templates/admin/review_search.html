@@ -161,14 +161,15 @@
                     </div>
                     <input type="date" id="date1" name="date1" th:value="${date1}">
                     <p>~</p>
-                    <input type="date" id="date2" name="date2" th:value="${date1}">
+                    <input type="date" id="date2" name="date2" th:value="${date2}">
                 </div>
 
                 <div class="search">
                     <span>검색</span>
                     <select name="reviews" id="reviews">
-                        <option value="productName">상품명</option>
-                        <option value="userId">회원ID</option>
+                        <option value="productName" th:selected="${searchType == 'productName'}">상품명</option>
+                        <option value="userId" th:selected="${searchType == 'userId'}">회원ID</option>
+<!--                        <option value="닉네임">닉네임</option>-->
                     </select>
                     <input type="text" name="searchInput">
                     <div class="buttons">
@@ -218,25 +219,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="r : ${ReviewList}">
-                            <td>
-                                <input type="checkbox" th:value="${r.review_id}">
-                            </td>
-                            <td th:text="${r.review_id}">05</td>
-                            <td th:text="${r.status}">답변완료</td>
-                            <td th:text="${r.product_name}">
-                                <a href="#">
-                                    프리미엄 선물용 사..
-                                </a>
-                            </td>
-                            <td th:text="${r.review_text}">어머니 선물로 샀는데 너무 달고 맛..</td>
-                            <td th:text="${r.user_email}">fireraccoon@naver.com</td>
-<!--                            <td>불타는너구리</td>-->
-                            <td th:text="${r.created_at}">2023. 03. 01</td>
-                            <td>
-                                <button th:text="${r.reply_registration}" th:value="${r.review_id}" id="showReview">답변보기</button>
-                            </td>
-                        </tr>
+                    <tr th:each="r : ${review_list}">
+                        <td>
+                            <input type="checkbox" th:value="${r.review_id}">
+                        </td>
+                        <td th:text="${r.review_id}">05</td>
+                        <td th:text="${r.status}">답변완료</td>
+                        <td th:text="${r.product_name}">
+                            <a href="#">
+                                프리미엄 선물용 사..
+                            </a>
+                        </td>
+                        <td th:text="${r.review_text}">어머니 선물로 샀는데 너무 달고 맛..</td>
+                        <td th:text="${r.user_email}">fireraccoon@naver.com</td>
+                        <!--                            <td>불타는너구리</td>-->
+                        <td th:text="${r.created_at}">2023. 03. 01</td>
+                        <td>
+                            <button th:text="${r.reply_registration}">답변보기</button>
+                        </td>
+                    </tr>
 
                     </tbody>
                 </table>
@@ -264,10 +265,6 @@
                         chevron_right
                     </span>
                 </a>
-            </div>
-
-            <div id="showReviewBody">
-
             </div>
 
             <!-- 리뷰관리 답변하기 버튼 클릭시 모달창 -->
@@ -414,36 +411,4 @@
         document.getElementById('search-form').submit();
     });
 </script>
-<script>
-    document.querySelectorAll('#showReview').forEach(button => {
-        button.addEventListener('click', function() {
-            const reviewId = this.value; // 클릭한 버튼의 value 값을 가져옴
-
-            //alert(reviewId)
-
-            // JSON 데이터 생성
-            const jsonData = {
-                reviewId: reviewId
-            };
-
-            // Axios를 사용하여 POST 요청 보냄
-            axios.post('/admin/showReview', jsonData)
-                .then(response => {
-
-                    $("#showReviewBody").append(response.data);
-                    // 성공적으로 응답을 받았을 때 처리
-                    console.log(response.data);
-                })
-                .catch(error => {
-                    // 오류가 발생했을 때 처리
-                    console.error(error);
-                });
-        });
-    });
-
-    function hideModal_showReview() {
-        $(".admin__review").css("display", "none");
-    }
-</script>
-
 </html>

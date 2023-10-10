@@ -178,6 +178,10 @@
         WHERE id = #{buttonValue} and user_email = #{email}
     </update>
 
+    <update id="updateReview">
+        UPDATE review SET review_text=#{review_text} where id=#{review_id}
+    </update>
+
     <select id="reviewCheckConfirm" parameterType="java.util.Map">
         select * from review where user_email=#{email} and product_id = #{product_no}
     </select>

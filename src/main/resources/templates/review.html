@@ -241,6 +241,8 @@
 
                 <form action="/review_ok" method="post">
 
+                <input type="hidden" name="review_type" value="">
+                <input type="hidden" name="review_id" value="">
                 <input type="hidden" name="product_id" th:value="${detail.id}">
                 <input type="hidden" name="user_email"  th:value="${email}">
 
@@ -324,16 +326,16 @@
                     <li >
                         <span class="id" th:text="${r.user_email}">Chan****</span>
                         <span class="date" th:text="${r.created_at}">2023. 07. 17</span>
-                        <button id="edit_review" th:if="${r.user_email == email}">수정하기</button>
-                        <button th:id="${r.id}" th:if="${r.review_reply != null}" onclick="toggleReply(this.id)">답글보기</button>
-                        <button th:if="${r.user_email == 'admin' && r.review_reply == null}">답글달기</button>
+                        <button th:id="'review_edit_'+${r.id}" th:value="${r.id}" th:if="${r.user_email == email}">수정하기</button>
+                        <button th:id="${r.id}" th:if="${r.review_reply != null && r.review_reply != ''}" onclick="toggleReply(this.id)">답글보기</button>
+                        <button th:id="'write_reply_'+${r.id}" th:value="${r.id}" th:if="${email == 'admin' && r.review_reply == null}">답글달기</button>
 
                         <p th:text="${r.review_text}">
                             배송빨라서 좋았어요! <br>
                             몇개는 상했고 대부분 괜찮았어요 ㅎㅎ <br>
                             베트남에서 너무 맛있어서 사봤는데 역시 맛있네요.
 
-                            <button>답글달기</button>
+
                         </p>
                     </li>
                     <li th:id="'reply_'+${r.id}" class="seller" style="display: none;">
@@ -352,29 +354,30 @@
 
 
 
-                <div class="pagination">
-                    <a href="#" class="prev">
-                        <span class="material-symbols-outlined">
-                            chevron_left
-                        </span>
-                    </a>
+                <div class="pagination" id="pagination">
+
+
+                    <th:block th:if="${pageInfo.hasPreviousPage}">
+                        <a th:href="@{/page(pageNum=${pageInfo.prePage} )}" class="prevBtn" th:value="${pageInfo.prePage}">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </a>
+                    </th:block>
+
 
                     <p class="numbers">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#">
-                            <span class="bold">4</span>
-                        </a>
-                        <a href="#">5</a>
+                    <span th:each="pageNumber : ${pageInfo.navigatepageNums}" th:if="${pageNumber <= pageInfo.total}">
+                      <a th:text="${pageNumber}" th:href="@{/detail/review/{id}(id=${detail.id},pageNum=${pageNumber})}" class="numberBtn" th:attr="value=${pageNumber}" th:classappend="${pageNumber == pageInfo.pageNum ? 'bold large-text' : ''}"
+                         style="font-size: 16px; font-weight: bold;"></a>
+                    </span>
                     </p>
 
-                    <a href="#" class="next">
-                        <span class="material-symbols-outlined">
-                            chevron_right
-                        </span>
-                    </a>
+                    <th:block th:if="${pageInfo.hasNextPage}">
+                        <a th:href="'#'" class="nextBtn" th:value="${pageInfo.nextPage}">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </a>
+                    </th:block>
                 </div>
+
             </div>
         </div>
     </section>

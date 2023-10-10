@@ -1336,6 +1336,7 @@
 #admin_review .inner .admin__review .admin__review__inner {
   width: 600px;
   background-color: #fff;
+  margin: 0 auto;
 }
 #admin_review .inner .admin__review .admin__review__inner .top {
   background-color: #333;

@@ -122,4 +122,20 @@ public class AdminService implements AdminMapper {
     public String countLikeList(String loggedInEmail) {
         return adminMapper.countLikeList(loggedInEmail);
     }
+
+    public void updateReviewReply(HashMap<String, Object> reviewData) {
+        adminMapper.updateReviewReply(reviewData);
+    }
+
+    public List<HashMap<String, Object>> selectReviewListAll() {
+        return adminMapper.selectReviewListAll();
+    }
+
+    public List<HashMap<String, Object>> selectSearchReviewList(HashMap<String, Object> reviewSearch) {
+        return adminMapper.selectSearchReviewList(reviewSearch);
+    }
+
+    public HashMap<String, Object> selectOneReview(HashMap<String, Object> reviewId) {
+        return adminMapper.selectOneReview(reviewId);
+    }
 }
