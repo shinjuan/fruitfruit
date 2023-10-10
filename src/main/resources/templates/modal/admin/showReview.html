@@ -1,4 +1,6 @@
 <!-- 리뷰관리 답변하기 버튼 클릭시 모달창 -->
+<form action="/update/reviewReply" method="post">
+
 <div class="admin__review" style="display: block; margin: 0 auto;">
   <div class="admin__review__inner">
 
@@ -16,19 +18,23 @@
 
     <div class="bottom">
       <p>리뷰답변</p>
-      <input type="text" th:value="${showReview.review_reply}">
+      <input type="text" name="review_text" th:value="${showReview.review_reply}">
+      <input type="hidden" name="review_id" th:value="${showReview.review_id}">
 <!--      <span>15 / 500</span>-->
 
       <div class="admin__review__buttons">
         <button onclick="hideModal_showReview()">
           <a>취소하기</a>
         </button>
-        <button>
-          <a href="#" th:if="${showReview.review_reply == null || showReview.review_reply == ''}">답변하기</a>
-          <a href="#" th:if="${showReview.review_reply != ''}">수정하기</a>
+        <button type="submit">
+          <a  th:if="${showReview.review_reply == null || showReview.review_reply == ''}">답변하기</a>
+          <a  th:if="${showReview.review_reply != ''}">수정하기</a>
         </button>
       </div>
     </div>
 
   </div>
 </div>
+
+
+</form>

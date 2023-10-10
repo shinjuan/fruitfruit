@@ -331,6 +331,20 @@ public class AdminController {
         return "modal/admin/showReview";
     }
 
+    @RequestMapping("/update/reviewReply")
+    public String update_reviewReply(@RequestParam HashMap<String, Object> reviewData, Model model) {
+
+
+        System.out.println("리뷰업데이트보기확인:"+reviewData);
+
+        adminService.updateReviewReply(reviewData);
+//
+//        model.addAttribute("showReview", showReview);
+
+
+        return "redirect:/admin/review";
+    }
+
 
     }
 
