@@ -60,4 +60,8 @@ public interface AdminMapper {
     List<HashMap<String, Object>> selectSearchReviewList(HashMap<String, Object> reviewSearch);
 
     HashMap<String, Object> selectOneReview(HashMap<String, Object> reviewId);
+
+    List<HashMap<String, Object>> selectMemberListAll();
+
+    List<HashMap<String, Object>> selectSearchMemberList(HashMap<String, Object> memberSearch);
 }

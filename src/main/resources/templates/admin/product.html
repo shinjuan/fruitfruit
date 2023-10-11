@@ -252,29 +252,29 @@
                 </table>
             </div>
 
-            <div class="pagination" id="pagination">
+<!--            <div class="pagination" id="pagination">-->
 
 
-                <th:block th:if="${pageInfo.hasPreviousPage}">
-                    <a th:href="@{/page(pageNum=${pageInfo.prePage}, categoryName=${pageInfo.category_name})}" class="prevBtn" th:value="${pageInfo.prePage}">
-                        <span class="material-symbols-outlined">chevron_left</span>
-                    </a>
-                </th:block>
+<!--                <th:block th:if="${pageInfo.hasPreviousPage}">-->
+<!--                    <a th:href="@{/page(pageNum=${pageInfo.prePage}, categoryName=${pageInfo.category_name})}" class="prevBtn" th:value="${pageInfo.prePage}">-->
+<!--                        <span class="material-symbols-outlined">chevron_left</span>-->
+<!--                    </a>-->
+<!--                </th:block>-->
 
 
-                <p class="numbers">
-                    <span th:each="pageNumber : ${pageInfo.navigatepageNums}" th:if="${pageNumber <= pageInfo.total}">
-                      <a th:text="${pageNumber}" th:href="'#'" class="numberBtn" th:attr="value=${pageNumber}" th:classappend="${pageNumber == pageInfo.pageNum ? 'bold large-text' : ''}"
-                         style="font-size: 16px; font-weight: bold;"></a>
-                    </span>
-                </p>
+<!--                <p class="numbers">-->
+<!--                    <span th:each="pageNumber : ${pageInfo.navigatepageNums}" th:if="${pageNumber <= pageInfo.total}">-->
+<!--                      <a th:text="${pageNumber}" th:href="'#'" class="numberBtn" th:attr="value=${pageNumber}" th:classappend="${pageNumber == pageInfo.pageNum ? 'bold large-text' : ''}"-->
+<!--                         style="font-size: 16px; font-weight: bold;"></a>-->
+<!--                    </span>-->
+<!--                </p>-->
 
-                <th:block th:if="${pageInfo.hasNextPage}">
-                    <a th:href="'#'" class="nextBtn" th:value="${pageInfo.nextPage}">
-                        <span class="material-symbols-outlined">chevron_right</span>
-                    </a>
-                </th:block>
-            </div>
+<!--                <th:block th:if="${pageInfo.hasNextPage}">-->
+<!--                    <a th:href="'#'" class="nextBtn" th:value="${pageInfo.nextPage}">-->
+<!--                        <span class="material-symbols-outlined">chevron_right</span>-->
+<!--                    </a>-->
+<!--                </th:block>-->
+<!--            </div>-->
         </div>
     </section>
 

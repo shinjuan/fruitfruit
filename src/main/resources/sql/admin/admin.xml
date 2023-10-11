@@ -379,5 +379,57 @@
 
     </select>
 
+    <select id="selectMemberListAll" resultType="java.util.Map">
+
+        SELECT
+            u.*,
+            CASE
+                WHEN u.status = 1 THEN '활동중'
+                WHEN u.status = 2 THEN '탈퇴'
+                ELSE '알 수 없음'
+                END AS status_text,
+            (SELECT COUNT(*) FROM orders o WHERE o.deliver_id IN (SELECT id FROM deliver d WHERE d.user_email = u.email)) AS order_count
+        FROM
+            user u
+
+
+
+    </select>
+
+    <select id="selectSearchMemberList" parameterType="java.util.Map">
+        SELECT
+        u.*,
+        CASE
+        WHEN u.status = 1 THEN '활동중'
+        WHEN u.status = 2 THEN '탈퇴'
+        ELSE '알 수 없음'
+        END AS status_text,
+        (SELECT COUNT(*) FROM orders o WHERE o.deliver_id IN (SELECT id FROM deliver d WHERE d.user_email = u.email)) AS order_count
+        FROM
+        user u
+        <where>
+
+            <!-- buttonStatus가 주어진 경우 -->
+            <if test="buttonStatus != null and buttonStatus !=''">
+                AND (CASE
+                WHEN u.status = 1 THEN '활동중'
+                WHEN u.status = 2 THEN '탈퇴'
+                ELSE '알 수 없음'
+                END) = #{buttonStatus}
+            </if>
+
+            <!-- searchType이 userId인 경우 -->
+            <if test="searchType == 'userId' and searchInput != ''">
+                AND u.email LIKE CONCAT('%', #{searchInput}, '%')
+
+            </if>
+            <!-- searchType이 nickName인 경우 -->
+            <if test="searchType == 'nickName' and searchInput != ''">
+                AND u.nickname LIKE CONCAT('%', #{searchInput}, '%')
+            </if>
+
+        </where>
+    </select>
+
 
 </mapper>

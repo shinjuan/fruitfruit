@@ -151,8 +151,8 @@
                 <div class="search">
                     <span>검색</span>
                     <select name="sort" id="sorts">
-                        <option value="userId">회원ID</option>
-                        <option value="nickName">닉네임</option>
+                        <option value="userId" th:selected="${searchType == 'userId'}">회원ID</option>
+                        <option value="nickName" th:selected="${searchType == 'nickName'}">닉네임</option>
 
                     </select>
                     <input type="text" placeholder="상품명 검색" name="searchInput">
@@ -171,10 +171,11 @@
 
                 <div class="right">
                     <select name="howmany" id="howmanys">
-                        <option value="10">10개씩 보기</option>
-                        <option value="30">30개씩 보기</option>
-                        <option value="50">50개씩 보기</option>
-                        <option value="100">100개씩 보기</option>
+                        <option th:value="${howmanys}" th:text="${howmanys}+'개씩 보기'">10개씩 보기</option>
+                        <option th:if="${howmanys != 10}" value="10">10개씩 보기</option>
+                        <option th:if="${howmanys != 30}" value="30">30개씩 보기</option>
+                        <option th:if="${howmanys != 50}" value="50">50개씩 보기</option>
+                        <option th:if="${howmanys != 100}" value="100">100개씩 보기</option>
                     </select>
 
                     <button>
@@ -203,7 +204,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="m : ${memberList}">
+                        <tr th:each="m : ${pageInfo.list}">
                             <td>
                                 <input type="checkbox" th:value="${m.id}">
                             </td>
@@ -240,7 +241,7 @@
 
                 <p class="numbers">
                     <span th:each="pageNumber : ${pageInfo.navigatepageNums}" th:if="${pageNumber <= pageInfo.total}">
-                      <a th:text="${pageNumber}" th:href="@{/admin/member(pageNum=${pageNumber})}" class="numberBtn2" th:attr="value=${pageNumber}" th:classappend="${pageNumber == pageInfo.pageNum ? 'bold large-text' : ''}"
+                      <a th:text="${pageNumber}" th:href="'#'" class="numberBtn2" th:attr="value=${pageNumber}" th:classappend="${pageNumber == pageInfo.pageNum ? 'bold large-text' : ''}"
                          style="font-size: 16px; font-weight: bold;"></a>
                     </span>
                 </p>
@@ -251,8 +252,6 @@
                     </a>
                 </th:block>
             </div>
-
-        </div>
 
 
 
@@ -440,10 +439,10 @@
 
         <!-- 숨겨진(hidden) 입력 필드로 값을 저장합니다 -->
 
-        <input type="hidden" id="hidden-sorts" name="sorts" value="sortName">
-        <input type="hidden" id="hidden-searchInput" name="searchInput" value="">
-        <input type="hidden" id="hidden-howmanys" name="howmanys" value="howmanysName">
-        <input type="hidden" id="hidden-button-status" name="buttonStatus" value="">
+        <input type="hidden" id="hidden-sorts" name="sorts" th:value="${searchType}">
+        <input type="hidden" id="hidden-searchInput" name="searchInput" th:value="${searchInput}">
+        <input type="hidden" id="hidden-howmanys" name="howmanys" th:value="${howmanys}">
+        <input type="hidden" id="hidden-button-status" name="buttonStatus" th:value="${buttonStatus}">
 
     </form>
 
@@ -456,7 +455,6 @@
         button.addEventListener('click', function () {
             // 클릭한 버튼의 value 값을 가져와서 hidden 입력 필드에 설정
             document.getElementById('hidden-button-status').value = this.value;
-            alert(document.getElementById('hidden-button-status').value)
         });
     });
 
@@ -471,6 +469,8 @@
         // 폼을 서버로 제출
         document.getElementById('search-form2').submit();
     });
+
+
 </script>
 
 </html>

@@ -582,7 +582,7 @@ public class UserController {
                                 @RequestParam("products") String searchType,
                                 @RequestParam("searchInput") String searchInput,
                                 @RequestParam(defaultValue = "1") int pageNum,
-                                @RequestParam(defaultValue = "2") int pageSize
+                                @RequestParam(defaultValue = "1") int pageSize
                                 ) {
 
         PageHelper.startPage(pageNum, pageSize);

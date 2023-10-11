@@ -345,6 +345,70 @@ public class AdminController {
         return "redirect:/admin/review";
     }
 
+    @GetMapping("/admin/member")
+    public String member(Model model, @RequestParam HashMap<String,Object> memberData,
+                         @RequestParam(defaultValue = "1") int pageNum,
+                         @RequestParam(defaultValue = "10") int pageSize) {
+
+        PageHelper.startPage(pageNum, pageSize);
+
+
+
+        List<HashMap<String,Object>> memberList = adminService.selectMemberListAll();
+
+        PageInfo<HashMap<String, Object>> pageInfo = new PageInfo<>(memberList);
+
+        model.addAttribute("memberList",memberList);
+        model.addAttribute("pageInfo", pageInfo);
+
+        return "admin/member";
+    }
+
+    @PostMapping("/admin/member_search")
+    public String member_serach(HttpSession session, Model model,
+                                @RequestParam("sorts") String searchType,
+                                @RequestParam("searchInput") String searchInput,
+                                @RequestParam("howmanys") int howmanys,
+                                @RequestParam("buttonStatus") String buttonStatus,
+                                @RequestParam(defaultValue = "1") int pageNum
+    ) {
+
+        int pageSize = howmanys;
+        PageHelper.startPage(pageNum, pageSize);
+
+
+        model.addAttribute("searchType",searchType);
+        model.addAttribute("searchInput",searchInput);
+        model.addAttribute("howmanys",howmanys);
+        model.addAttribute("buttonStatus",buttonStatus);
+
+
+        System.out.println("searchType="+searchType);
+        System.out.println("searchInput="+searchInput);
+        System.out.println("howmanys="+howmanys);
+        System.out.println("buttonStatus="+buttonStatus);
+
+        HashMap<String,Object> member_search = new HashMap<>();
+
+
+        member_search.put("searchType",searchType);
+        member_search.put("searchInput",searchInput);
+        member_search.put("howmanys",howmanys);
+        member_search.put("buttonStatus",buttonStatus);
+
+        List<HashMap<String,Object>> member_search_list = adminService.selectSearchMemberList(member_search);
+
+        PageInfo<HashMap<String, Object>> pageInfo = new PageInfo<>(member_search_list);
+
+        System.out.println("회원페이지검색테스트:"+pageInfo);
+
+
+        model.addAttribute("pageInfo", pageInfo);
+
+
+        return "/admin/member_search";
+    }
+
 
     }
 

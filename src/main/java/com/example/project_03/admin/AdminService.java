@@ -138,4 +138,12 @@ public class AdminService implements AdminMapper {
     public HashMap<String, Object> selectOneReview(HashMap<String, Object> reviewId) {
         return adminMapper.selectOneReview(reviewId);
     }
+
+    public List<HashMap<String, Object>> selectMemberListAll() {
+        return adminMapper.selectMemberListAll();
+    }
+
+    public List<HashMap<String, Object>> selectSearchMemberList(HashMap<String, Object> memberSearch) {
+        return adminMapper.selectSearchMemberList(memberSearch);
+    }
 }
